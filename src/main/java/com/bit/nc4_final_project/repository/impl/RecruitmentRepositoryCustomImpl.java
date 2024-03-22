@@ -2,7 +2,7 @@ package com.bit.nc4_final_project.repository.impl;
 
 
 import com.bit.nc4_final_project.entity.Recruitment;
-import com.bit.nc4_final_project.repository.RecruitmentRepositoryCustom;
+import com.bit.nc4_final_project.repository.recruitment.RecruitmentRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

@@ -1,14 +1,12 @@
 package com.bit.nc4_final_project.entity;
 
 
-import com.bit.nc4_final_project.dto.RecruitmentDTO;
-import com.bit.nc4_final_project.dto.ReviewDTO;
+import com.bit.nc4_final_project.dto.review.ReviewDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
@@ -35,6 +33,7 @@ public class Review {
     private String title;
     private String content;
     private String writer;
+    private Integer rating;
     private LocalDateTime regDate;
 
 
@@ -52,4 +51,6 @@ public class Review {
                 .regDate(LocalDateTime.now())
                 .build();
     }
+
+
 }
