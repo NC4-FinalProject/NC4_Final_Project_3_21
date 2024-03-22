@@ -1,12 +1,11 @@
 package com.bit.nc4_final_project.entity;
 
-import com.bit.nc4_final_project.dto.RecruitmentDTO;
+import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
