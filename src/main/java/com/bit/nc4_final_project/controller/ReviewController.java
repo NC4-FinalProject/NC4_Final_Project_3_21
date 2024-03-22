@@ -2,8 +2,8 @@ package com.bit.nc4_final_project.controller;
 
 import com.bit.nc4_final_project.common.FileUtils;
 import com.bit.nc4_final_project.dto.ResponseDTO;
-import com.bit.nc4_final_project.dto.ReviewDTO;
-import com.bit.nc4_final_project.service.ReviewService;
+import com.bit.nc4_final_project.dto.review.ReviewDTO;
+import com.bit.nc4_final_project.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

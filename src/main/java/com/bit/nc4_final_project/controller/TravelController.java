@@ -2,7 +2,7 @@ package com.bit.nc4_final_project.controller;
 
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.service.TravelService;
+import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
