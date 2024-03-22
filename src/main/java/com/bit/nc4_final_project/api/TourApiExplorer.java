@@ -71,7 +71,7 @@ public class TourApiExplorer {
     public int getTotalPages() {
         int totalPages = 0;
         try {
-            String firstPageContent = getContentForPage(1);
+            String firstPageContent = getContentForPage(1, 1);
             JSONObject jsonObject = new JSONObject(firstPageContent);
             JSONObject bodyObject = jsonObject.getJSONObject("response").getJSONObject("body");
             int totalCount = bodyObject.getInt("totalCount");
