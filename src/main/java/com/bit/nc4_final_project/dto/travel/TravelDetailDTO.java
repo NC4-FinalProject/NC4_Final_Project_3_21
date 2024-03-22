@@ -1,9 +1,9 @@
-package com.bit.nc4_final_project.factory.travel;
+package com.bit.nc4_final_project.dto.travel;
 
 import lombok.Getter;
 
 @Getter
-public class TravelDetailInput {
+public class TravelDetailDTO {
     private String contentid;
     private String contenttypeid;
     private String homepage;
