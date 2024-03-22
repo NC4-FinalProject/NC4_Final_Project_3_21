@@ -1,8 +1,8 @@
-package com.bit.nc4_final_project.service.impl;
+package com.bit.nc4_final_project.service.taravel.impl;
 
 import com.bit.nc4_final_project.api.TourApiExplorer;
-import com.bit.nc4_final_project.repository.TravelRepository;
-import com.bit.nc4_final_project.service.TravelService;
+import com.bit.nc4_final_project.repository.travel.TravelRepository;
+import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

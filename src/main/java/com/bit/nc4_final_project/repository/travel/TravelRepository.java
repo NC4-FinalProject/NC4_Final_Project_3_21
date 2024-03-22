@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.repository;
+package com.bit.nc4_final_project.repository.travel;
 
 import com.bit.nc4_final_project.entity.Travel;
 import org.springframework.data.mongodb.repository.MongoRepository;
