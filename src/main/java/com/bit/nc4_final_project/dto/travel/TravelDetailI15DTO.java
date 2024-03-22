@@ -1,13 +1,11 @@
 package com.bit.nc4_final_project.dto.travel;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
-public class TravelDetailI15DTO {
+public class TravelDetailI15DTO extends TravelDetailDTO {
     private String program;
     private String eventplace;
     private LocalDateTime eventstartdate;
@@ -19,5 +17,5 @@ public class TravelDetailI15DTO {
     private String spendtimefestival;
     private String eventhomepage;
     private String bookingplace;
-    
+
 }
