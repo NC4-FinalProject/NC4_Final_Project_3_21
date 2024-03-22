@@ -11,8 +11,8 @@ import java.util.List;
 public class ResponseDTO<T> {
     private T item;
     private List<T> items;
-    private Page<T> pageItems;
-    private int statusCode;
     private int errorCode;
     private String errorMessage;
+    private int statusCode;
+    private Page<T> pageItems;
 }
