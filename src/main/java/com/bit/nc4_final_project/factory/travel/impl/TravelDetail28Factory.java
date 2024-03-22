@@ -1,15 +1,15 @@
 package com.bit.nc4_final_project.factory.travel.impl;
 
+import com.bit.nc4_final_project.dto.travel.TravelDetailDTO;
+import com.bit.nc4_final_project.dto.travel.TravelDetailI28DTO;
 import com.bit.nc4_final_project.entity.TravelDetail;
 import com.bit.nc4_final_project.factory.travel.TravelDetailFactory;
-import com.bit.nc4_final_project.factory.travel.TravelDetailI28Input;
-import com.bit.nc4_final_project.factory.travel.TravelDetailInput;
 
 public class TravelDetail28Factory implements TravelDetailFactory {
     @Override
-    public TravelDetail createTravelDetail(TravelDetailInput input) {
-        if (!(input instanceof TravelDetailI28Input input28)) {
-            throw new IllegalArgumentException("Expected input of type TravelDetail28Input");
+    public TravelDetail createTravelDetail(TravelDetailDTO input) {
+        if (!(input instanceof TravelDetailI28DTO input28)) {
+            throw new IllegalArgumentException("Expected input of type TravelDetailI28DTO");
         }
 
         return TravelDetail.builder()
