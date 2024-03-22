@@ -37,8 +37,6 @@ public class Recruitment {
     private String searchCondition;
     @Transient
     private String searchKeyword;
-    @jakarta.persistence.Id
-    private Long id;
 
     public RecruitmentDTO toDTO() {
         return RecruitmentDTO.builder()
