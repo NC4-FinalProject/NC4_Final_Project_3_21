@@ -2,9 +2,9 @@ package com.bit.nc4_final_project.controller;
 
 
 import com.bit.nc4_final_project.common.FileUtils;
-import com.bit.nc4_final_project.dto.RecruitmentDTO;
+import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
 import com.bit.nc4_final_project.dto.ResponseDTO;
-import com.bit.nc4_final_project.service.RecruitmentService;
+import com.bit.nc4_final_project.service.recruitment.RecruitmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

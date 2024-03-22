@@ -1,13 +1,11 @@
 package com.bit.nc4_final_project.dto.travel;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
-public class TravelDetailI12DTO {
+public class TravelDetailI12DTO extends TravelDetailDTO {
     private LocalDateTime opendate;
     private String restdate;
     private String useseason;
