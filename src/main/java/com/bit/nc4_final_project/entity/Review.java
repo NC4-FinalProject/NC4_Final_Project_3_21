@@ -2,6 +2,7 @@ package com.bit.nc4_final_project.entity;
 
 
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
+import com.bit.nc4_final_project.entity.community.Community;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,14 @@ public class Review {
     private Integer rating;
     private LocalDateTime regDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_seq")
+    private User user;
+
+    // 몽고 DB연결되어져 있어서 매핑 보류
+//    @ManyToOne
+//    @JoinColumn(name = "id")
+//    private Travel travel;
 
     @Transient
     private String searchCondition;
