@@ -1,6 +1,7 @@
-package com.bit.nc4_final_project.entity;
+package com.bit.nc4_final_project.entity.community;
 
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
+import com.bit.nc4_final_project.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,10 @@ public class Community {
     private int cnt;
     private String picture;
     private int capacity;
+
+    @ManyToOne
+    @JoinColumn(name = "user_seq")
+    private User user;
 
 
     private CommunityDTO toDTO() {
