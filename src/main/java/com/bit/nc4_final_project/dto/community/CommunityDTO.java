@@ -1,6 +1,6 @@
 package com.bit.nc4_final_project.dto.community;
 
-import com.bit.nc4_final_project.entity.Community;
+import com.bit.nc4_final_project.entity.community.Community;
 import lombok.*;
 
 import java.time.LocalDateTime;
