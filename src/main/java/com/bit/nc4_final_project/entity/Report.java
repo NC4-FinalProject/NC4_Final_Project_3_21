@@ -41,6 +41,10 @@ public class Report {
     private ReportType reportType;
     private Boolean state;
 
+    @ManyToOne
+    @JoinColumn(name = "user_seq")
+    private User user;
+
     public ReportDTO toDTO() {
         return ReportDTO.builder()
                 .seq(this.seq)
