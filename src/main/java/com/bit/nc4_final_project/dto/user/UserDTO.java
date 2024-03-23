@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +26,11 @@ public class UserDTO {
     private boolean isActive;
     private String lastLoginDate;
     private String token;
+    private List<UserTagDTO> tags;
+
+    public List<UserTagDTO> getTags() {
+        return tags;
+    }
 
     public User toEntity() {
         return User.builder()
