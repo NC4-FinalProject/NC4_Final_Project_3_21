@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAutheticationFilter, CorsFilter.class)

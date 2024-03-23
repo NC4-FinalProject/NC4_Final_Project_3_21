@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "T_USER")
@@ -35,7 +37,15 @@ public class User {
     private boolean isActive;
     private LocalDateTime lastLoginDate;
 
-    private UserDTO toDTO() {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserTag> userTags = new ArrayList<>();
+
+    public void addUserTag(UserTag userTag) {
+        userTags.add(userTag);
+        userTag.setUser(this);
+    }
+
+    public UserDTO toDTO() {
         return UserDTO.builder()
                 .seq(this.seq)
                 .id(this.id)
