@@ -26,4 +26,8 @@ public class Friend {
     private Integer fromUserId;
     private LocalDateTime agreeTime;
 
+    @ManyToOne
+    @JoinColumn(name = "user_seq")
+    private User user;
+
 }
