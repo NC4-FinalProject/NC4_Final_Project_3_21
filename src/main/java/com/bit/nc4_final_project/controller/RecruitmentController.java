@@ -2,11 +2,10 @@ package com.bit.nc4_final_project.controller;
 
 
 import com.bit.nc4_final_project.common.FileUtils;
-import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
 import com.bit.nc4_final_project.dto.ResponseDTO;
+import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
 import com.bit.nc4_final_project.service.recruitment.RecruitmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,13 @@ public class RecruitmentController {
         ResponseDTO<RecruitmentDTO> responseDTO = new ResponseDTO<>();
 
         try {
-            Page<RecruitmentDTO> recruitmentDTOPage = recruitmentService.searchAll(searchCondition, searchKeyword);
-
-            responseDTO.setPageItems(recruitmentDTOPage);
+            // Page<RecruitmentDTO> recruitmentDTOPage = recruitmentService.searchAll(searchCondition, searchKeyword);
+            //
+            // responseDTO.setPageItems(recruitmentDTOPage);
             responseDTO.setItem(RecruitmentDTO.builder()
-                        .searchCondition(searchCondition)
-                        .searchKeyword(searchKeyword)
-                        .build());
+                    .searchCondition(searchCondition)
+                    .searchKeyword(searchKeyword)
+                    .build());
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);

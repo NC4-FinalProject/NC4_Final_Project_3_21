@@ -1,6 +1,7 @@
 package com.bit.nc4_final_project.entity;
 
 import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
+import com.bit.nc4_final_project.entity.community.Community;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,12 +34,19 @@ public class Recruitment {
     private String content;
     private String writer;
     private LocalDateTime regDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_seq")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "community_seq")
+    private Community community;
+
     @Transient
     private String searchCondition;
     @Transient
     private String searchKeyword;
-    @jakarta.persistence.Id
-    private Long id;
 
     public RecruitmentDTO toDTO() {
         return RecruitmentDTO.builder()

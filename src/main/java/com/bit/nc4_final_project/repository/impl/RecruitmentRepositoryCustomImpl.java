@@ -1,12 +1,10 @@
 package com.bit.nc4_final_project.repository.impl;
 
 
-import com.bit.nc4_final_project.entity.Recruitment;
 import com.bit.nc4_final_project.repository.recruitment.RecruitmentRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,8 +13,8 @@ public class RecruitmentRepositoryCustomImpl implements RecruitmentRepositoryCus
     private final EntityManager em;
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public Page<Recruitment> searchAll(String searchCondition, String searchKeyword) {
-        return null;
-    }
+    // @Override
+    // public Page<Recruitment> searchAll(String searchCondition, String searchKeyword) {
+    //     return null;
+    // }
 }
