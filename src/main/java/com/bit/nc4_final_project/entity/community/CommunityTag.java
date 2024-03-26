@@ -17,7 +17,7 @@ public class CommunityTag {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "UserSeqGenerator"
+            generator = "TagSeqGenerator"
     )
     @Column(name = "com_tag_seq")
     private Integer seq;
