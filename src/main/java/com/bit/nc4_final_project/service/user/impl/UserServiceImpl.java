@@ -1,7 +1,9 @@
 package com.bit.nc4_final_project.service.user.impl;
 
+import ch.qos.logback.classic.Logger;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,21 +12,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import com.bit.nc4_final_project.entity.UserTag;
-import com.bit.nc4_final_project.jwt.JwtTokenProvider;
-import com.bit.nc4_final_project.repository.user.UserRepository;
-import com.bit.nc4_final_project.service.user.UserService;
-import lombok.RequiredArgsConstructor;
+
+
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -50,11 +50,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO signin(UserDTO userDTO) {
         Optional<User> signinUser = userRepository.findById(userDTO.getId());
 
-        if(signinUser.isEmpty()) {
+        if (signinUser.isEmpty()) {
             throw new RuntimeException("not exist userid");
         }
 
-        if(!passwordEncoder.matches(userDTO.getPw(), signinUser.get().getPw())) {
+        if (!passwordEncoder.matches(userDTO.getPw(), signinUser.get().getPw())) {
             throw new RuntimeException("wrong pw");
         }
 
@@ -74,7 +74,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.countById(userDTO.getId());
     }
 
-    @Override
+
+   @Override
+   public UserDTO join(UserDTO userDTO) {
+        return null;
+    }
+
+   @Override
     public UserDTO getUserDTO(Integer userSeq) {
         Optional<User> user = userRepository.findById(userSeq);
         if (user.isEmpty()) {
