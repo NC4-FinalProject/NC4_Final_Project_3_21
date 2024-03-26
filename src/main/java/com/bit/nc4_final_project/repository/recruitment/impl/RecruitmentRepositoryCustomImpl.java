@@ -43,19 +43,19 @@ public class RecruitmentRepositoryCustomImpl implements RecruitmentRepositoryCus
     public BooleanBuilder getSearch(String searchCondition, String searchKeyword) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if(searchKeyword == null || searchKeyword.isEmpty()) {
+        if (searchKeyword == null || searchKeyword.isEmpty()) {
             return null;
         }
 
-        if(searchCondition.equalsIgnoreCase("all")) {
+        if (searchCondition.equalsIgnoreCase("all")) {
             booleanBuilder.or(recruitment.title.containsIgnoreCase(searchKeyword));
             booleanBuilder.or(recruitment.content.containsIgnoreCase(searchKeyword));
             booleanBuilder.or(recruitment.writer.containsIgnoreCase(searchKeyword));
-        } else if(searchCondition.equalsIgnoreCase("title")) {
+        } else if (searchCondition.equalsIgnoreCase("title")) {
             booleanBuilder.or(recruitment.title.containsIgnoreCase(searchKeyword));
-        } else if(searchCondition.equalsIgnoreCase("content")) {
+        } else if (searchCondition.equalsIgnoreCase("content")) {
             booleanBuilder.or(recruitment.content.containsIgnoreCase(searchKeyword));
-        } else if(searchCondition.equalsIgnoreCase("writer")) {
+        } else if (searchCondition.equalsIgnoreCase("writer")) {
             booleanBuilder.or(recruitment.writer.containsIgnoreCase(searchKeyword));
         }
 
