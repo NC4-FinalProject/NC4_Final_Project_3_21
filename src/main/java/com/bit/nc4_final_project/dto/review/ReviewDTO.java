@@ -30,7 +30,7 @@ public class ReviewDTO {
                 .content(this.content)
                 .writer(this.writer)
                 .rating(this.rating)
-                .regDate(LocalDateTime.now())
+                .regDate(LocalDateTime.parse(this.regDate.toString()))
                 .build();
     }
 }
