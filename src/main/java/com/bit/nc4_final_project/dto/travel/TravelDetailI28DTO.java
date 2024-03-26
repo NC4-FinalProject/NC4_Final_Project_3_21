@@ -8,8 +8,8 @@ import lombok.Getter;
 public class TravelDetailI28DTO extends TravelDetailDTO {
     private String openperiod;
     private String restdateleports;
-    private Integer accomcountleports;
-    private Integer usefeeleports;
+    private String accomcountleports;
+    private String usefeeleports;
     private String usetimeleports;
-    private Integer expagerangeleports;
+    private String expagerangeleports;
 }
