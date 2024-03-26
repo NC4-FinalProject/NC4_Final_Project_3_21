@@ -35,7 +35,7 @@ public class User {
     private boolean isActive;
     private LocalDateTime lastLoginDate;
 
-    private UserDTO toDTO() {
+    public UserDTO toDTO() {
         return UserDTO.builder()
                 .seq(this.seq)
                 .id(this.id)
