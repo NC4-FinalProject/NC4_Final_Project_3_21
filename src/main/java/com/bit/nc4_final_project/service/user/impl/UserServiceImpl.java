@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.service.user.impl;
 
+import ch.qos.logback.classic.Logger;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.UserTag;
@@ -10,13 +11,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import com.bit.nc4_final_project.entity.UserTag;
+
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -40,25 +50,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signin(UserDTO userDTO) {
-//        Optional<User> signinUser = userRepository.findById(userDTO.getId());
-//
-//        if(signinUser.isEmpty()) {
-//            throw new RuntimeException("not exist userid");
-//        }
-//
-//        if(!passwordEncoder.matches(userDTO.getPw(), signinUser.get().getPw())) {
-//            throw new RuntimeException("wrong pw");
-//        }
-//
-//        UserDTO signinDTO = signinUser.get().toDTO();
-//
-//        signinDTO.setLastLoginDate(LocalDateTime.now().toString());
-//        signinDTO.setToken(jwtTokenProvider.create(signinUser.get()));
-//
-//        userRepository.save(signinDTO.toEntity());
-//        userRepository.flush();
-//
         return null;
+        Optional<User> signinUser = userRepository.findById(userDTO.getId());
+
+        if (signinUser.isEmpty()) {
+            throw new RuntimeException("not exist userid");
+        }
+
+        if (!passwordEncoder.matches(userDTO.getPw(), signinUser.get().getPw())) {
+            throw new RuntimeException("wrong pw");
+        }
+
+        UserDTO signinDTO = signinUser.get().toDTO();
+
+        signinDTO.setLastLoginDate(LocalDateTime.now().toString());
+        signinDTO.setToken(jwtTokenProvider.create(signinUser.get()));
+
+        userRepository.save(signinDTO.toEntity());
+        userRepository.flush();
+
+        return signinDTO;
     }
 
     @Override
@@ -66,12 +77,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.countById(userDTO.getId());
     }
 
-    @Override
-    public UserDTO join(UserDTO userDTO) {
+   @Override
+   public UserDTO join(UserDTO userDTO) {
         return null;
     }
 
-    @Override
+   @Override
     public UserDTO getUserDTO(Integer userSeq) {
         Optional<User> user = userRepository.findById(userSeq);
         if (user.isEmpty()) {
