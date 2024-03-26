@@ -2,6 +2,13 @@ package com.bit.nc4_final_project.service.user.impl;
 
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.repository.user.UserRepository;
+import com.bit.nc4_final_project.service.user.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 import com.bit.nc4_final_project.entity.UserTag;
 import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.repository.user.UserRepository;
@@ -14,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -64,5 +72,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public long idCheck(UserDTO userDTO) {
         return userRepository.countById(userDTO.getId());
+    }
+
+    @Override
+    public UserDTO getUserDTO(Integer userSeq) {
+        Optional<User> user = userRepository.findById(userSeq);
+        if (user.isEmpty()) {
+            log.warn("Travel with ID {} not found", userSeq);
+            return null;
+        }
+        return user.get().toDTO();
     }
 }

@@ -38,6 +38,7 @@ public class User {
     private boolean isActive;
     private LocalDateTime lastLoginDate;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<UserTag> userTags = new ArrayList<>();
