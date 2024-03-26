@@ -3,8 +3,6 @@ package com.bit.nc4_final_project.dto.travel;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
 public class TravelDTO {
@@ -26,7 +24,8 @@ public class TravelDTO {
     private String mapx;
     private String mapy;
     private String mlevel;
-    private LocalDateTime createdtime;
-    private LocalDateTime modifiedtime;
+    private String createdtime;
+    private String modifiedtime;
     private Integer viewCnt;
+    private TravelDetailDTO detail;
 }
