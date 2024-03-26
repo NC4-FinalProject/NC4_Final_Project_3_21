@@ -18,6 +18,7 @@ public class ReviewDTO {
     private String title;
     private String content;
     private String writer;
+    private int rating;
     private LocalDateTime regDate;
     private String searchCondition;
     private String searchKeyword;
@@ -28,6 +29,7 @@ public class ReviewDTO {
                 .title(this.title)
                 .content(this.content)
                 .writer(this.writer)
+                .rating(this.rating)
                 .regDate(LocalDateTime.now())
                 .build();
     }
