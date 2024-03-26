@@ -25,4 +25,15 @@ public class UserTag {
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setContent(String tagContent) {
+    }
+
 }

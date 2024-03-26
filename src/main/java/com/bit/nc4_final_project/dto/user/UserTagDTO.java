@@ -11,4 +11,6 @@ import lombok.*;
 public class UserTagDTO {
     private Integer seq;
     private String content;
+
+
 }
