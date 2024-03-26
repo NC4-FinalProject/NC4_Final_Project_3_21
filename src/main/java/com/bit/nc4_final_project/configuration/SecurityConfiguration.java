@@ -1,3 +1,4 @@
+
 //package com.bit.nc4_final_project.configuration;
 //
 //import com.bit.nc4_final_project.jwt.JwtAutheticationFilter;
@@ -38,6 +39,7 @@
 //                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
 //                    authorizationManagerRequestMatcherRegistry.requestMatchers("/").permitAll();
 //                    authorizationManagerRequestMatcherRegistry.requestMatchers("/review/**").permitAll();
+//                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
 //                    authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
 //                })
 //                .addFilterAfter(jwtAutheticationFilter, CorsFilter.class)
