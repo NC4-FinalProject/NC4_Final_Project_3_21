@@ -16,6 +16,7 @@ import lombok.Setter;
 public class ChatMessageDTO {
     
     private String channelId;
+    private String messenger;
     private String chatMessage;
     private Object data;
 
