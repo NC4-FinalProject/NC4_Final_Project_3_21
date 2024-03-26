@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "T_USER")
@@ -38,6 +39,7 @@ public class User {
     private LocalDateTime lastLoginDate;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<UserTag> userTags = new ArrayList<>();
 
     public void addUserTag(UserTag userTag) {
@@ -58,6 +60,8 @@ public class User {
                 .regDate(this.regDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
+                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
+
     }
 }
