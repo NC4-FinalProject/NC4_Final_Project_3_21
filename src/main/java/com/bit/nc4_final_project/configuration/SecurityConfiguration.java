@@ -1,5 +1,5 @@
-
 package com.bit.nc4_final_project.configuration;
+
 
 
 import com.bit.nc4_final_project.jwt.JwtAuthenticationFilter;
@@ -8,18 +8,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private final JwtAuthenticationFilter jwtAutheticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -44,9 +44,11 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/review/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/id-check").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
-                .addFilterAfter(jwtAutheticationFilter, CorsFilter.class)
+                .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
                 .build();
 
     }
