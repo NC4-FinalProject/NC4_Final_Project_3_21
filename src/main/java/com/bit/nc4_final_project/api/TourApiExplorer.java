@@ -104,7 +104,6 @@ public class TourApiExplorer {
     }
 
     private Travel parseTravelFromJson(JSONObject jsonTravel) {
-        // 필수 필드들을 파싱하고, 필수 필드가 없는 경우에는 해당 아이템을 스킵합니다.
         String contentid = jsonTravel.optString("contentid");
         String contenttypeid = jsonTravel.optString("contenttypeid");
         String title = jsonTravel.optString("title");
@@ -177,7 +176,14 @@ public class TourApiExplorer {
                     "defaultYN=Y",
                     "overviewYN=Y"
             });
+
             String response = sendHttpRequest(url);
+            log.info(response);
+
+            if (response.contains("<errMsg>")) {
+                log.error(">>Unexpected API response for contentId: {}", contentId);
+                return Optional.empty();
+            }
 
             JSONObject responseBody = new JSONObject(response)
                     .getJSONObject("response")
