@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.service.review.impl;
 
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
-import com.bit.nc4_final_project.entity.Recruitment;
 import com.bit.nc4_final_project.entity.Review;
 import com.bit.nc4_final_project.repository.review.ReviewRepository;
 import com.bit.nc4_final_project.service.review.ReviewService;
