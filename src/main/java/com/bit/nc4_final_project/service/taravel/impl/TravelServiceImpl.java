@@ -25,10 +25,11 @@ public class TravelServiceImpl implements TravelService {
         log.info("travel data save start");
         int totalCnt = tourApiExplorer.getTotalCnt();
         int totalPages = (int) Math.ceil((double) totalCnt / 200);
+        log.info("totalPages : " + totalPages);
 
-        for (int i = 1; i <= totalPages; i++) {
-            List<Travel> travels = tourApiExplorer.getList(i, 200, totalCnt);
-
+        for (int i = 5; i <= 9; i++) {
+            List<Travel> travels = tourApiExplorer.getList(9, 200, totalCnt);
+            log.info("getList");
             for (Travel travel : travels) {
                 Optional<TravelDetail> detail = tourApiExplorer.getDetailCommon(travel.getContentid());
                 detail.ifPresent(travel::setDetail);
@@ -37,6 +38,18 @@ public class TravelServiceImpl implements TravelService {
             travelRepository.saveAll(travels);
             log.info("save 200 pieces");
         }
+
+        // for (int i = 1; i <= totalPages; i++) {
+        //     List<Travel> travels = tourApiExplorer.getList(i, 200, totalCnt);
+        //     log.info("getList");
+        //     for (Travel travel : travels) {
+        //         Optional<TravelDetail> detail = tourApiExplorer.getDetailCommon(travel.getContentid());
+        //         detail.ifPresent(travel::setDetail);
+        //     }
+        //
+        //     travelRepository.saveAll(travels);
+        //     log.info("save 200 pieces");
+        // }
     }
 
     @Override
