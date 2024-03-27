@@ -1,8 +1,9 @@
 package com.bit.nc4_final_project.factory.travel;
 
-import com.bit.nc4_final_project.dto.travel.TravelDetailDTO;
-import com.bit.nc4_final_project.entity.TravelDetail;
+import com.bit.nc4_final_project.entity.travel.TravelDetail;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 public interface TravelDetailFactory {
-    TravelDetail createTravelDetail(TravelDetailDTO input);
+    TravelDetail createTravelDetail(String homepage, String overview, JSONObject jsonTravel) throws JSONException;
 }

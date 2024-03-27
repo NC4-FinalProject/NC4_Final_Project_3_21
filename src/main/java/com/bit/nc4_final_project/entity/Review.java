@@ -34,17 +34,12 @@ public class Review {
     private String title;
     private String content;
     private String writer;
-    private Integer rating;
+    private int rating;
     private LocalDateTime regDate;
 
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
-
-    // 몽고 DB연결되어져 있어서 매핑 보류
-//    @ManyToOne
-//    @JoinColumn(name = "id")
-//    private Travel travel;
 
     @Transient
     private String searchCondition;
@@ -57,7 +52,8 @@ public class Review {
                 .title(this.title)
                 .content(this.content)
                 .writer(this.writer)
-                .regDate(LocalDateTime.now())
+                .rating(this.rating)
+                .regDate(LocalDateTime.parse(this.regDate.toString()))
                 .build();
     }
 
