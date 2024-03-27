@@ -19,25 +19,13 @@ public class TravelController {
     @PostMapping("/api")
     public ResponseEntity<?> saveTravelInfo() {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
-
         try {
             travelService.save();
-
             responseDTO.setStatusCode(HttpStatus.OK.value());
-
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            if (e.getMessage().equalsIgnoreCase("Invalid Argument")) {
-                responseDTO.setErrorCode(100);
-                responseDTO.setErrorMessage(e.getMessage());
-            } else if (e.getMessage().equalsIgnoreCase("already exist username")) {
-                responseDTO.setErrorCode(101);
-                responseDTO.setErrorMessage(e.getMessage());
-            } else {
-                responseDTO.setErrorCode(102);
-                responseDTO.setErrorMessage(e.getMessage());
-            }
-
+            responseDTO.setErrorCode(100);
+            responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }
