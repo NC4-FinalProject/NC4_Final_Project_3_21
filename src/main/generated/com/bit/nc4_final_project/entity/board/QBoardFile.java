@@ -24,13 +24,15 @@ public class QBoardFile extends EntityPathBase<BoardFile> {
 
     public final QBoard board;
 
-    public final StringPath field = createString("field");
-
-    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+    public final StringPath cate = createString("cate");
 
     public final StringPath name = createString("name");
 
+    public final StringPath origin = createString("origin");
+
     public final StringPath path = createString("path");
+
+    public final NumberPath<Integer> seq = createNumber("seq", Integer.class);
 
     public QBoardFile(String variable) {
         this(BoardFile.class, forVariable(variable), INITS);

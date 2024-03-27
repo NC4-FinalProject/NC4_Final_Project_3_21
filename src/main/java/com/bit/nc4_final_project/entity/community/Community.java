@@ -2,6 +2,8 @@ package com.bit.nc4_final_project.entity.community;
 
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.entity.board.BoardFile;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "T_COMMUNITY")
@@ -31,6 +34,14 @@ public class Community {
     private String picture;
     private int capacity;
 
+    @Transient
+    private String searchCondition;
+    @Transient
+    private String searchKeyword;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<BoardFile> boardFileList;
+
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
@@ -45,6 +56,11 @@ public class Community {
                 .cnt(this.cnt)
                 .picture(this.picture)
                 .capacity(this.capacity)
+                .boardFileDTOList(
+                        this.boardFileList.stream().map(
+                                boardFile -> boardFile.toDTO()
+                        ).toList()
+                )
                 .build();
     }
 }

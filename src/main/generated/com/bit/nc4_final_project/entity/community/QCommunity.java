@@ -22,6 +22,8 @@ public class QCommunity extends EntityPathBase<Community> {
 
     public static final QCommunity community = new QCommunity("community");
 
+    public final ListPath<com.bit.nc4_final_project.entity.board.Board, com.bit.nc4_final_project.entity.board.QBoard> boardList = this.<com.bit.nc4_final_project.entity.board.Board, com.bit.nc4_final_project.entity.board.QBoard>createList("boardList", com.bit.nc4_final_project.entity.board.Board.class, com.bit.nc4_final_project.entity.board.QBoard.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> capacity = createNumber("capacity", Integer.class);
 
     public final NumberPath<Integer> cnt = createNumber("cnt", Integer.class);
