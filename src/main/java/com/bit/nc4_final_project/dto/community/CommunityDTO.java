@@ -1,9 +1,11 @@
 package com.bit.nc4_final_project.dto.community;
 
+import com.bit.nc4_final_project.dto.board.BoardFileDTO;
 import com.bit.nc4_final_project.entity.community.Community;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +22,12 @@ public class CommunityDTO {
     private String picture;
     private int capacity;
 
-    private Community toEntity() {
+    private List<BoardFileDTO> boardFileDTOList;
+    private String searchCondition;
+    private String searchKeyword;
+
+
+    public Community toEntity() {
         return Community.builder()
                 .seq(this.seq)
                 .name(this.name)
