@@ -26,11 +26,10 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    // private final PasswordEncoder passwordEncoder;
+     private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
@@ -50,7 +49,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signin(UserDTO userDTO) {
-        return null;
         Optional<User> signinUser = userRepository.findById(userDTO.getId());
 
         if (signinUser.isEmpty()) {
