@@ -22,6 +22,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public static final QBoard board = new QBoard("board");
 
+    public final ListPath<BoardFile, QBoardFile> boardFileList = this.<BoardFile, QBoardFile>createList("boardFileList", BoardFile.class, QBoardFile.class, PathInits.DIRECT2);
+
     public final com.bit.nc4_final_project.entity.community.QCommunity community;
 
     public final StringPath content = createString("content");
