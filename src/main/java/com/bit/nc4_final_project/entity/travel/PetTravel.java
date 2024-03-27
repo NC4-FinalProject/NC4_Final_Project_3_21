@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.entity;
+package com.bit.nc4_final_project.entity.travel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

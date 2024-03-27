@@ -1,26 +1,23 @@
 package com.bit.nc4_final_project.factory.travel.impl;
 
-import com.bit.nc4_final_project.dto.travel.TravelDetailDTO;
-import com.bit.nc4_final_project.dto.travel.TravelDetailI12DTO;
-import com.bit.nc4_final_project.entity.TravelDetail;
+import com.bit.nc4_final_project.entity.travel.TravelDetail;
 import com.bit.nc4_final_project.factory.travel.TravelDetailFactory;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 public class TravelDetail12Factory implements TravelDetailFactory {
     @Override
-    public TravelDetail createTravelDetail(TravelDetailDTO input) {
-        if (!(input instanceof TravelDetailI12DTO input12)) {
-            throw new IllegalArgumentException("Expected input of type TravelDetailI28DTO");
-        }
+    public TravelDetail createTravelDetail(String homepage, String overview, JSONObject jsonTravel) throws JSONException {
 
         return TravelDetail.builder()
-                .homepage(input12.getHomepage())
-                .overview(input12.getOverview())
-                .opendate(input12.getOpendate())
-                .restdate(input12.getRestdate())
-                .useseason(input12.getUseseason())
-                .usetime(input12.getUsetime())
-                .accomcount(input12.getAccomcount())
-                .expagerange(input12.getExpagerange())
+                .homepage(homepage)
+                .overview(overview)
+                .opendate(jsonTravel.getString("opendate"))
+                .restdate(jsonTravel.getString("restdate"))
+                .useseason(jsonTravel.getString("useseason"))
+                .usetime(jsonTravel.getString("usetime"))
+                .accomcount(jsonTravel.getString("accomcount"))
+                .expagerange(jsonTravel.getString("expagerange"))
                 .build();
     }
 }

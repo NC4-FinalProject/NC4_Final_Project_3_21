@@ -1,6 +1,7 @@
 package com.bit.nc4_final_project.configuration;
 
-import com.bit.nc4_final_project.jwt.JwtAutheticationFilter;
+
+import com.bit.nc4_final_project.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private final JwtAutheticationFilter jwtAutheticationFilter;
+    private final JwtAuthenticationFilter jwtAutheticationFilter;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -31,12 +32,18 @@ public class SecurityConfiguration {
 
                 })
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
+                .httpBasic(httpSecurityHttpBasicConfigurer -> {
+                    httpSecurityHttpBasicConfigurer.disable();
+                })
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
                     httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/review/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAutheticationFilter, CorsFilter.class)
@@ -44,3 +51,5 @@ public class SecurityConfiguration {
 
     }
 }
+
+
