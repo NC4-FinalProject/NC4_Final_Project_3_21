@@ -11,6 +11,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findById(String nickname);
 
-    long countById(String Id);
+    long countById(String id);
 }
 
