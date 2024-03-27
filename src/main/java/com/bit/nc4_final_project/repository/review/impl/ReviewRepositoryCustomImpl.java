@@ -48,15 +48,15 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         }
 
         if (searchCondition.equalsIgnoreCase("all")) {
-            booleanBuilder.or(recruitment.title.containsIgnoreCase(searchKeyword));
-            booleanBuilder.or(recruitment.content.containsIgnoreCase(searchKeyword));
-            booleanBuilder.or(recruitment.writer.containsIgnoreCase(searchKeyword));
+            booleanBuilder.or(review.title.containsIgnoreCase(searchKeyword));
+            booleanBuilder.or(review.content.containsIgnoreCase(searchKeyword));
+            booleanBuilder.or(review.writer.containsIgnoreCase(searchKeyword));
         } else if (searchCondition.equalsIgnoreCase("title")) {
-            booleanBuilder.or(recruitment.title.containsIgnoreCase(searchKeyword));
+            booleanBuilder.or(review.title.containsIgnoreCase(searchKeyword));
         } else if (searchCondition.equalsIgnoreCase("content")) {
-            booleanBuilder.or(recruitment.content.containsIgnoreCase(searchKeyword));
+            booleanBuilder.or(review.content.containsIgnoreCase(searchKeyword));
         } else if (searchCondition.equalsIgnoreCase("writer")) {
-            booleanBuilder.or(recruitment.writer.containsIgnoreCase(searchKeyword));
+            booleanBuilder.or(review.writer.containsIgnoreCase(searchKeyword));
         }
 
         return booleanBuilder;
