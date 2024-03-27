@@ -2,6 +2,7 @@
 package com.bit.nc4_final_project.configuration;
 
 
+
 import com.bit.nc4_final_project.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private final JwtAuthenticationFilter jwtAutheticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -46,7 +47,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
-                .addFilterAfter(jwtAutheticationFilter, CorsFilter.class)
+                .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
                 .build();
 
     }

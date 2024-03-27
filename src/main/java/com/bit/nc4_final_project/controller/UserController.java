@@ -6,6 +6,10 @@ import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+<<<<<<< Updated upstream
+=======
+//import org.springframework.security.crypto.password.PasswordEncoder;
+>>>>>>> Stashed changes
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +25,11 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+<<<<<<< Updated upstream
     private final PasswordEncoder passwordEncoder;
+=======
+   private final PasswordEncoder passwordEncoder;
+>>>>>>> Stashed changes
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
@@ -29,12 +37,21 @@ public class UserController {
         System.out.println(userDTO);
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
 
+<<<<<<< Updated upstream
         try {
             userDTO.setActive(true);
             userDTO.setLastLoginDate(LocalDateTime.now().toString());
             userDTO.setRegDate(LocalDateTime.now().toString());
             userDTO.setRole("ROLE_USER");
             userDTO.setPw(passwordEncoder.encode(userDTO.getPw()));
+=======
+       try{
+           userDTO.setActive(true);
+           userDTO.setLastLoginDate(LocalDateTime.now().toString());
+           userDTO.setRegDate(LocalDateTime.now().toString());
+           userDTO.setRole("ROLE_USER");
+          userDTO.setPw(passwordEncoder.encode(userDTO.getPw()));
+>>>>>>> Stashed changes
 
             System.out.println(userDTO);
             UserDTO signupUserDTO = userService.signup(userDTO);
