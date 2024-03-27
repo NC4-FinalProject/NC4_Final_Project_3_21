@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.service.user.impl;
 
+
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.UserTag;
@@ -15,9 +16,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -57,6 +58,7 @@ public class UserServiceImpl implements UserService {
         signinDTO.setToken(jwtTokenProvider.create(signinUser.get()));
 
         userRepository.save(signinDTO.toEntity());
+        System.out.println(jwtTokenProvider.create(signinUser.get()));
         userRepository.flush();
 
         return signinDTO;
@@ -74,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserDTO(Integer userSeq) {
-        Optional<User> user = userRepository.findById(userSeq);
+        Optional<User> user = userRepository.findById(String.valueOf(userSeq));
         if (user.isEmpty()) {
             log.warn("Travel with ID {} not found", userSeq);
             return null;

@@ -49,7 +49,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
-<<<<<<< Updated upstream
 def generated = 'src/main/generated'
 
 tasks.withType(JavaCompile) {
@@ -67,8 +66,7 @@ clean {
 tasks.named('test') {
     useJUnitPlatform()
 }
-=======
+
 tasks.named('test') {
     useJUnitPlatform()
 }
->>>>>>> Stashed changes

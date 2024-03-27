@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/review/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/id-check").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
