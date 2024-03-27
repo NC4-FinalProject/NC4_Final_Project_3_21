@@ -21,4 +21,3 @@ public class TravelMongoConfiguration {
         return new MongoTemplate(new SimpleMongoClientDatabaseFactory(mongoUri));
     }
 }
-
