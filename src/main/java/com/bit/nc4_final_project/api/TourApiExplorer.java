@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -85,45 +86,68 @@ public class TourApiExplorer {
                 for (int i = 0; i < itemsArray.length(); i++) {
                     JSONObject itemObject = itemsArray.getJSONObject(i);
                     Travel travel = parseTravelFromJson(itemObject);
-                    travels.add(travel);
-                    totalCount++;
-                    if (totalCount == totalCnt) {
-                        break;
+                    if (travel != null) {
+                        travels.add(travel);
+                        totalCount++;
+                        if (totalCount == totalCnt) {
+                            break;
+                        }
                     }
                 }
             }
         } catch (IOException | JSONException e) {
-            throw new RuntimeException(e);
+            log.error("Error fetching travel list: {}", e.getMessage(), e);
+            throw new RuntimeException("Error fetching travel list", e);
         }
 
         return travels;
     }
 
-    private Travel parseTravelFromJson(JSONObject jsonTravel) throws JSONException {
-        Travel.TravelBuilder builder = Travel.builder();
+    private Travel parseTravelFromJson(JSONObject jsonTravel) {
+        // 필수 필드들을 파싱하고, 필수 필드가 없는 경우에는 해당 아이템을 스킵합니다.
+        String contentid = jsonTravel.optString("contentid");
+        String contenttypeid = jsonTravel.optString("contenttypeid");
+        String title = jsonTravel.optString("title");
+        String zipcode = jsonTravel.optString("zipcode");
+        String addr1 = jsonTravel.optString("addr1");
+        String addr2 = jsonTravel.optString("addr2", "");
+        String tel = jsonTravel.optString("tel", "");
+        String cat1 = jsonTravel.optString("cat1");
+        String cat2 = jsonTravel.optString("cat2");
+        String cat3 = jsonTravel.optString("cat3");
+        String firstimage = jsonTravel.optString("firstimage", "");
+        String firstimage2 = jsonTravel.optString("firstimage2", "");
+        String booktour = jsonTravel.optString("booktour", "");
+        String cpyrhtDivCd = jsonTravel.optString("cpyrhtDivCd", "");
+        String mapx = jsonTravel.optString("mapx", "");
+        String mapy = jsonTravel.optString("mapy", "");
+        String mlevel = jsonTravel.optString("mlevel", "");
+        String createdtime = jsonTravel.optString("createdtime", "");
+        String modifiedtime = jsonTravel.optString("modifiedtime", "");
+        int viewCnt = jsonTravel.optInt("viewCnt", 0);
 
-        builder.contentid(jsonTravel.getString("contentid"))
-                .contenttypeid(jsonTravel.getString("contenttypeid"))
-                .title(jsonTravel.getString("title"))
-                .zipCode(jsonTravel.getString("zipcode"))
-                .addr1(jsonTravel.getString("addr1"))
-                .addr2(jsonTravel.optString("addr2", ""))
-                .tel(jsonTravel.optString("tel", ""))
-                .cat1(jsonTravel.getString("cat1"))
-                .cat2(jsonTravel.getString("cat2"))
-                .cat3(jsonTravel.getString("cat3"))
-                .firstimage(jsonTravel.optString("firstimage", ""))
-                .firstimage2(jsonTravel.optString("firstimage2", ""))
-                .booktour(jsonTravel.optString("booktour", ""))
-                .cpyrhtDivCd(jsonTravel.optString("cpyrhtDivCd", ""))
-                .mapx(jsonTravel.optString("mapx", ""))
-                .mapy(jsonTravel.optString("mapy", ""))
-                .mlevel(jsonTravel.optString("mlevel", ""))
-                .createdtime(jsonTravel.optString("createdtime", ""))
-                .modifiedtime(jsonTravel.optString("modifiedtime", ""))
-                .viewCnt(jsonTravel.optInt("viewCnt", 0));
-
-        return builder.build();
+        return Travel.builder()
+                .contentid(contentid)
+                .contenttypeid(contenttypeid)
+                .title(title)
+                .zipCode(zipcode)
+                .addr1(addr1)
+                .addr2(addr2)
+                .tel(tel)
+                .cat1(cat1)
+                .cat2(cat2)
+                .cat3(cat3)
+                .firstimage(firstimage)
+                .firstimage2(firstimage2)
+                .booktour(booktour)
+                .cpyrhtDivCd(cpyrhtDivCd)
+                .mapx(mapx)
+                .mapy(mapy)
+                .mlevel(mlevel)
+                .createdtime(createdtime)
+                .modifiedtime(modifiedtime)
+                .viewCnt(viewCnt)
+                .build();
     }
 
     public JSONObject getDetailIntro(String contentId, String contentTypeId) {
@@ -146,7 +170,7 @@ public class TourApiExplorer {
         return itemObject;
     }
 
-    public TravelDetail getDetailCommon(String contentId) {
+    public Optional<TravelDetail> getDetailCommon(String contentId) {
         try {
             String url = buildUrl("detailCommon1", new String[]{
                     "contentId=" + URLEncoder.encode(contentId, "UTF-8"),
@@ -160,29 +184,29 @@ public class TourApiExplorer {
                     .getJSONObject("body")
                     .optJSONObject("items");
 
-            String homepage = "";
-            String overview = "";
-
             if (responseBody != null) {
                 JSONObject itemObject = responseBody.optJSONArray("item").optJSONObject(0);
 
                 if (itemObject != null) {
-                    homepage = itemObject.optString("homepage", "");
-                    overview = itemObject.optString("overview", "");
+                    String homepage = itemObject.optString("homepage", "");
+                    String overview = itemObject.optString("overview", "");
 
                     String contentTypeId = itemObject.optString("contenttypeid", "");
                     if (!contentTypeId.isEmpty()) {
-                        return parseTravelDetailFromJson(homepage, overview, getDetailIntro(contentId, contentTypeId));
+                        TravelDetail detail = parseTravelDetailFromJson(homepage, overview, getDetailIntro(contentId, contentTypeId));
+                        return Optional.ofNullable(detail);
+                    } else {
+                        return Optional.of(TravelDetail.builder()
+                                .homepage(homepage)
+                                .overview(overview)
+                                .build());
                     }
                 }
             }
-
-            return TravelDetail.builder()
-                    .homepage(homepage)
-                    .overview(overview)
-                    .build();
+            return Optional.empty();
         } catch (IOException | JSONException e) {
-            throw new RuntimeException(e);
+            log.error("Error retrieving travel detail for contentId: {}", contentId, e);
+            return Optional.empty();
         }
     }
 
