@@ -2,7 +2,7 @@ package com.bit.nc4_final_project.entity.community;
 
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.entity.User;
-import com.bit.nc4_final_project.entity.board.BoardFile;
+import com.bit.nc4_final_project.entity.board.Board;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,9 +38,9 @@ public class Community {
     private String searchCondition;
     @Transient
     private String searchKeyword;
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<BoardFile> boardFileList;
+    private List<Board> boardList;
 
     @ManyToOne
     @JoinColumn(name = "user_seq")
@@ -56,11 +56,11 @@ public class Community {
                 .cnt(this.cnt)
                 .picture(this.picture)
                 .capacity(this.capacity)
-                .boardFileDTOList(
-                        this.boardFileList.stream().map(
-                                boardFile -> boardFile.toDTO()
-                        ).toList()
-                )
+//                .boardFileDTOList(
+//                        this.boardFileList.stream().map(
+//                                boardFile -> boardFile.toDTO()
+//                        ).toList()
+//                )
                 .build();
     }
 }
