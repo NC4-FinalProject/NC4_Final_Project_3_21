@@ -6,8 +6,11 @@ import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
 import com.bit.nc4_final_project.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +24,23 @@ public class ReviewController {
     private final FileUtils fileUtils;
 
     @GetMapping("/list")
-    public ResponseEntity<?> getReviewList(@PageableDefault(page = 0, size = 10) Pageable pageable,
+    public ResponseEntity<?> getReviewList(@PageableDefault(page = 0, size = 4) Pageable pageable,
                                            @RequestParam("searchCondition") String searchCondition,
-                                           @RequestParam("searchKeyword") String searchKeyword) {
+                                           @RequestParam("searchKeyword") String searchKeyword,
+                                           @RequestParam("sort") String sort) {
+        Sort sortParameter  = Sort.by(Sort.Direction.DESC, "createdAt"); // 기본 정렬 기준
+        if (sort.equals("latest")) {
+            sortParameter = Sort.by(Sort.Direction.DESC, "createdAt");
+        } else if (sort.equals("oldest")) {
+            sortParameter = Sort.by(Sort.Direction.ASC, "createdAt");
+        } else if (sort.equals("rating_high")) {
+            sortParameter = Sort.by(Sort.Direction.DESC, "rating");
+        } else if (sort.equals("rating_low")) {
+            sortParameter = Sort.by(Sort.Direction.ASC, "rating");
+        }
+
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortParameter);
+
         ResponseDTO<ReviewDTO> responseDTO = new ResponseDTO<>();
 
         try {

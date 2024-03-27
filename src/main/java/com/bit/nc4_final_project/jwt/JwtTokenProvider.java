@@ -18,8 +18,8 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
     // JWT TOKEN의 signature 부분이 될 서명 키 선언
-    // bitcampdevops4todobootapp502magicecole 을 BASE64 인코딩한 값
-    private static final String SECRET_KEY = "Yml0Y2FtcGRldm9wczR0b2RvYm9vdGFwcDUwMm1hZ2ljZWNvbGU=";
+    // bitcampdevops4finalproject20240419endoftheclass 을 BASE64 인코딩한 값
+    private static final String SECRET_KEY = "Yml0Y2FtcGRldm9wczRmaW5hbHByb2plY3QyMDI0MDQxOWVuZG9mdGhlY2xhc3M=";
 
     // SECRET_KEY를 KEY 객체로 변환
     SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
@@ -39,7 +39,7 @@ public class JwtTokenProvider {
                 // sub(subject: 토큰의 주인)
                 .subject(user.getId())
                 // iss(issuer: 토큰의 발행주체)
-                .issuer("todo boot app")
+                .issuer("final project")
                 // isa(issuedAt: 토큰의 발행일자)
                 .issuedAt(new Date())
                 // 토큰 만료일자
@@ -60,7 +60,6 @@ public class JwtTokenProvider {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-
         return claims.getSubject();
     }
 }

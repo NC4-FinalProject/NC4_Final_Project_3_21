@@ -29,12 +29,13 @@ public class UserController {
         System.out.println(userDTO);
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
 
-        try {
-            userDTO.setActive(true);
-            userDTO.setLastLoginDate(LocalDateTime.now().toString());
-            userDTO.setRegDate(LocalDateTime.now().toString());
-            userDTO.setRole("ROLE_USER");
-            userDTO.setPw(passwordEncoder.encode(userDTO.getPw()));
+
+       try{
+           userDTO.setActive(true);
+           userDTO.setLastLoginDate(LocalDateTime.now().toString());
+           userDTO.setRegDate(LocalDateTime.now().toString());
+           userDTO.setRole("ROLE_USER");
+          userDTO.setPw(passwordEncoder.encode(userDTO.getPw()));
 
             System.out.println(userDTO);
             UserDTO signupUserDTO = userService.signup(userDTO);
@@ -59,9 +60,8 @@ public class UserController {
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
         try {
             UserDTO signinUserDTO = userService.signin(userDTO);
-
+            System.out.println(signinUserDTO.getToken());
             signinUserDTO.setPw("");
-
             responseDTO.setItem(signinUserDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok(responseDTO);
