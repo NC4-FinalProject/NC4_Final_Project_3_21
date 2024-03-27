@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.controller;
+package com.bit.nc4_final_project.controller.chat;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -8,31 +8,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
-import com.bit.nc4_final_project.service.chat.ChatService;
+import com.bit.nc4_final_project.service.chat.ChatMessageService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chat")
-public class ChatController {
-    public final ChatService chatService;
+public class ChatMessageController {
+    public final ChatMessageService chatService;
     public final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/message")
+    @MessageMapping("/chat/send")
     public ResponseEntity<?> recieveMessage (@RequestBody ChatMessageDTO messageDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         try {
             chatService.saveMessage(messageDTO);
 
-            messagingTemplate.convertAndSend("/sub/chat-room/" + messageDTO.getChannelId(), messageDTO);        
+            messagingTemplate.convertAndSend("/topic/" + messageDTO.getReceiver());        
 
-            return ResponseEntity.ok("Message Transfer Success.");
+            return ResponseEntity.ok("Message Send Success.");
         } catch (Exception e) {
             responseDTO.setErrorMessage(e.getMessage());
             
@@ -41,9 +39,5 @@ public class ChatController {
 
     }
 
-    @GetMapping("/chat-room")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
-    }
     
 }

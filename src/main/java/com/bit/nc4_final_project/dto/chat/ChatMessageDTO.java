@@ -13,8 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessageDTO {
     
-    private String channelId;
-    private String messenger;
+    private int chatRoomId;
+    private String receiver;
+    private String sender;
     private String chatMessage;
     private Object data;
 
