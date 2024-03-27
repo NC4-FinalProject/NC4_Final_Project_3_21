@@ -1,6 +1,6 @@
 package com.bit.nc4_final_project.service.user.impl;
 
-import ch.qos.logback.classic.Logger;
+
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.UserTag;
@@ -9,27 +9,20 @@ import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import com.bit.nc4_final_project.entity.UserTag;
-
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-     private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
@@ -65,6 +58,7 @@ public class UserServiceImpl implements UserService {
         signinDTO.setToken(jwtTokenProvider.create(signinUser.get()));
 
         userRepository.save(signinDTO.toEntity());
+        System.out.println(jwtTokenProvider.create(signinUser.get()));
         userRepository.flush();
 
         return signinDTO;
@@ -75,14 +69,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.countById(userDTO.getId());
     }
 
-   @Override
-   public UserDTO join(UserDTO userDTO) {
+    @Override
+    public UserDTO join(UserDTO userDTO) {
         return null;
     }
 
-   @Override
+    @Override
     public UserDTO getUserDTO(Integer userSeq) {
-        Optional<User> user = userRepository.findById(userSeq);
+        Optional<User> user = userRepository.findById(String.valueOf(userSeq));
         if (user.isEmpty()) {
             log.warn("Travel with ID {} not found", userSeq);
             return null;
