@@ -1,6 +1,4 @@
-package com.bit.nc4_final_project.dto;
-
-import java.time.LocalDateTime;
+package com.bit.nc4_final_project.dto.chat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
