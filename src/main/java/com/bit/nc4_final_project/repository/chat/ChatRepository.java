@@ -1,8 +1,11 @@
 package com.bit.nc4_final_project.repository.chat;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import com.bit.nc4_final_project.entity.chat.ChatMessage;
+import java.util.List;
 
-public interface ChatRepository extends MongoRepository <ChatMessage, String>{
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.bit.nc4_final_project.entity.chat.Chat;
+public interface ChatRepository extends JpaRepository <Chat, Integer> {
+
+    List<Chat> findAllByUserId(String userId);
 }

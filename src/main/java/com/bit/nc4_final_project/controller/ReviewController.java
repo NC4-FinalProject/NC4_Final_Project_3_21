@@ -28,23 +28,11 @@ public class ReviewController {
                                            @RequestParam("searchCondition") String searchCondition,
                                            @RequestParam("searchKeyword") String searchKeyword,
                                            @RequestParam("sort") String sort) {
-        Sort sortParameter  = Sort.by(Sort.Direction.DESC, "createdAt"); // 기본 정렬 기준
-        if (sort.equals("latest")) {
-            sortParameter = Sort.by(Sort.Direction.DESC, "createdAt");
-        } else if (sort.equals("oldest")) {
-            sortParameter = Sort.by(Sort.Direction.ASC, "createdAt");
-        } else if (sort.equals("rating_high")) {
-            sortParameter = Sort.by(Sort.Direction.DESC, "rating");
-        } else if (sort.equals("rating_low")) {
-            sortParameter = Sort.by(Sort.Direction.ASC, "rating");
-        }
-
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortParameter);
 
         ResponseDTO<ReviewDTO> responseDTO = new ResponseDTO<>();
 
         try {
-            Page<ReviewDTO> reviewDTOPage = reviewService.searchAll(pageable,searchCondition, searchKeyword);
+            Page<ReviewDTO> reviewDTOPage = reviewService.searchAll(pageable,searchCondition, searchKeyword, sort);
 
             responseDTO.setPageItems(reviewDTOPage);
             responseDTO.setItem(ReviewDTO.builder()
@@ -74,7 +62,7 @@ public class ReviewController {
         try {
             reviewService.post(reviewDTO);
 
-            Page<ReviewDTO> recruitmentDTOPage = reviewService.searchAll(pageable, "all", "");
+            Page<ReviewDTO> recruitmentDTOPage = reviewService.searchAll(pageable, "all", "","");
 
             responseDTO.setPageItems(recruitmentDTOPage);
             responseDTO.setStatusCode(HttpStatus.OK.value());
@@ -140,7 +128,7 @@ public class ReviewController {
         try {
             reviewService.deleteById(seq);
 
-            responseDTO.setPageItems(reviewService.searchAll(pageable, "all", ""));
+            responseDTO.setPageItems(reviewService.searchAll(pageable, "all", "",""));
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);
