@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ReviewRepositoryCustom {
-    Page<Review> searchAll(Pageable pageable, String searchCondition, String searchKeyword);
+    Page<Review> searchAll(Pageable pageable, String searchCondition, String searchKeyword, String sort);
 }
