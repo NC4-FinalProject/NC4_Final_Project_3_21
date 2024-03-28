@@ -13,13 +13,16 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer{
     // WebSocket 엔드포인트 등록
    @Override
    public void registerStompEndpoints(StompEndpointRegistry registry) {
-      registry.addEndpoint("/ws")
-              .setAllowedOrigins("*");
+      registry.addEndpoint("/chatting")
+               .setAllowedOrigins("*")
+               .withSockJS();
+      registry.addEndpoint("/chatting");
+      
    }
 
    @Override
    public void configureMessageBroker (MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/sub");            // /sub가 붙은 주소로 메시지를 보내면 해당 주소를 구독하고 있는 클라이언트에게 메시지를 전달
-    registry.setApplicationDestinationPrefixes("/pub");        // /pub가 붙은 메세지들은 @MessageMapping이 붙은 메소드로 라우팅
+    registry.enableSimpleBroker("/topic");            // /topic이 붙은 주소로 메시지를 보내면 해당 주소를 구독하고 있는 클라이언트에게 메시지를 전달
+    registry.setApplicationDestinationPrefixes("/app");        // /app이 붙은 메세지들은 @MessageMapping이 붙은 메소드로 라우팅
    }
 }

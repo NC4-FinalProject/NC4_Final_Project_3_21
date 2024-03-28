@@ -17,8 +17,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public Page<ReviewDTO> searchAll(Pageable pageable, String searchCondition, String searchKeyword) {
-        Page<Review> reviewPage = reviewRepository.searchAll(pageable, searchCondition, searchKeyword);
+    public Page<ReviewDTO> searchAll(Pageable pageable, String searchCondition, String searchKeyword, String sort) {
+        Page<Review> reviewPage = reviewRepository.searchAll(pageable, searchCondition, searchKeyword, sort);
 
         return reviewPage.map(review -> review.toDTO());
     }

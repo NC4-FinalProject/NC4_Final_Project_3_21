@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.configuration;
 
 
-
 import com.bit.nc4_final_project.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +44,9 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/id-check").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-id").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-nickname").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)

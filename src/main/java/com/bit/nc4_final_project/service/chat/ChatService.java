@@ -1,8 +1,11 @@
 package com.bit.nc4_final_project.service.chat;
 
-import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
+import java.util.List;
+
+import com.bit.nc4_final_project.dto.chat.ChatDTO;
 
 public interface ChatService {
 
-    void saveMessage(ChatMessageDTO messageDTO);
-} 
+    List<ChatDTO> getChatList(String userId);
+    
+}
