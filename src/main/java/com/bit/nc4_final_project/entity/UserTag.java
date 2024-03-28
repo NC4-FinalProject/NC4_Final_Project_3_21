@@ -33,7 +33,9 @@ public class UserTag {
         this.user = user;
     }
 
-    public void setContent(String tagContent) {
+    public void setContent(String content) {
+        this.content = content;
     }
+
 
 }

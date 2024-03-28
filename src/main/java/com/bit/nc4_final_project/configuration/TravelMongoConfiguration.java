@@ -1,3 +1,4 @@
+
 package com.bit.nc4_final_project.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,3 +22,4 @@ public class TravelMongoConfiguration {
         return new MongoTemplate(new SimpleMongoClientDatabaseFactory(mongoUri));
     }
 }
+
