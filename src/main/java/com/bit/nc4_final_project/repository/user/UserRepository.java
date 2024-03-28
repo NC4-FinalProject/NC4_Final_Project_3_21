@@ -9,7 +9,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findAllBySeq(Integer seq);
 
-    Optional<User> findById(String nickname);
+    Optional<User> findById(String id);
+
 
     long countById(String id);
 }

@@ -21,18 +21,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     // SpringSecurity 인증과정에서 자동으로 호출되는 메소드
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findById(nickname);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
 
-        if(userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             return null;
-        } else if(!userOptional.get().isActive()) {
+        } else if (!userOptional.get().isActive()) {
             throw new RuntimeException("inActive");
         }
 
         // 로그인 성공 시 로그인 날짜 업데이트
         UserDTO signinUser = userOptional.get().toDTO();
-       signinUser.setLastLoginDate(LocalDateTime.now().toString());
+        signinUser.setLastLoginDate(LocalDateTime.now().toString());
 
         User user = signinUser.toEntity();
         userRepository.save(user);

@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.configuration;
 
 
-
 import com.bit.nc4_final_project.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +44,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/id-check").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
