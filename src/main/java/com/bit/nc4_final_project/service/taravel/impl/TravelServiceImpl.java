@@ -24,21 +24,21 @@ public class TravelServiceImpl implements TravelService {
     public void save() {
         log.info("travel data save start");
         int totalCnt = tourApiExplorer.getTotalCnt();
-        int totalPages = (int) Math.ceil((double) totalCnt / 200);
+        int totalPages = (int) Math.ceil((double) totalCnt / 199);
         log.info("totalPages : " + totalPages);
 
-        for (int i = 5; i <= 9; i++) {
-            List<Travel> travels = tourApiExplorer.getList(9, 200, totalCnt);
-            log.info("getList");
+        for (int i = 28; i <= 30; i++) {
+            List<Travel> travels = tourApiExplorer.getList(i, 199, totalCnt);
+            log.info("getList: " + i);
             for (Travel travel : travels) {
                 Optional<TravelDetail> detail = tourApiExplorer.getDetailCommon(travel.getContentid());
                 detail.ifPresent(travel::setDetail);
             }
 
             travelRepository.saveAll(travels);
-            log.info("save 200 pieces");
+            log.info("save 199 pieces");
         }
-
+        log.info("end");
         // for (int i = 1; i <= totalPages; i++) {
         //     List<Travel> travels = tourApiExplorer.getList(i, 200, totalCnt);
         //     log.info("getList");

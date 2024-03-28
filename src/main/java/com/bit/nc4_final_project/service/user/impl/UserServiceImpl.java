@@ -69,6 +69,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.countById(userDTO.getId());
     }
 
+    public boolean isIdAvailable(String id) {
+        return !userRepository.existsById(id);
+    }
+
+    public boolean isNicknameAvailable(String nickname) {
+        return !userRepository.existsByNickname(nickname);
+    }
+
+
     @Override
     public UserDTO join(UserDTO userDTO) {
         return null;
