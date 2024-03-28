@@ -4,13 +4,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.chat.ChatDTO;
+import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.service.chat.ChatService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -20,21 +27,42 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ChatController {
     private final ChatService chatService;
 
-    @GetMapping
-    public ResponseEntity<?> getChatList(String userId) {
-        ResponseDTO<ChatDTO> responseDTO = new ResponseDTO<>();
+    // 채팅 목록 조회, 친구 요청 목록 조회
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getChatList(@PathVariable("userId") String userId) {
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 
         try {
-            List<ChatDTO> chatList = chatService.getChatList(userId);
+            Map<String, Object> responseMap = new HashMap<>();
+            
+            List<ChatDTO> chatDTOList = chatService.getChatList(userId);
+            // 나중에 friendDTOList도 추가해야 함
 
+            responseMap.put("chatList", chatDTOList);
+            
+            responseDTO.setItem(responseMap);
+            
+            return ResponseEntity.ok("");
         } catch (Exception e) {
             responseDTO.setErrorCode(100);
             responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setStatusCode(400);
             return ResponseEntity.badRequest().body(responseDTO);
         }
-
-        return ResponseEntity.ok("");
     }
+
+    // @PostMapping("/newChat")
+    // public ResponseEntity<?> newChat (@RequestBody UserDTO partnerDTO) {
+    //     ResponseDTO <String> responseDTO = new ResponseDTO<>();
+
+    //     try {
+            
+    //     } catch (Exception e) {
+            
+    //         return responseDTO.setErrorCode(0);
+    //     }
+        
+        
+    // }
     
 }

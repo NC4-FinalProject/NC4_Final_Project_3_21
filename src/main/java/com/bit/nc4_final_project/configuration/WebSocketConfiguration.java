@@ -13,8 +13,11 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer{
     // WebSocket 엔드포인트 등록
    @Override
    public void registerStompEndpoints(StompEndpointRegistry registry) {
-      registry.addEndpoint("/chat").withSockJS();
-      registry.addEndpoint("/chat");
+      registry.addEndpoint("/chatting")
+               .setAllowedOrigins("*")
+               .withSockJS();
+      registry.addEndpoint("/chatting");
+      
    }
 
    @Override

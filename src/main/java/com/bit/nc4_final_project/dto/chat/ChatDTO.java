@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+ 
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,17 +17,19 @@ import lombok.ToString;
 @Builder
 @ToString
 public class ChatDTO {
-    private int seq;
-    private int chatRoomNo;
+    private Integer seq;
+    private Integer chatRoomNo;
     private String partnerName;
     private String partnerImg;
     private String lastChat;
-    private int unreadCnt;
+    private Integer unreadCnt;
 
     public Chat toEntity() {
         return Chat.builder()
                 .seq(this.seq)
                 .chatRoomNo(this.chatRoomNo)
+                .partnerName(this.partnerName)
+                .partnerImg(partnerImg)
                 .lastChat(this.lastChat)
                 .unreadCnt(this.unreadCnt)
                 .build();

@@ -25,8 +25,10 @@ public class Chat {
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
-    
+
     private Integer chatRoomNo;
+    private String partnerName;
+    private String partnerImg;
     private String lastChat;
     private Integer unreadCnt;
 
@@ -34,6 +36,8 @@ public class Chat {
         return ChatDTO.builder()
                 .seq(this.seq)
                 .chatRoomNo(this.chatRoomNo)
+                .partnerName(partnerName)
+                .partnerImg(partnerImg)
                 .lastChat(this.lastChat)
                 .unreadCnt(this.unreadCnt)
                 .build();

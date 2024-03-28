@@ -11,8 +11,6 @@ import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 import com.bit.nc4_final_project.service.chat.ChatMessageService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -22,13 +20,13 @@ public class ChatMessageController {
     public final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat/send")
-    public ResponseEntity<?> recieveMessage (@RequestBody ChatMessageDTO messageDTO) {
+    public ResponseEntity<?> recieveMessage (ChatMessageDTO messageDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
         try {
             chatService.saveMessage(messageDTO);
 
-            messagingTemplate.convertAndSend("/topic/" + messageDTO.getReceiver());        
+            messagingTemplate.convertAndSend("/topic/" + messageDTO.getReceiver(), messageDTO);        
 
             return ResponseEntity.ok("Message Send Success.");
         } catch (Exception e) {
