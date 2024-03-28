@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -105,5 +102,43 @@ public class UserController {
         }
     }
 
+    @GetMapping("/check-id")
+    public ResponseEntity<ResponseDTO<Map<String, Object>>> checkId(@RequestParam("id") String id) {
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
 
+        try {
+            boolean available = userService.isIdAvailable(id);
+            Map<String, Object> response = new HashMap<>();
+            response.put("available", available);
+
+            responseDTO.setItem(response);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setErrorCode(102);
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<ResponseDTO<Map<String, Object>>> checkNickname(@RequestParam("nickname") String nickname) {
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+
+        try {
+            boolean available = userService.isNicknameAvailable(nickname);
+            Map<String, Object> response = new HashMap<>();
+            response.put("available", available);
+
+            responseDTO.setItem(response);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setErrorCode(103);
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
 }

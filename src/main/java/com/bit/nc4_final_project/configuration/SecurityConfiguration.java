@@ -45,7 +45,8 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/id-check").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-id").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-nickname").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
