@@ -1,12 +1,14 @@
 package com.bit.nc4_final_project.dto.user;
 
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.entity.UserTag;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -37,7 +39,7 @@ public class UserDTO {
     }
 
     public User toEntity() {
-        return User.builder()
+        User user = User.builder()
                 .seq(this.seq)
                 .id(this.id)
                 .pw(this.pw)
@@ -51,5 +53,13 @@ public class UserDTO {
                 .lastLoginDate(LocalDateTime.parse(this.lastLoginDate))
                 .build();
 
+        if (this.tags != null) {
+            List<UserTag> userTags = this.tags.stream()
+                    .map(tag -> UserTag.builder().content(tag).user(user).build())
+                    .collect(Collectors.toList());
+            user.getUserTags().addAll(userTags);
+        }
+
+        return user;
     }
 }
