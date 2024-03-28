@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ReviewService {
-    Page<ReviewDTO> searchAll(Pageable pageable, String searchCondition, String searchKeyword);
+    Page<ReviewDTO> searchAll(Pageable pageable, String searchCondition, String searchKeyword, String sort);
     void post(ReviewDTO reviewDTO);
 
     ReviewDTO findById(int seq);

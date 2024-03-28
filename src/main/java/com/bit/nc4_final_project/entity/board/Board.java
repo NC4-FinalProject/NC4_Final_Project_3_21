@@ -42,6 +42,7 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "community_seq")
+//    @JsonBackReference
     private Community community;
 
     public BoardDTO toDTO() {

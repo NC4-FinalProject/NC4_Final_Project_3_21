@@ -22,11 +22,9 @@ public class QCommunity extends EntityPathBase<Community> {
 
     public static final QCommunity community = new QCommunity("community");
 
-    public final ListPath<com.bit.nc4_final_project.entity.board.Board, com.bit.nc4_final_project.entity.board.QBoard> boardList = this.<com.bit.nc4_final_project.entity.board.Board, com.bit.nc4_final_project.entity.board.QBoard>createList("boardList", com.bit.nc4_final_project.entity.board.Board.class, com.bit.nc4_final_project.entity.board.QBoard.class, PathInits.DIRECT2);
+    public final QCommunityTag communityTag;
 
-    public final NumberPath<Integer> capacity = createNumber("capacity", Integer.class);
-
-    public final NumberPath<Integer> cnt = createNumber("cnt", Integer.class);
+    public final StringPath description = createString("description");
 
     public final NumberPath<Integer> member = createNumber("member", Integer.class);
 
@@ -58,6 +56,7 @@ public class QCommunity extends EntityPathBase<Community> {
 
     public QCommunity(Class<? extends Community> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.communityTag = inits.isInitialized("communityTag") ? new QCommunityTag(forProperty("communityTag"), inits.get("communityTag")) : null;
         this.user = inits.isInitialized("user") ? new com.bit.nc4_final_project.entity.QUser(forProperty("user")) : null;
     }
 

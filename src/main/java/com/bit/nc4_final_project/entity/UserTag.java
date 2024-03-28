@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,9 @@ public class UserTag {
 
     @ManyToOne
     @JoinColumn(name = "user_seq")
+    @JsonBackReference
     private User user;
+
     public User getUser() {
         return user;
     }
@@ -33,7 +36,9 @@ public class UserTag {
         this.user = user;
     }
 
-    public void setContent(String tagContent) {
+    public void setContent(String content) {
+        this.content = content;
     }
+
 
 }
