@@ -1,10 +1,10 @@
 package com.bit.nc4_final_project.dto.community;
 
 import com.bit.nc4_final_project.entity.community.Community;
-import com.bit.nc4_final_project.entity.community.CommunityTag;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +20,8 @@ public class CommunityDTO {
     private String picture;
     private String description;
     private Integer userSeq;
-    private CommunityTag communityTag;
+    // List<CommunityTagDTO> 타입의 필드를 추가하여 CommunityTag 엔터티의 리스트를 담을 수 있게 합니다.
+    private List<CommunityTagDTO> tagFileDTOList;
 
 
     public Community toEntity() {
