@@ -64,11 +64,6 @@ public class UserServiceImpl implements UserService {
         return signinDTO;
     }
 
-    @Override
-    public long idCheck(UserDTO userDTO) {
-        return userRepository.countById(userDTO.getId());
-    }
-
     public boolean isIdAvailable(String id) {
         return !userRepository.existsById(id);
     }

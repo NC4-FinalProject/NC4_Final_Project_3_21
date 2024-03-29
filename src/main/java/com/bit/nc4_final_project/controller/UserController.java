@@ -6,6 +6,8 @@ import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,27 +78,26 @@ public class UserController {
         }
     }
 
-    @PostMapping("/id-check")
-    public ResponseEntity<?> idCheck(@RequestBody UserDTO userDTO) {
+    @GetMapping("/sign-out")
+    public ResponseEntity<?> signout() {
         ResponseDTO<Map<String, String>> responseDTO = new ResponseDTO<>();
 
-        try {
-            long idCheck = userService.idCheck(userDTO);
+        try{
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(null);
+            SecurityContextHolder.setContext(securityContext);
 
-            Map<String, String> returnMap = new HashMap<>();
-            if (idCheck == 0) {
-                returnMap.put("idCheckResult", "available id");
-            } else {
-                returnMap.put("idCheckResult", "invalid id");
-            }
+            Map<String, String> msgMap = new HashMap<>();
 
-            responseDTO.setItem(returnMap);
+            msgMap.put("signoutMsg", "signout success");
+
+            responseDTO.setItem(msgMap);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);
-        } catch (Exception e) {
+        } catch(Exception e) {
             responseDTO.setErrorMessage(e.getMessage());
-            responseDTO.setErrorCode(101);
+            responseDTO.setErrorCode(202);
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }

@@ -10,9 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Document(collection = "chat")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -31,7 +33,7 @@ public class ChatMessage {
                 .receiver(this.receiver)
                 .sender(this.sender)
                 .chatMessage(this.chatMessage)
-                .sendDate(this.sendDate)
+                .sendDate(this.sendDate.toString())
                 .build();
     }
 }
