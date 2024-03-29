@@ -12,8 +12,6 @@ public interface UserService {
 
     UserDTO signin(UserDTO userDTO);
 
-    long idCheck(UserDTO userDTO);
-
     boolean isIdAvailable(String id);
 
     boolean isNicknameAvailable(String nickname);
