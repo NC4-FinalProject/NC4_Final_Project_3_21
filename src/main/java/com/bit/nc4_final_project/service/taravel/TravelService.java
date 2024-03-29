@@ -22,6 +22,7 @@ public interface TravelService {
 
     void removeDuplicateContentIds();
 
-    Page<TravelDTO> searchAll(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort);
+    List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort);
 
+    Page<TravelDTO> searchAllPageable(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort);
 }

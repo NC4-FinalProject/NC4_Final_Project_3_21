@@ -127,8 +127,16 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public Page<TravelDTO> searchAll(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort) {
-        Page<Travel> travelPage = travelRepository.findByAreaAndSigunguAndTitle(searchArea, searchSigungu, searchKeyword, sort, pageable);
+    public List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort) {
+        List<Travel> travels = travelRepository.findAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
+        return travels.stream()
+                .map(Travel::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<TravelDTO> searchAllPageable(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort) {
+        Page<Travel> travelPage = travelRepository.findAllPagination(searchArea, searchSigungu, searchKeyword, sort, pageable);
         return travelPage.map(Travel::toDTO);
     }
 }
