@@ -21,7 +21,7 @@ public class ChatMessageDTO {
     private String receiver;
     private String sender;
     private String chatMessage;
-    private LocalDateTime sendDate;
+    private String sendDate;
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
@@ -29,7 +29,7 @@ public class ChatMessageDTO {
                 .receiver(this.receiver)
                 .sender(this.sender)
                 .chatMessage(this.chatMessage)
-                .sendDate(this.sendDate)
+                .sendDate(LocalDateTime.parse(this.sendDate))
                 .build();
     }
 }
