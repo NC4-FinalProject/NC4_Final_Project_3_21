@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.configuration;
+package com.bit.nc4_final_project.configuration.chat;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
