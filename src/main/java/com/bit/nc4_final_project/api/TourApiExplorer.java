@@ -124,6 +124,8 @@ public class TourApiExplorer {
         String mlevel = jsonTravel.optString("mlevel", "");
         String createdtime = jsonTravel.optString("createdtime", "");
         String modifiedtime = jsonTravel.optString("modifiedtime", "");
+        String areacode = jsonTravel.optString("areacode", "");
+        String sigungucode = jsonTravel.optString("sigungucode", "");
         int viewCnt = jsonTravel.optInt("viewCnt", 0);
 
         return Travel.builder()
@@ -146,6 +148,8 @@ public class TourApiExplorer {
                 .mlevel(mlevel)
                 .createdtime(createdtime)
                 .modifiedtime(modifiedtime)
+                .areaCode(areacode)
+                .sigunguCode(sigungucode)
                 .viewCnt(viewCnt)
                 .build();
     }

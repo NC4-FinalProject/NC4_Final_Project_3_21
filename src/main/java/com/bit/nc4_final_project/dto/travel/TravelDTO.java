@@ -3,6 +3,8 @@ package com.bit.nc4_final_project.dto.travel;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @Builder
 public class TravelDTO {
@@ -27,5 +29,10 @@ public class TravelDTO {
     private String createdtime;
     private String modifiedtime;
     private Integer viewCnt;
+    private String areaCode;
+    private String sigunguCode;
     private TravelDetailDTO detail;
+
+    private List<String> searchArea;
+    private String searchKeyword;
 }

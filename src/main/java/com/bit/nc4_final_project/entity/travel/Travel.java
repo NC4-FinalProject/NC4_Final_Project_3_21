@@ -34,6 +34,8 @@ public class Travel {
     private String createdtime;
     private String modifiedtime;
     private Integer viewCnt;
+    private String areaCode;
+    private String sigunguCode;
 
     @Setter
     @Field("detail")
@@ -60,7 +62,10 @@ public class Travel {
                 .mapy(this.mapy)
                 .mlevel(this.mlevel)
                 .createdtime(this.createdtime)
-                .modifiedtime(this.modifiedtime);
+                .modifiedtime(this.modifiedtime)
+                .viewCnt(this.viewCnt)
+                .areaCode(this.areaCode)
+                .sigunguCode(this.sigunguCode);
 
         if (this.detail != null) {
             builder.detail(toTravelDetailDTO(this.detail));
