@@ -40,7 +40,7 @@ public class Recruitment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "community_seq")
+    @JoinColumn(name = "com_seq")
     private Community community;
 
     @Transient

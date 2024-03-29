@@ -20,6 +20,6 @@ public class CommunitySubscriberId implements Serializable {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_seq")
+    @JoinColumn(name = "com_seq")
     private Community community;
 }
