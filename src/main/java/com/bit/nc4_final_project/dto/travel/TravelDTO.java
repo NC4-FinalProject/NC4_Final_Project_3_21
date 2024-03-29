@@ -27,5 +27,11 @@ public class TravelDTO {
     private String createdtime;
     private String modifiedtime;
     private Integer viewCnt;
+    private String areaCode;
+    private String sigunguCode;
     private TravelDetailDTO detail;
+
+    private String searchArea;
+    private String searchSigungu;
+    private String searchKeyword;
 }
