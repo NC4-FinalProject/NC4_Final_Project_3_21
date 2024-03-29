@@ -2,8 +2,11 @@ package com.bit.nc4_final_project.service.taravel.impl;
 
 import com.bit.nc4_final_project.api.TourApiExplorer;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
+import com.bit.nc4_final_project.entity.travel.AreaCode;
+import com.bit.nc4_final_project.entity.travel.SigunguCode;
 import com.bit.nc4_final_project.entity.travel.Travel;
 import com.bit.nc4_final_project.entity.travel.TravelDetail;
+import com.bit.nc4_final_project.repository.travel.AreaCodeRepository;
 import com.bit.nc4_final_project.repository.travel.TravelRepository;
 import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +27,7 @@ import java.util.stream.Collectors;
 public class TravelServiceImpl implements TravelService {
     private final TourApiExplorer tourApiExplorer;
     private final TravelRepository travelRepository;
+    private final AreaCodeRepository areaCodeRepository;
 
     @Override
     public void save() {
@@ -57,6 +62,48 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    public List<AreaCode> getAreaCodes() {
+        return areaCodeRepository.findAll();
+    }
+
+    @Override
+    public List<SigunguCode> getSigunguCodes(String areaCode) {
+        return areaCodeRepository.findAreaCodesByCode(areaCode).getSigunguCodes();
+    }
+
+    @Override
+    public void saveAreaCodes() throws UnsupportedEncodingException {
+        log.info("area code data save start");
+        List<Object> areaCodes = tourApiExplorer.getAreaCodeList(null);
+
+        List<AreaCode> areaCodesToSave = areaCodes.stream()
+                .filter(obj -> obj instanceof AreaCode)
+                .map(obj -> {
+                    AreaCode areaCodeObj = (AreaCode) obj;
+                    List<SigunguCode> sigunguCodes = null;
+                    try {
+                        sigunguCodes = tourApiExplorer.getAreaCodeList(areaCodeObj.getCode())
+                                .stream()
+                                .filter(sigunguCodeObj -> sigunguCodeObj instanceof SigunguCode)
+                                .map(sigunguCodeObj -> (SigunguCode) sigunguCodeObj)
+                                .collect(Collectors.toList());
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+                    areaCodeObj.setSigunguCodes(sigunguCodes);
+                    return areaCodeObj;
+                })
+                .collect(Collectors.toList());
+
+        if (!areaCodesToSave.isEmpty()) {
+            areaCodeRepository.saveAll(areaCodesToSave);
+            log.info("save");
+        }
+
+        log.info("end");
+    }
+
+    @Override
     public TravelDTO getTravelDTO(String travelId) {
         Optional<Travel> travel = travelRepository.findById(travelId);
         if (travel.isEmpty()) {
@@ -67,26 +114,21 @@ public class TravelServiceImpl implements TravelService {
     }
 
     public void removeDuplicateContentIds() {
-        // 모든 여행 정보 조회
         List<Travel> allTravel = travelRepository.findAll();
 
-        // contentid를 기준으로 그룹화
         Map<String, List<Travel>> contentIdGroups = allTravel.stream()
                 .collect(Collectors.groupingBy(Travel::getContentid));
 
-        // 중복된 contentid를 가진 그룹에 대해서 하나만 남기고 나머지 삭제
         contentIdGroups.forEach((contentId, travels) -> {
             if (travels.size() > 1) {
-                // 첫 번째 요소를 제외한 나머지 요소 삭제
                 travelRepository.deleteAll(travels.subList(1, travels.size()));
             }
         });
     }
 
     @Override
-    public Page<TravelDTO> searchAll(Pageable pageable, List<String> searchArea, String searchKeyword) {
-        Page<Travel> travelPage = travelRepository.findByAreaOrKeyword(searchArea.get(0), searchKeyword, pageable);
-
+    public Page<TravelDTO> searchAll(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort) {
+        Page<Travel> travelPage = travelRepository.findByAreaAndSigunguAndTitle(searchArea, searchSigungu, searchKeyword, sort, pageable);
         return travelPage.map(Travel::toDTO);
     }
 }

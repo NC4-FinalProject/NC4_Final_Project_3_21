@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 public interface TravelRepository extends MongoRepository<Travel, String> {
-    @Query("{$or:[{'area': {$regex : ?0, $options: 'i'}}, {'keyword': {$regex : ?1, $options: 'i'}}]}")
-    Page<Travel> findByAreaOrKeyword(String area, String keyword, Pageable pageable);
+    @Query(value = "{$and: [{area: ?0}, {sigungu: ?1, $exists: true}, {title: {$regex: ?2, $options: 'i', $exists: true}}]}",
+            sort = "{?#{#sort.equals('alphabetical') ? {title: 1} : {viewCnt: -1}}}")
+    Page<Travel> findByAreaAndSigunguAndTitle(String area, String sigungu, String keyword, String sort, Pageable pageable);
 }
