@@ -18,7 +18,6 @@ import lombok.ToString;
 @ToString
 public class ChatDTO {
     private Integer seq;
-    private Integer chatRoomNo;
     private String partnerName;
     private String partnerImg;
     private String lastChat;
@@ -27,7 +26,6 @@ public class ChatDTO {
     public Chat toEntity() {
         return Chat.builder()
                 .seq(this.seq)
-                .chatRoomNo(this.chatRoomNo)
                 .partnerName(this.partnerName)
                 .partnerImg(partnerImg)
                 .lastChat(this.lastChat)
