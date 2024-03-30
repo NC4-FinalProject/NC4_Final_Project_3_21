@@ -26,7 +26,6 @@ public class Chat {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    private Integer chatRoomNo;
     private String partnerName;
     private String partnerImg;
     private String lastChat;
@@ -35,7 +34,6 @@ public class Chat {
     public ChatDTO toDTO() {
         return ChatDTO.builder()
                 .seq(this.seq)
-                .chatRoomNo(this.chatRoomNo)
                 .partnerName(partnerName)
                 .partnerImg(partnerImg)
                 .lastChat(this.lastChat)

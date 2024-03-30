@@ -26,39 +26,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
-        System.out.println(userDTO);
+//        System.out.println(userDTO);
+
         User user = userRepository.save(userDTO.toEntity());
 
-        List<String> tags = userDTO.getTags();
+//        List<String> tags = userDTO.getTags();
 
-        tags.forEach(tagContent -> {
-            UserTag userTag = new UserTag();
-            userTag.setContent(tagContent);
-            user.addUserTag(userTag);
-        });
+//        tags.forEach(tagContent -> {
+//            UserTag userTag = new UserTag();
+//            userTag.setContent(tagContent);
+//            user.addUserTag(userTag);
+//        });
 
         return user.toDTO();
     }
 
     @Override
     public UserDTO signin(UserDTO userDTO) {
-        Optional<User> signinUser = userRepository.findById(userDTO.getId());
+        Optional<User> signInUser = userRepository.findById(userDTO.getId());
 
-        if (signinUser.isEmpty()) {
+        if (signInUser.isEmpty()) {
             throw new RuntimeException("not exist userid");
         }
 
-        if (!passwordEncoder.matches(userDTO.getPw(), signinUser.get().getPw())) {
+        if (!passwordEncoder.matches(userDTO.getPw(), signInUser.get().getPw())) {
             throw new RuntimeException("wrong pw");
         }
 
-        UserDTO signinDTO = signinUser.get().toDTO();
+        UserDTO signinDTO = signInUser.get().toDTO();
 
         signinDTO.setLastLoginDate(LocalDateTime.now().toString());
-        signinDTO.setToken(jwtTokenProvider.create(signinUser.get()));
+        signinDTO.setToken(jwtTokenProvider.create(signInUser.get()));
+
+        log.info("===========token: {} ==========", signinDTO.getToken());
 
         userRepository.save(signinDTO.toEntity());
-        System.out.println(jwtTokenProvider.create(signinUser.get()));
+//        System.out.println(jwtTokenProvider.create(signinUser.get()));
         userRepository.flush();
 
         return signinDTO;

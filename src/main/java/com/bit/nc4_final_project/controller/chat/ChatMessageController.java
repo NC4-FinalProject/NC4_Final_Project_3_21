@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +31,7 @@ public class ChatMessageController {
         try {
             chatService.saveMessage(messageDTO);
 
-            messagingTemplate.convertAndSend("/sub/chat/" + messageDTO.getId(), messageDTO);        
+            messagingTemplate.convertAndSend("/sub/" + messageDTO.getChatId(), messageDTO);
 
             return ResponseEntity.ok("Message Send Success.");
         } catch (Exception e) {
@@ -41,12 +42,19 @@ public class ChatMessageController {
 
     }
 
-    // @PostMapping("/new-chat")
-    // public ResponseEntity<?> createChatRoom(ChatDTO ChatDTO) {
-    //     //TODO: process POST request
-        
-    //     return entity;
-    // }
+    // 채팅 목록 읽어오기
+    @GetMapping("/chat")
+    public ResponseEntity<?> getChatList() {
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+        try {
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setErrorCode(400);
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
     
 
     
