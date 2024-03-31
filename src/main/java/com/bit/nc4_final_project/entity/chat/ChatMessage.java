@@ -21,15 +21,16 @@ import lombok.Setter;
 public class ChatMessage {
     
     @Id
-    private String chatId;
-    private String chatRoomNo;
+    private String id;
+    private String chatRoomId;
     private String sender;
     private String message;
     private LocalDateTime sendDate;
 
     public ChatMessageDTO toDTO() {
         return ChatMessageDTO.builder()
-                .chatId(this.chatId)
+                .id(this.id)
+                .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
                 .message(this.message)
                 .sendDate(this.sendDate.toString())

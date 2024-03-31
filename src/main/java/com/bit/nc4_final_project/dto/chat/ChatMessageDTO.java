@@ -16,16 +16,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessageDTO {
-    
-    private String chatId;
-    private String chatRoomNo;
+
+    private String id;
+    private String chatRoomId;
     private String sender;
     private String message;
     private String sendDate;
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
-                .chatId(this.chatId)
+                .id(this.id)
+                .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
                 .message(this.message)
                 .sendDate(LocalDateTime.parse(this.sendDate))

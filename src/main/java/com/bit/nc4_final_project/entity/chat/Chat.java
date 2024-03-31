@@ -21,12 +21,9 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ChatSeqGenerator")
     @Column(name = "chat_seq")
     private Integer seq;
-    
-    @ManyToOne
-    @JoinColumn(name = "user_seq")
-    private User user;
 
-    private String partnerName;
+    private String makerId;
+    private String partnerId;
     private String partnerImg;
     private String lastChat;
     private Integer unreadCnt;
@@ -34,8 +31,9 @@ public class Chat {
     public ChatDTO toDTO() {
         return ChatDTO.builder()
                 .seq(this.seq)
-                .partnerName(partnerName)
-                .partnerImg(partnerImg)
+                .makerId(this.makerId)
+                .partnerId(this.partnerId)
+                .partnerImg(this.partnerImg)
                 .lastChat(this.lastChat)
                 .unreadCnt(this.unreadCnt)
                 .build();

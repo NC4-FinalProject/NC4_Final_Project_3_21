@@ -70,7 +70,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            log.info("==========set security context error: " + e.getMessage() + "==========");
+            log.info("error log={}", e.getMessage());
         }
 
         // 필터 체인에 등록

@@ -2,36 +2,35 @@ package com.bit.nc4_final_project.controller.chat;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
-import com.bit.nc4_final_project.service.chat.ChatMessageService;
+import com.bit.nc4_final_project.service.chat.ChatRoomService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class ChatMessageController {
-    public final ChatMessageService chatService;
-    public final SimpMessagingTemplate messagingTemplate;
+public class ChatRoomController {
+    public final ChatRoomService chatRoomService;
+    public final SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/chat")
-    public ResponseEntity<?> recieveMessage (ChatMessageDTO messageDTO) {
+    @MessageMapping("/send-message")
+    public ResponseEntity<?> sendMessage (ChatMessageDTO messageDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
-        log.info("Message Recieved: " + messageDTO.toString());
+        log.debug("send-message log={}" + messageDTO.toString());
         try {
-            chatService.saveMessage(messageDTO);
-
-            messagingTemplate.convertAndSend("/sub/" + messageDTO.getChatId(), messageDTO);
+            chatRoomService.saveMessage(messageDTO);
+            simpMessagingTemplate.convertAndSend("/sub/" + messageDTO.getChatRoomId(), messageDTO);
 
             return ResponseEntity.ok("Message Send Success.");
         } catch (Exception e) {
@@ -42,20 +41,23 @@ public class ChatMessageController {
 
     }
 
-    // 채팅 목록 읽어오기
-    @GetMapping("/chat")
-    public ResponseEntity<?> getChatList() {
-        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+    // 채팅방 목록에서 채팅방 입장시 읽어오기
+    @GetMapping("/chat/{chatRoomId}")
+    public ResponseEntity<?> getMessages(@PathVariable ("chatRoomId") String chatRoomId) {
+
+        ResponseDTO<ChatMessageDTO> responseDTO = new ResponseDTO<>();
+
         try {
+            List<ChatMessageDTO> chatMessageDTOList = chatRoomService.getMessages (chatRoomId);
+            responseDTO.setItems(chatMessageDTOList);
 
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
+            log.error("getMessages error={}", e.getMessage());
             responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setErrorCode(400);
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
-    
-
     
 }
