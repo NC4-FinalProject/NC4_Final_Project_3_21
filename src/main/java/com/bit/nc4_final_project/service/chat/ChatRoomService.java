@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChatRoomService {
 
-    void saveMessage(ChatMessageDTO messageDTO);
+    ChatMessageDTO saveMessage(ChatMessageDTO messageDTO);
 
-    List<ChatMessageDTO> getMessages(String CurrentUserId);
+//    List<ChatMessageDTO> getMessages(String CurrentUserId);
 } 

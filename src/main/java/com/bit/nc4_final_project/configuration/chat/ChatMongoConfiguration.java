@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.bit.nc4_final_project.repository.chat", mongoTemplateRef = "mongoTemplate2")
+@EnableMongoRepositories(basePackages = "com.bit.nc4_final_project.repository.chatroom", mongoTemplateRef = "mongoTemplate2")
 public class ChatMongoConfiguration {
 
    @Value("${custom.mongodb.chat.uri}")
