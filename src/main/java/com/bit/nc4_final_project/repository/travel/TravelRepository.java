@@ -11,14 +11,17 @@ import java.util.List;
 
 public interface TravelRepository extends MongoRepository<Travel, String> {
     @Query(value = "{ $and: [ { $cond: { if: { $ne: [ ?0, '' ] }, then: { area: ?0 }, else: {} } }, { $cond: { if: { $ne: [ ?1, '' ] }, then: { sigungu: ?1 }, else: {} } }, { $cond: { if: { $ne: [ ?2, '' ] }, then: { title: { $regex: ?2, $options: 'i' } }, else: {} } } ] }",
-            sort = "{?#{#sort.equals('alphabetical') ? {title: 1} : {viewCnt: -1}}}")
+            sort = "{?#{#sort.equals('alphabetical') ? {title: 1} : #sort.equals('random') ? { $sample: { size: 12 } } : {viewCnt: -1}}}")
     @Aggregation(pipeline = {"{ $limit : 12 }"})
     List<Travel> findAllCarousel(String area, String sigungu, String keyword, String sort);
+
+    @Aggregation(pipeline = {
+            "{$match: { $expr: { $and: [ { $gt: [ { $toDouble: \"$mapx\" }, ?0 ] }, { $lt: [ { $toDouble: \"$mapx\" }, ?1 ] }, { $gt: [ { $toDouble: \"$mapy\" }, ?2 ] }, { $lt: [ { $toDouble: \"$mapy\" }, ?3 ] } ] } } }"
+    })
+    List<Travel> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy);
 
 
     @Query(value = "{ $and: [ { $cond: { if: { $ne: [ ?0, '' ] }, then: { area: ?0 }, else: {} } }, { $cond: { if: { $ne: [ ?1, '' ] }, then: { sigungu: ?1 }, else: {} } }, { $cond: { if: { $ne: [ ?2, '' ] }, then: { title: { $regex: ?2, $options: 'i' } }, else: {} } } ] }",
             sort = "{?#{#sort.equals('alphabetical') ? {title: 1} : {viewCnt: -1}}}")
     Page<Travel> findAllPagination(String area, String sigungu, String keyword, String sort, Pageable pageable);
-
-
 }
