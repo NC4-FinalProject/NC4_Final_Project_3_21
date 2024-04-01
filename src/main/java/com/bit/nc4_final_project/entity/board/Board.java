@@ -41,7 +41,7 @@ public class Board {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "community_seq")
+    @JoinColumn(name = "com_seq")
 //    @JsonBackReference
     private Community community;
 
