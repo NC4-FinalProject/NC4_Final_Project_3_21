@@ -40,13 +40,22 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void modify(ReviewDTO reviewDTO) {
+        reviewDTO.setRegDate(LocalDateTime.now());
+
         Review review = reviewDTO.toEntity();
+
         reviewRepository.save(review);
     }
 
     @Override
     public void deleteById(int seq) {
         reviewRepository.deleteById(seq);
+    }
+
+    @Override
+    public Page<ReviewDTO> getMyReviewList(String userId, Pageable pageable) {
+        Page<Review> reviewPage = reviewRepository.searchMyReviewList(userId, pageable);
+        return reviewPage.map(review -> review.toDTO());
     }
 
 
