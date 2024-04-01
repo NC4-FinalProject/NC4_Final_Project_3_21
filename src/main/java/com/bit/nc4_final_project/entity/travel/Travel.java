@@ -41,7 +41,7 @@ public class Travel {
     @Field("detail")
     private TravelDetail detail;
 
-    public TravelDTO toDTO() {
+    public TravelDTO toDTO(Integer bookmarkCnt, String areaName, String sigunguName) {
         TravelDTO.TravelDTOBuilder builder = TravelDTO.builder()
                 .id(this.id)
                 .contentid(this.contentid)
@@ -64,8 +64,11 @@ public class Travel {
                 .createdtime(this.createdtime)
                 .modifiedtime(this.modifiedtime)
                 .viewCnt(this.viewCnt)
+                .bookmarkCnt(bookmarkCnt)
                 .areaCode(this.areaCode)
-                .sigunguCode(this.sigunguCode);
+                .areaName(areaName)
+                .sigunguCode(this.sigunguCode)
+                .sigunguName(sigunguName);
 
         if (this.detail != null) {
             builder.detail(toTravelDetailDTO(this.detail));

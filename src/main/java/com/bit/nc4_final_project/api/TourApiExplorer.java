@@ -67,7 +67,7 @@ public class TourApiExplorer {
                 .append("&").append(URLEncoder.encode("_type", "UTF-8")).append("=").append(URLEncoder.encode("json", "UTF-8"))
                 .append("&").append(URLEncoder.encode("MobileOS", "UTF-8")).append("=").append(URLEncoder.encode("ETC", "UTF-8"))
                 .append("&").append(URLEncoder.encode("MobileApp", "UTF-8")).append("=").append(URLEncoder.encode("AppTest", "UTF-8"))
-                .append("&").append(URLEncoder.encode("contentTypeId", "UTF-8")).append("=").append(URLEncoder.encode("12", "UTF-8"));
+                .append("&").append(URLEncoder.encode("contentTypeId", "UTF-8")).append("=").append(URLEncoder.encode("28", "UTF-8"));
         return urlBuilder;
     }
 
