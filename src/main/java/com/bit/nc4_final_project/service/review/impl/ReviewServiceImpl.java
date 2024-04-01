@@ -52,5 +52,11 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.deleteById(seq);
     }
 
+    @Override
+    public Page<ReviewDTO> getMyReviewList(String userId, Pageable pageable) {
+        Page<Review> reviewPage = reviewRepository.searchMyReviewList(userId, pageable);
+        return reviewPage.map(review -> review.toDTO());
+    }
+
 
 }
