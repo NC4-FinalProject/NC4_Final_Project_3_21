@@ -40,7 +40,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void modify(ReviewDTO reviewDTO) {
+        reviewDTO.setRegDate(LocalDateTime.now());
+
         Review review = reviewDTO.toEntity();
+
         reviewRepository.save(review);
     }
 

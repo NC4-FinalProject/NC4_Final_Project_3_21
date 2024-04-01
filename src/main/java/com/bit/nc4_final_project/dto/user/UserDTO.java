@@ -57,7 +57,7 @@ public class UserDTO {
             List<UserTag> userTags = this.tags.stream()
                     .map(tag -> UserTag.builder().content(tag).user(user).build())
                     .collect(Collectors.toList());
-            user.getUserTags().addAll(userTags);
+            //user.getUserTags().addAll(userTags);
         }
 
         return user;

@@ -40,13 +40,13 @@ public class User {
     private LocalDateTime lastLoginDate;
 
 
-   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-   @Builder.Default
-   @JsonManagedReference
-   private List<UserTag> userTags = new ArrayList<>();
+//   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//   @Builder.Default
+//   @JsonManagedReference
+//   private List<UserTag> userTags = new ArrayList<>();
 
     public void addUserTag(UserTag userTag) {
-       userTags.add(userTag);
+       //userTags.add(userTag);
         userTag.setUser(this);
     }
 
@@ -63,7 +63,7 @@ public class User {
                 .regDate(this.regDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
-                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
+                //.tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
 
     }

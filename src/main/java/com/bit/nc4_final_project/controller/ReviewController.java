@@ -38,12 +38,14 @@ public class ReviewController {
             responseDTO.setItem(ReviewDTO.builder()
                     .searchCondition(searchCondition)
                     .searchKeyword(searchKeyword)
+                    .sort(sort)
                     .build());
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             responseDTO.setErrorCode(201);
             responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -98,7 +100,7 @@ public class ReviewController {
     }
 
     @PutMapping("/modify")
-    public ResponseEntity<?> modify(@RequestPart("reviewDTO") ReviewDTO reviewDTO) {
+    public ResponseEntity<?> modify(@RequestBody ReviewDTO reviewDTO) {
         ResponseDTO<ReviewDTO> responseDTO = new ResponseDTO<>();
 
         try {
