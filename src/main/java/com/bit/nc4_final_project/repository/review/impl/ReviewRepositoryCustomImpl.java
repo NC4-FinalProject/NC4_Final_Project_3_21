@@ -46,6 +46,28 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         return new PageImpl<>(reviewList, pageable, totalCnt);
     }
 
+    @Override
+    public Page<Review> searchMyReviewList(String userId, Pageable pageable) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.and(review.user.id.eq(userId));
+
+        List<Review> reviews = jpaQueryFactory
+                .selectFrom(review)
+                .where(booleanBuilder)
+                .orderBy(review.regDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long totalCnt = jpaQueryFactory
+                .select(review.count())
+                .from(review)
+                .where(booleanBuilder)
+                .fetchOne();
+
+        return new PageImpl<>(reviews, pageable, totalCnt);
+    }
+
 
     private BooleanBuilder getSearch(String searchCondition, String searchKeyword) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();

@@ -4,6 +4,8 @@ import com.bit.nc4_final_project.common.FileUtils;
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
+import com.bit.nc4_final_project.entity.CustomUserDetails;
+import com.bit.nc4_final_project.entity.Review;
 import com.bit.nc4_final_project.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
@@ -14,7 +16,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,12 +44,14 @@ public class ReviewController {
             responseDTO.setItem(ReviewDTO.builder()
                     .searchCondition(searchCondition)
                     .searchKeyword(searchKeyword)
+                    .sort(sort)
                     .build());
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             responseDTO.setErrorCode(201);
             responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -98,11 +106,11 @@ public class ReviewController {
     }
 
     @PutMapping("/modify")
-    public ResponseEntity<?> modify(@RequestPart("reviewDTO") ReviewDTO reviewDTO) {
+    public ResponseEntity<?> modify(@RequestBody ReviewDTO reviewDTO) {
         ResponseDTO<ReviewDTO> responseDTO = new ResponseDTO<>();
-
         try {
             reviewService.modify(reviewDTO);
+
 
             ReviewDTO modifiedReviewDTO = reviewService.findById(reviewDTO.getSeq());
 
@@ -135,6 +143,30 @@ public class ReviewController {
         } catch(Exception e) {
             System.out.println(e.getMessage());
             responseDTO.setErrorCode(206);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<?> getMyReview(@PageableDefault(page = 0, size = 4) Pageable pageable,
+                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        ResponseDTO<ReviewDTO> responseDTO = new ResponseDTO<>();
+
+        try {
+            String userId = customUserDetails.getUsername();
+            Page<ReviewDTO> reviewDTOPage = reviewService.getMyReviewList(userId, pageable);
+
+            responseDTO.setPageItems(reviewDTOPage);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+
+            return ResponseEntity.ok(responseDTO);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            responseDTO.setErrorCode(207);
             responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
 

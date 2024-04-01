@@ -22,6 +22,7 @@ public class ReviewDTO {
     private LocalDateTime regDate;
     private String searchCondition;
     private String searchKeyword;
+    private String sort;
 
     public Review toEntity() {
         return Review.builder()

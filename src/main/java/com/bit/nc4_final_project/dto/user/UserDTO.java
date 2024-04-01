@@ -52,13 +52,13 @@ public class UserDTO {
                 .isActive(this.isActive)
                 .lastLoginDate(LocalDateTime.parse(this.lastLoginDate))
                 .build();
-
 //        if (this.tags != null) {
 //            List<UserTag> userTags = this.tags.stream()
 //                    .map(tag -> UserTag.builder().content(tag).user(user).build())
 //                    .collect(Collectors.toList());
 //            user.getUserTags().addAll(userTags);
 //        }
+
 
         return user;
     }
