@@ -148,7 +148,7 @@ public class TravelController {
         }
     }
 
-    @GetMapping("/map")
+    @GetMapping("/maker")
     public ResponseEntity<?> getTravelAroundMap(@RequestParam(value = "userMapx", defaultValue = "") double userMapx,
                                                 @RequestParam(value = "userMapy", defaultValue = "") double userMapy) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
