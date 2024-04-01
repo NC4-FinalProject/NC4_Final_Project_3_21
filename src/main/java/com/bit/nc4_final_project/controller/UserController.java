@@ -4,6 +4,7 @@ import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -25,7 +26,7 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
 
-        System.out.println(userDTO);
+//        System.out.println(userDTO);
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
 
 
@@ -43,7 +44,7 @@ public class UserController {
 
             responseDTO.setItem(signupUserDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
-            System.out.println(userDTO);
+//            System.out.println(userDTO);
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -59,8 +60,9 @@ public class UserController {
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
         try {
             UserDTO signinUserDTO = userService.signin(userDTO);
-            System.out.println(signinUserDTO.getToken());
-            signinUserDTO.setPw("");
+//            System.out.println(signinUserDTO.getToken());
+//            signinUserDTO.setPw("");
+//            log.info("===========token: {} ==========", signinUserDTO.getToken());
             responseDTO.setItem(signinUserDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok(responseDTO);
