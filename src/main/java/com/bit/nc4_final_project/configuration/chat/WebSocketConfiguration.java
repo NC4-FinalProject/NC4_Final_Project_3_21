@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.configuration.chat;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -9,6 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
@@ -17,9 +19,10 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer{
     // WebSocket 엔드포인트 등록
    @Override
    public void registerStompEndpoints(StompEndpointRegistry registry) {
+       log.debug("stomp-endpoint log={}", registry);
       registry.addEndpoint("/chatting")
-               .setAllowedOriginPatterns("http://localhost:3000")
-               .withSockJS();
+              .setAllowedOrigins("http://localhost:3000")
+              .withSockJS();
    }
 
    @Override
@@ -28,8 +31,8 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer{
     registry.setApplicationDestinationPrefixes("/pub");        // /app이 붙은 메세지들은 @MessageMapping이 붙은 메소드로 라우팅
    }
 
-   @Override
-   public void configureClientInboundChannel (ChannelRegistration registration) {
-      registration.interceptors(stompHeaderChannelInterceptor);
-   }
+//   @Override
+//   public void configureClientInboundChannel (ChannelRegistration registration) {
+//      registration.interceptors(stompHeaderChannelInterceptor);
+//   }
 }
