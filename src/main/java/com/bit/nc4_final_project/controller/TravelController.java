@@ -6,20 +6,38 @@ import com.bit.nc4_final_project.entity.travel.AreaCode;
 import com.bit.nc4_final_project.entity.travel.SigunguCode;
 import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/travel")
 @RequiredArgsConstructor
 public class TravelController {
     private final TravelService travelService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBoard(@PathVariable("id") String contentId) {
+        ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
+
+        try {
+            TravelDTO travelDTO = travelService.getTravelDTO(contentId);
+            responseDTO.setItem(travelDTO);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(403);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
 
     @PostMapping("/api")
     public ResponseEntity<?> saveTravelInfo() {
@@ -98,23 +116,57 @@ public class TravelController {
         }
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<?> getBoardList(@PageableDefault(page = 0, size = 10) Pageable pageable,
-                                          @RequestParam("searchArea") String searchArea,
-                                          @RequestParam("searchSigungu") String searchSigungu,
-                                          @RequestParam("searchKeyword") String searchKeyword,
-                                          @RequestParam("sort") String sort) {
+    @GetMapping("/carousel")
+    public ResponseEntity<?> getTravelInCarousel(@RequestParam(value = "searchArea", defaultValue = "") String searchArea,
+                                                 @RequestParam(value = "searchSigungu", defaultValue = "") String searchSigungu,
+                                                 @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+                                                 @RequestParam(value = "sort", defaultValue = "") String sort) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
 
         try {
-            Page<TravelDTO> travelDTOPage = travelService.searchAll(pageable, searchArea, searchSigungu, searchKeyword, sort);
+            log.info(searchArea + ", " + searchSigungu + ", " + searchKeyword + ", " + sort);
 
-            responseDTO.setPageItems(travelDTOPage);
+            if (sort.equals("bookmark")) {
+                // 북마크 조회 추가
+            }
+            List<TravelDTO> travelDTOs = travelService.searchAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
+            responseDTO.setItems(travelDTOs);
             responseDTO.setItem(TravelDTO.builder()
                     .searchArea(searchArea)
                     .searchSigungu(searchSigungu)
                     .searchKeyword(searchKeyword)
                     .build());
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(401);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/map")
+    public ResponseEntity<?> getTravelAroundMap(@RequestParam(value = "userMapx", defaultValue = "") double userMapx,
+                                                @RequestParam(value = "userMapy", defaultValue = "") double userMapy) {
+        ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
+
+        try {
+            // double userMapx = 127.1445792;
+            // double userMapy = 37.606103;
+
+            double radius = 5.0 / 111.0;
+
+            double minMapx = userMapx - radius;
+            double maxMapx = userMapx + radius;
+            double minMapy = userMapy - radius;
+            double maxMapy = userMapy + radius;
+
+            List<TravelDTO> travelDTOs = travelService.findNearbyTravels(minMapx, maxMapx, minMapy, maxMapy);
+
+            responseDTO.setItems(travelDTOs);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);

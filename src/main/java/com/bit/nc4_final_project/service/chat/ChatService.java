@@ -7,5 +7,4 @@ import com.bit.nc4_final_project.dto.chat.ChatDTO;
 public interface ChatService {
 
     List<ChatDTO> getChatList(String userId);
-    
 }

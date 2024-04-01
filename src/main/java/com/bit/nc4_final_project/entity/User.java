@@ -44,6 +44,7 @@ public class User {
 //   @Builder.Default
 //   @JsonManagedReference
 //   private List<UserTag> userTags = new ArrayList<>();
+
 //
 //    public void addUserTag(UserTag userTag) {
 //       userTags.add(userTag);
@@ -63,7 +64,7 @@ public class User {
                 .regDate(this.regDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
-//                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
+                //.tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
 
     }

@@ -58,8 +58,6 @@ public class UserServiceImpl implements UserService {
         signinDTO.setLastLoginDate(LocalDateTime.now().toString());
         signinDTO.setToken(jwtTokenProvider.create(signInUser.get()));
 
-        log.info("===========token: {} ==========", signinDTO.getToken());
-
         userRepository.save(signinDTO.toEntity());
 //        System.out.println(jwtTokenProvider.create(signinUser.get()));
         userRepository.flush();

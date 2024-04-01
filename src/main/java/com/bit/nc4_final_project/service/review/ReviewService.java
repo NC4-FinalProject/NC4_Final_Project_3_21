@@ -13,4 +13,6 @@ public interface ReviewService {
     void modify(ReviewDTO reviewDTO);
 
     void deleteById(int seq);
+
+    Page<ReviewDTO> getMyReviewList(String userId, Pageable pageable);
 }
