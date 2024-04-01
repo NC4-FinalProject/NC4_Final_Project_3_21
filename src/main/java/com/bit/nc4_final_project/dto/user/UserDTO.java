@@ -29,14 +29,14 @@ public class UserDTO {
     private boolean isActive;
     private String lastLoginDate;
     private String token;
-    private List<String> tags;
+//    private List<String> tags;
 
-    public List<String> getTags() {
-        if (tags == null) {
-            tags = new ArrayList<>();
-        }
-        return tags;
-    }
+//    public List<String> getTags() {
+//        if (tags == null) {
+//            tags = new ArrayList<>();
+//        }
+//        return tags;
+//    }
 
     public User toEntity() {
         User user = User.builder()
@@ -52,13 +52,13 @@ public class UserDTO {
                 .isActive(this.isActive)
                 .lastLoginDate(LocalDateTime.parse(this.lastLoginDate))
                 .build();
+//        if (this.tags != null) {
+//            List<UserTag> userTags = this.tags.stream()
+//                    .map(tag -> UserTag.builder().content(tag).user(user).build())
+//                    .collect(Collectors.toList());
+//            user.getUserTags().addAll(userTags);
+//        }
 
-        if (this.tags != null) {
-            List<UserTag> userTags = this.tags.stream()
-                    .map(tag -> UserTag.builder().content(tag).user(user).build())
-                    .collect(Collectors.toList());
-            user.getUserTags().addAll(userTags);
-        }
 
         return user;
     }

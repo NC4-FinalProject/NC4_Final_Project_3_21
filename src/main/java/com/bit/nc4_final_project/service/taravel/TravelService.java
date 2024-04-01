@@ -18,10 +18,17 @@ public interface TravelService {
 
     void saveAreaCodes() throws UnsupportedEncodingException;
 
-    TravelDTO getTravelDTO(String travelId);
+    TravelDTO getTravelDTO(String contentId);
 
     void removeDuplicateContentIds();
 
-    Page<TravelDTO> searchAll(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort);
+    List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort);
 
+    Page<TravelDTO> searchAllPageable(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort);
+
+    List<TravelDTO> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy);
+
+    AreaCode getAreaCode(String areaCode);
+
+    String getSigunguName(AreaCode areaCode, String sigunguCode);
 }
