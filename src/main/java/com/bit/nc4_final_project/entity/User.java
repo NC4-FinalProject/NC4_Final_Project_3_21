@@ -38,18 +38,27 @@ public class User {
     private LocalDateTime regDate;
     private boolean isActive;
     private LocalDateTime lastLoginDate;
+    private String profileImageUrl;
+
+   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   @Builder.Default
+   @JsonManagedReference
+   private List<UserTag> userTags = new ArrayList<>();
 
 
-//   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//   @Builder.Default
-//   @JsonManagedReference
-//   private List<UserTag> userTags = new ArrayList<>();
+    public void addUserTag(UserTag userTag) {
+       userTags.add(userTag);
+        userTag.setUser(this);
+    }
 
-//
-//    public void addUserTag(UserTag userTag) {
-//       userTags.add(userTag);
-//        userTag.setUser(this);
-//    }
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
 
     public UserDTO toDTO() {
         return UserDTO.builder()
@@ -64,8 +73,10 @@ public class User {
                 .regDate(this.regDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
-                //.tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
+                .profileImageUrl(this.profileImageUrl)
+                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
 
     }
+
 }
