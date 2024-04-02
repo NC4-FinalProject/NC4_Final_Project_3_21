@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReviewRepositoryCustom {
     Page<Review> searchAll(Pageable pageable, String searchCondition, String searchKeyword, String sort);
+    Page<Review> searchMyReviewList(String userId, Pageable pageable);
+
 }

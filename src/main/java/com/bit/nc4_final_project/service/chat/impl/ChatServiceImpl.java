@@ -17,11 +17,11 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
 
     @Override
-    public List<ChatDTO> getChatList(String userId) {
-        List<Chat> chatList = chatRepository.findAllByUserId(userId);
+    public List<ChatDTO> getChatList(String currentUserId) {
+        List<Chat> chatList = chatRepository.findAllByMakerIdOrPartnerId(currentUserId);
         List<ChatDTO> chatDTOList = chatList.stream().map(Chat::toDTO).toList();
 
         return chatDTOList;
     }
-    
+
 }

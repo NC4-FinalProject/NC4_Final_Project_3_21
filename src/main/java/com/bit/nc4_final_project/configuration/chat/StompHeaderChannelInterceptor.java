@@ -25,17 +25,18 @@ public class StompHeaderChannelInterceptor implements ChannelInterceptor{
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
+        log.debug("===== WebSocket InterCepTer : preSend =====");
         StompCommand command = accessor.getCommand();
         // websocket 연결시 헤더의 jwt token 유효성 검증
         if (command == StompCommand.CONNECT) {
-            String token = accessor.getFirstNativeHeader("Authorization");
+            log.debug("===== WebSocket InterCepTer : CONNECT =====");
+            String token = accessor.getFirstNativeHeader("ACCESS_TOKEN");
             // 현재 프로젝트 내의 jwtTokenProvider를 사용하여 토큰의 유효성을 검사
             if (jwtTokenProvider.validateAndGetUsername(token) == null) {
+                log.info("===== WebSocket InterCepTer : Token is not valid. =====");
                 throw new AccessDeniedException("Token is not valid.");
             }
         }
-        log.info("preSend: " + accessor.toString());
         return message;
     }
 }
