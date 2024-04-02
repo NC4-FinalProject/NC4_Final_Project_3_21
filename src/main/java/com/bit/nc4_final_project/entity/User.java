@@ -45,20 +45,15 @@ public class User {
    @JsonManagedReference
    private List<UserTag> userTags = new ArrayList<>();
 
-
-    public void addUserTag(UserTag userTag) {
-       userTags.add(userTag);
-        userTag.setUser(this);
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
+//   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//   @Builder.Default
+//   @JsonManagedReference
+//   private List<UserTag> userTags = new ArrayList<>();
+//
+//    public void addUserTag(UserTag userTag) {
+//       userTags.add(userTag);
+//        userTag.setUser(this);
+//    }
 
     public UserDTO toDTO() {
         return UserDTO.builder()
@@ -74,7 +69,7 @@ public class User {
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
                 .profileImageUrl(this.profileImageUrl)
-                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
+//                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
 
     }
