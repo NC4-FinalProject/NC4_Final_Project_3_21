@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.save(userDTO.toEntity());
 
-        List<String> tags = userDTO.getTags();
-
-        tags.forEach(tagContent -> {
-            UserTag userTag = new UserTag();
-            userTag.setContent(tagContent);
-            user.addUserTag(userTag);
-        });
+//        List<String> tags = userDTO.getTags();
+//
+//        tags.forEach(tagContent -> {
+//            UserTag userTag = new UserTag();
+//            userTag.setContent(tagContent);
+//            user.addUserTag(userTag);
+//        });
 
         return user.toDTO();
     }
