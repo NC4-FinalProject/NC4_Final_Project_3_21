@@ -5,6 +5,8 @@ import org.joda.time.LocalDateTime;
 
 import com.bit.nc4_final_project.entity.chat.ChatMessage;
 
+import java.util.Date;
+
 @Builder
 @Getter
 @Setter
@@ -13,19 +15,19 @@ import com.bit.nc4_final_project.entity.chat.ChatMessage;
 @ToString
 public class ChatMessageDTO {
 
-    private String messageId;
+    private String id;
     private String chatRoomId;
     private String sender;
     private String message;
-    private String sendDate;
+//    private String sendDate;
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
-                .messageId(this.messageId)
+                .id(this.id)
                 .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
                 .message(this.message)
-                .sendDate(LocalDateTime.parse(this.sendDate))
+//                .sendDate(LocalDateTime.parse(this.sendDate).toDate())
                 .build();
     }
 }
