@@ -2,6 +2,7 @@ package com.bit.nc4_final_project.controller;
 
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
+import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +26,7 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
@@ -143,5 +148,27 @@ public class UserController {
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }
+    }
+
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
+        String id = jwtTokenProvider.validateAndGetUsername(token);
+        String profileImageUrl = userService.uploadProfileImage(file, id);
+        return ResponseEntity.ok(profileImageUrl);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteProfileImage(@RequestHeader("Authorization") String token) {
+        String id = jwtTokenProvider.validateAndGetUsername(token);
+        userService.deleteProfileImage(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateProfileImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
+        String id = jwtTokenProvider.validateAndGetUsername(token);
+        String profileImageUrl = userService.updateProfileImage(file, id);
+        return ResponseEntity.ok(profileImageUrl);
     }
 }
