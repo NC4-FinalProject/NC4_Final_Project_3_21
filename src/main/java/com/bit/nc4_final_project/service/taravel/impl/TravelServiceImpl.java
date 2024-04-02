@@ -16,9 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -130,8 +128,12 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort) {
+        log.info(">> " + searchArea + ", " + searchSigungu + ", " + searchKeyword + ", " + sort);
         List<Travel> travels = travelRepository.findAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
-
+        log.info("travels : " + travels.size());
+        for (Travel travel : travels) {
+            log.info("travel id : " + travel.getContentid());
+        }
         return travels.stream()
                 .map(travel -> {
                     AreaCode areaCode = getAreaCode(travel.getAreaCode());
@@ -154,11 +156,21 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public List<TravelDTO> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy) {
         List<Travel> travels = travelRepository.findNearbyTravels(minMapx, maxMapx, minMapy, maxMapy);
+        if (travels == null) {
+            log.warn("No nearby travels found.");
+            return Collections.emptyList();
+        }
         return travels.stream()
+                .filter(Objects::nonNull)
                 .map(travel -> {
-                    AreaCode areaCode = getAreaCode(travel.getAreaCode());
-                    String sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
-                    return travel.toDTO(0, areaCode.getName(), sigunguName);
+                    String areaName = "";
+                    String sigunguName = "";
+                    if (!travel.getAreaCode().isEmpty()) {
+                        AreaCode areaCode = getAreaCode(travel.getAreaCode());
+                        areaName = areaCode.getName();
+                        sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
+                    }
+                    return travel.toDTO(0, areaName, sigunguName);
                 })
                 .collect(Collectors.toList());
     }
