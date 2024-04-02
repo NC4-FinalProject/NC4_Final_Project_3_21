@@ -36,7 +36,7 @@ public class TravelServiceImpl implements TravelService {
         int totalPages = (int) Math.ceil((double) totalCnt / 199);
         log.info("totalPages : " + totalPages);
 
-        for (int i = 20; i <= 21; i++) {
+        for (int i = 1; i <= 4; i++) {
             List<Travel> travels = tourApiExplorer.getList(i, 199, totalCnt);
             log.info("getList: " + i);
             for (Travel travel : travels) {
@@ -104,13 +104,15 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public TravelDTO getTravelDTO(String travelId) {
-        Optional<Travel> travel = travelRepository.findById(travelId);
+    public TravelDTO getTravelDTO(String contentId) {
+        Optional<Travel> travel = travelRepository.findById(contentId);
         if (travel.isEmpty()) {
-            log.warn("Travel with ID {} not found", travelId);
+            log.warn("Travel with ID {} not found", contentId);
             return null;
         }
-        return travel.get().toDTO();
+        AreaCode areaCode = getAreaCode(travel.get().getAreaCode());
+        String sigunguName = getSigunguName(areaCode, travel.get().getSigunguCode());
+        return travel.get().toDTO(0, areaCode.getName(), sigunguName);
     }
 
     public void removeDuplicateContentIds() {
@@ -127,8 +129,53 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public Page<TravelDTO> searchAll(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort) {
-        Page<Travel> travelPage = travelRepository.findByAreaAndSigunguAndTitle(searchArea, searchSigungu, searchKeyword, sort, pageable);
-        return travelPage.map(Travel::toDTO);
+    public List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort) {
+        List<Travel> travels = travelRepository.findAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
+
+        return travels.stream()
+                .map(travel -> {
+                    AreaCode areaCode = getAreaCode(travel.getAreaCode());
+                    String sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
+                    return travel.toDTO(0, areaCode.getName(), sigunguName);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<TravelDTO> searchAllPageable(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort) {
+        Page<Travel> travelPage = travelRepository.findAllPagination(searchArea, searchSigungu, searchKeyword, sort, pageable);
+        return travelPage.map(travel -> {
+            AreaCode areaCode = getAreaCode(travel.getAreaCode());
+            String sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
+            return travel.toDTO(0, areaCode.getName(), sigunguName);
+        });
+    }
+
+    @Override
+    public List<TravelDTO> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy) {
+        List<Travel> travels = travelRepository.findNearbyTravels(minMapx, maxMapx, minMapy, maxMapy);
+        return travels.stream()
+                .map(travel -> {
+                    AreaCode areaCode = getAreaCode(travel.getAreaCode());
+                    String sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
+                    return travel.toDTO(0, areaCode.getName(), sigunguName);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AreaCode getAreaCode(String areaCode) {
+        return areaCodeRepository.findAreaCodesByCode(areaCode);
+    }
+
+    @Override
+    public String getSigunguName(AreaCode areaCode, String sigunguCode) {
+        List<SigunguCode> sigunguCodes = areaCode.getSigunguCodes();
+        for (SigunguCode sigungu : sigunguCodes) {
+            if (sigungu.getCode().equals(sigunguCode)) {
+                return sigungu.getName();
+            }
+        }
+        return null;
     }
 }
