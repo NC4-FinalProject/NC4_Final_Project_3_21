@@ -10,6 +10,8 @@ import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 
 import jakarta.persistence.Id;
 
+import java.util.Date;
+
 @Document(collection = "chat")
 @Getter
 @Setter
@@ -20,20 +22,22 @@ import jakarta.persistence.Id;
 public class ChatMessage {
     
     @Id
-    private String messageId;
+    private String id;
 
     private String chatRoomId;
     private String sender;
     private String message;
-    private LocalDateTime sendDate;
+    private String img;
+//    private Date sendDate;
 
     public ChatMessageDTO toDTO() {
         return ChatMessageDTO.builder()
-                .messageId(this.messageId)
+                .id(this.id)
                 .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
                 .message(this.message)
-                .sendDate(this.sendDate.toString())
+                .img(this.img)
+//                .sendDate(this.sendDate.toString())
                 .build();
     }
 }
