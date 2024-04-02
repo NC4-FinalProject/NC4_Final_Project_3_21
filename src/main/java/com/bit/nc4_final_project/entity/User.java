@@ -74,4 +74,6 @@ public class User {
 
     }
 
+    public void setProfileImageUrl(String fileUrl) {
+    }
 }
