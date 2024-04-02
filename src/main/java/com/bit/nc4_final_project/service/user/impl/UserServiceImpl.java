@@ -1,6 +1,10 @@
 package com.bit.nc4_final_project.service.user.impl;
 
 
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.bit.nc4_final_project.common.FileUtils;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.UserTag;
@@ -11,10 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,15 +30,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final FileUtils fileUtils;
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
-//        System.out.println(userDTO);
+//      System.out.println(userDTO);
 
         User user = userRepository.save(userDTO.toEntity());
 
 //        List<String> tags = userDTO.getTags();
-
+//
 //        tags.forEach(tagContent -> {
 //            UserTag userTag = new UserTag();
 //            userTag.setContent(tagContent);
@@ -73,6 +81,68 @@ public class UserServiceImpl implements UserService {
         return !userRepository.existsByNickname(nickname);
     }
 
+    @Override
+    public void deleteProfileImage(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String fileUrl = user.getProfileImageUrl();
+        if (fileUrl != null) {
+            String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            fileUtils.getS3().deleteObject(fileUtils.getBucketName(), fileName);
+            user.setProfileImageUrl(null);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public String uploadProfileImage(MultipartFile file, String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String fileName = UUID.randomUUID().toString();
+        try {
+            PutObjectRequest request = new PutObjectRequest(fileUtils.getBucketName(), fileName, file.getInputStream(), new ObjectMetadata())
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+            fileUtils.getS3().putObject(request);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload file", e);
+        }
+        String fileUrl = fileUtils.getStorageUrl() + "/" + fileUtils.getBucketName() + "/" + fileName;
+
+        user.setProfileImageUrl(fileUrl);
+        userRepository.save(user);
+
+        return fileUrl;
+    }
+
+    @Override
+    public String updateProfileImage(MultipartFile file, String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String existingFileUrl = user.getProfileImageUrl();
+        if (existingFileUrl != null) {
+            String existingFileName = existingFileUrl.substring(existingFileUrl.lastIndexOf("/") + 1);
+            fileUtils.getS3().deleteObject(fileUtils.getBucketName(), existingFileName);
+        }
+
+        String newFileName = UUID.randomUUID().toString();
+        try {
+            PutObjectRequest request = new PutObjectRequest(fileUtils.getBucketName(), newFileName, file.getInputStream(), new ObjectMetadata())
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+            fileUtils.getS3().putObject(request);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload file", e);
+        }
+        String newFileUrl = fileUtils.getStorageUrl() + "/" + fileUtils.getBucketName() + "/" + newFileName;
+
+        user.setProfileImageUrl(newFileUrl);
+        userRepository.save(user);
+
+        return newFileUrl;
+    }
+
 
     @Override
     public UserDTO join(UserDTO userDTO) {
@@ -88,4 +158,5 @@ public class UserServiceImpl implements UserService {
         }
         return user.get().toDTO();
     }
+
 }

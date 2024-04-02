@@ -148,24 +148,19 @@ public class TravelController {
         }
     }
 
-    @GetMapping("/maker")
-    public ResponseEntity<?> getTravelAroundMap(@RequestParam(value = "userMapx", defaultValue = "") double userMapx,
-                                                @RequestParam(value = "userMapy", defaultValue = "") double userMapy) {
+    @GetMapping("/marker")
+    public ResponseEntity<?> getTravelAroundMap(@RequestParam(value = "userMapx") double userMapx,
+                                                @RequestParam(value = "userMapy") double userMapy) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
 
         try {
-            // double userMapx = 127.1445792;
-            // double userMapy = 37.606103;
-
-            double radius = 5.0 / 111.0;
-
+            double radius = 3.0 / 111.0;
             double minMapx = userMapx - radius;
             double maxMapx = userMapx + radius;
             double minMapy = userMapy - radius;
             double maxMapy = userMapy + radius;
 
             List<TravelDTO> travelDTOs = travelService.findNearbyTravels(minMapx, maxMapx, minMapy, maxMapy);
-
             responseDTO.setItems(travelDTOs);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
@@ -178,5 +173,4 @@ public class TravelController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
-
 }
