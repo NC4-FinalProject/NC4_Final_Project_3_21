@@ -27,6 +27,7 @@ public class ChatMessage {
     private String chatRoomId;
     private String sender;
     private String message;
+    private String img;
 //    private Date sendDate;
 
     public ChatMessageDTO toDTO() {
@@ -35,6 +36,7 @@ public class ChatMessage {
                 .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
                 .message(this.message)
+                .img(this.img)
 //                .sendDate(this.sendDate.toString())
                 .build();
     }
