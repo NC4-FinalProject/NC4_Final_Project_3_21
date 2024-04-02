@@ -5,9 +5,22 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bit.nc4_final_project.configuration.NaverConfiguration;
+import com.bit.nc4_final_project.dto.board.BoardFileDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 @Component
 
@@ -36,4 +49,16 @@ public class FileUtils {
                 ))
                 .build();
     }
+    public AmazonS3 getS3() {
+        return s3;
+    }
+
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public String getStorageUrl() {
+        return storageUrl;
+    }
 }
+
