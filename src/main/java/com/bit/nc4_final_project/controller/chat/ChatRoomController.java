@@ -26,6 +26,7 @@ public class ChatRoomController {
 
     @MessageMapping("/send-message")
     public ResponseEntity<?> sendMessage (ChatMessageDTO messageDTO) {
+        log.debug("messageDTO:{}", messageDTO);
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try {
             ChatMessageDTO returnChatMessageDTO = chatRoomService.saveMessage(messageDTO);
@@ -42,22 +43,24 @@ public class ChatRoomController {
     }
 
     // 채팅방 목록에서 채팅방 입장시 읽어오기
-//    @GetMapping("/chat/{chatRoomId}")
-//    public ResponseEntity<?> getMessages(@PathVariable ("chatRoomId") String chatRoomId) {
-//
-//        ResponseDTO<ChatMessageDTO> responseDTO = new ResponseDTO<>();
-//
-//        try {
-//            List<ChatMessageDTO> chatMessageDTOList = chatRoomService.getMessages (chatRoomId);
-//            responseDTO.setItems(chatMessageDTOList);
-//
-//            return ResponseEntity.ok(responseDTO);
-//        } catch (Exception e) {
-//            log.error("getMessages error={}", e.getMessage());
-//            responseDTO.setErrorMessage(e.getMessage());
-//            responseDTO.setErrorCode(400);
-//            return ResponseEntity.badRequest().body(responseDTO);
-//        }
-//    }
+    @GetMapping("/chat/{chatRoomId}")
+    public ResponseEntity<?> getMessages(@PathVariable ("chatRoomId") String chatRoomId) {
+
+        ResponseDTO<ChatMessageDTO> responseDTO = new ResponseDTO<>();
+
+        try {
+            List<ChatMessageDTO> chatMessageDTOList = chatRoomService.getMessages (chatRoomId);
+            log.info("chatMessageDTOList : {}", chatMessageDTOList.toString());
+
+            responseDTO.setItems(chatMessageDTOList);
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            log.error("getMessages error={}", e.getMessage());
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setErrorCode(400);
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
     
 }

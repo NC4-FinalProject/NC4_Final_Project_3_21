@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.entity.community;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class CommunityTag {
 
     @ManyToOne
     @JoinColumn(name = "com_seq")
+    @JsonBackReference
     private Community community;
 
 
