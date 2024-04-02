@@ -3,6 +3,7 @@ package com.bit.nc4_final_project.entity.community;
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.dto.community.CommunityTagDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,8 @@ public class Community {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @OneToMany(mappedBy = "community")
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<CommunityTag> communityTags;
 
     // 태그 리스트 설정 메소드 추가
