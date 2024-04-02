@@ -38,7 +38,12 @@ public class User {
     private LocalDateTime regDate;
     private boolean isActive;
     private LocalDateTime lastLoginDate;
+    private String profileImageUrl;
 
+   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   @Builder.Default
+   @JsonManagedReference
+   private List<UserTag> userTags = new ArrayList<>();
 
 //   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 //   @Builder.Default
@@ -63,8 +68,10 @@ public class User {
                 .regDate(this.regDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
+                .profileImageUrl(this.profileImageUrl)
 //                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
 
     }
+
 }
