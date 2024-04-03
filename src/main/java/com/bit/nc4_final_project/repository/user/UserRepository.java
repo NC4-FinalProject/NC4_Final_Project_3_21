@@ -9,13 +9,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findBySeq(Integer seq);
 
-    Optional<User> findById(String id);
+//    Optional<User> findById(String id);
 
+    long countByUserId(String userId);
 
-    long countById(String id);
+    boolean existsByUserName(String username);
 
-    boolean existsByNickname(String nickname);
+    boolean existsByUserId(String userid);
 
-    boolean existsById(String id);
+    Optional<User> findByUserId(String username);
 }
 

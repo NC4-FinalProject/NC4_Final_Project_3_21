@@ -1,5 +1,7 @@
 package com.bit.nc4_final_project.jwt;
 
+
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,8 +57,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 토큰 검사 및 securit context 등록
             if (token != null && !token.equalsIgnoreCase("null")) {
                 // 토큰의 유효성 검사 및 nickname 가져오기
-                String id = jwtTokenProvider.validateAndGetUsername(token);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(id);
+                String userId = jwtTokenProvider.validateAndGetUsername(token);
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
                 // 유효성 검사 완료된 토큰 시큐리티에 인증된 사용자로 등록
                 AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
