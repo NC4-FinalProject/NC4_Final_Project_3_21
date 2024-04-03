@@ -44,11 +44,14 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-id").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-nickname").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-userid").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-username").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").authenticated();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/chatting/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/update").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/delete").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/upload").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)

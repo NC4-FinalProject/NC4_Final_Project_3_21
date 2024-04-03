@@ -32,6 +32,8 @@ public class QReview extends EntityPathBase<Review> {
 
     public final StringPath title = createString("title");
 
+    public final StringPath travalId = createString("travalId");
+
     public final QUser user;
 
     public final StringPath writer = createString("writer");

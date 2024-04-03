@@ -37,7 +37,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 // payload(데이터) 부분
                 // sub(subject: 토큰의 주인)
-                .subject(user.getId())
+                .subject(user.getUserId())
                 // iss(issuer: 토큰의 발행주체)
                 .issuer("final project")
                 // isa(issuedAt: 토큰의 발행일자)
