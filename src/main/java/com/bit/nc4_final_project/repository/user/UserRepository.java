@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User findAllBySeq(Integer seq);
+    User findBySeq(Integer seq);
 
     Optional<User> findById(String id);
 

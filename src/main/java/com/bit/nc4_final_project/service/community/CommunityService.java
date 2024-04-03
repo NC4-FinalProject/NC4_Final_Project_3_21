@@ -9,9 +9,9 @@ public interface CommunityService {
 
     void post(CommunityDTO communityDTO);
 
-    CommunityDTO findById(int seq);
+    CommunityDTO findBySeq(int seq);
 
-    void modify(CommunityDTO communityDTO, List<CommunityTagDTO> uCommunityTagList);
+    CommunityDTO modify(CommunityDTO communityDTO, List<CommunityTagDTO> uCommunityTagList);
 
     void deleteById(int seq);
 }

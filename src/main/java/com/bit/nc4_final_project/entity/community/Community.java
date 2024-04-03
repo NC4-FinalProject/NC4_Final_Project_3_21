@@ -2,6 +2,7 @@ package com.bit.nc4_final_project.entity.community;
 
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.dto.community.CommunityTagDTO;
+import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -49,7 +50,7 @@ public class Community {
         communityTags.forEach(tag -> tag.setCommunity(this));
     }
 
-    public CommunityDTO toDTO() {
+    public CommunityDTO toDTO(UserDTO userDTO) {
         return CommunityDTO.builder()
                 .seq(this.seq)
                 .name(this.name)
@@ -57,11 +58,10 @@ public class Community {
                 .regDate(this.regDate.toString())
                 .picture(this.picture)
                 .description(this.description)
-                .userSeq(this.user.getSeq())
+                .user(userDTO)
                 .tagDTOList(this.communityTags != null ? this.communityTags.stream()
-                        .map(tag -> new CommunityTagDTO(tag.getSeq(), tag.getContent())) // CommunityTag -> CommunityTagDTO 변환
-                        .collect(Collectors.toList()) : null) // communityTags가 null이 아니라면 변환하여 리스트에 담음
+                        .map(tag -> new CommunityTagDTO(tag.getSeq(), tag.getContent()))
+                        .collect(Collectors.toList()) : null)
                 .build();
-
     }
 }
