@@ -33,6 +33,7 @@ public class TravelDTO {
     private String sigunguCode;
     private String sigunguName;
     private TravelDetailDTO detail;
+    private PetTravelDTO petTravel;
 
     private String searchArea;
     private String searchSigungu;

@@ -1,6 +1,7 @@
 package com.bit.nc4_final_project.controller;
 
 import com.bit.nc4_final_project.dto.ResponseDTO;
+import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import com.bit.nc4_final_project.entity.travel.AreaCode;
 import com.bit.nc4_final_project.entity.travel.SigunguCode;
@@ -21,7 +22,7 @@ public class TravelController {
     private final TravelService travelService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBoard(@PathVariable("id") String contentId) {
+    public ResponseEntity<?> getTravel(@PathVariable("id") String contentId) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
 
         try {
@@ -122,10 +123,7 @@ public class TravelController {
                                                  @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
                                                  @RequestParam(value = "sort", defaultValue = "") String sort) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
-
         try {
-            log.info(searchArea + ", " + searchSigungu + ", " + searchKeyword + ", " + sort);
-
             if (sort.equals("bookmark")) {
                 // 북마크 조회 추가
             }
@@ -152,7 +150,6 @@ public class TravelController {
     public ResponseEntity<?> getTravelAroundMap(@RequestParam(value = "userMapx") double userMapx,
                                                 @RequestParam(value = "userMapy") double userMapy) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
-
         try {
             double radius = 3.0 / 111.0;
             double minMapx = userMapx - radius;
@@ -173,4 +170,21 @@ public class TravelController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
+
+    @PostMapping("/bookmark")
+    public ResponseEntity<?> regBookmark(@RequestBody BookmarkDTO bookmarkDTO) {
+        ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
+        try {
+            travelService.regBookmark(bookmarkDTO);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(100);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+
 }
