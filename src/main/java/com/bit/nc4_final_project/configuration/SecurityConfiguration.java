@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                     httpSecurityHttpBasicConfigurer.disable();
                 })
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
-                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/").permitAll();
@@ -47,7 +47,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-userid").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-username").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").authenticated();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/chatting/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/update").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/delete").permitAll();

@@ -5,5 +5,5 @@ import com.bit.nc4_final_project.entity.chat.Chat;
 import java.util.List;
 
 public interface ChatRepositoryCustom {
-    List<Chat> findAllByMakerIdOrPartnerId(String currentUserId);
+    List<Chat> findAllByMakerNameOrPartnerName(String currentUserId);
 }

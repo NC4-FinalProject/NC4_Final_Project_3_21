@@ -1,5 +1,5 @@
 # 채팅 만들기 (aaa)
-insert into t_chat (chat_seq, last_chat, unread_cnt, maker_id, partner_id, partner_img)
+insert into t_chat (chat_seq, last_chat, unread_cnt, maker_name, partner_name, partner_img)
 values (1, '안녕하세요', 1, 'aaa', 'bbb', 'img1.jpg'),
        (2, '안녕하세요', 2, 'aaa', 'robbie', 'img2.jpg'),
        (3, '안녕하세요', 3, 'aaa', 'robbie', 'img3.jpg'),

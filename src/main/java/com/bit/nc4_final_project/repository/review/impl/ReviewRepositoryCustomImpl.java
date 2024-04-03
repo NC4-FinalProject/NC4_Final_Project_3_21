@@ -19,7 +19,6 @@ import static com.bit.nc4_final_project.entity.QReview.review;
 @Repository
 @RequiredArgsConstructor
 public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
-    private final EntityManager em;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override

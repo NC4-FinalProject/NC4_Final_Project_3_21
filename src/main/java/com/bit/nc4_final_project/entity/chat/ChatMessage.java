@@ -1,16 +1,13 @@
 package com.bit.nc4_final_project.entity.chat;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.*;
-import org.joda.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 
 import jakarta.persistence.Id;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Document(collection = "chat")
 @Getter
@@ -28,7 +25,7 @@ public class ChatMessage {
     private String sender;
     private String message;
     private String img;
-//    private Date sendDate;
+    private LocalDateTime sendDate;
 
     public ChatMessageDTO toDTO() {
         return ChatMessageDTO.builder()
@@ -37,7 +34,7 @@ public class ChatMessage {
                 .sender(this.sender)
                 .message(this.message)
                 .img(this.img)
-//                .sendDate(this.sendDate.toString())
+                .sendDate(this.sendDate)
                 .build();
     }
 }

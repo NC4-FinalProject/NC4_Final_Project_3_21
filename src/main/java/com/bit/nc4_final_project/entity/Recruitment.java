@@ -57,4 +57,8 @@ public class Recruitment {
                 .regDate(LocalDateTime.now())
                 .build();
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
