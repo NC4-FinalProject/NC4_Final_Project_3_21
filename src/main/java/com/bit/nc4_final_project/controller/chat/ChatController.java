@@ -56,7 +56,6 @@ public class ChatController {
          ResponseDTO <List<ChatDTO>> responseDTO = new ResponseDTO<>();
             try {
                 List<ChatDTO> returnChatDTOList = chatService.makeChatRoom(chatMakeInfo);
-                log.info("returnChatDTOList : " + returnChatDTOList);
                 responseDTO.setItem(returnChatDTOList);
                 responseDTO.setStatusCode(HttpStatus.OK.value());
                 return ResponseEntity.ok(responseDTO);
