@@ -36,12 +36,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPw();
+        return user.getUserPw();
     }
 
     @Override
     public String getUsername() {
-        return user.getNickname();
+        return user.getUserId();
     }
 
 
@@ -66,7 +66,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String  getUserId() {
-        return user.getId();
+        return user.getUserId();
     }
 
     public Integer getUserSeq() {

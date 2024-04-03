@@ -1,11 +1,10 @@
 package com.bit.nc4_final_project.dto.chat;
 
 import lombok.*;
-import org.joda.time.LocalDateTime;
 
 import com.bit.nc4_final_project.entity.chat.ChatMessage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -20,7 +19,7 @@ public class ChatMessageDTO {
     private String sender;
     private String message;
     private String img;
-//    private String sendDate;
+    private LocalDateTime sendDate;
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
@@ -29,7 +28,7 @@ public class ChatMessageDTO {
                 .sender(this.sender)
                 .message(this.message)
                 .img(this.img)
-//                .sendDate(LocalDateTime.parse(this.sendDate).toDate())
+                .sendDate(this.sendDate)
                 .build();
     }
 }

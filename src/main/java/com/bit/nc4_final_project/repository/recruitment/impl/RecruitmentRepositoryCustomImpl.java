@@ -51,7 +51,7 @@ public class RecruitmentRepositoryCustomImpl implements RecruitmentRepositoryCus
     @Override
     public Page<Recruitment> searchMyRecruitmentList(String userId, Pageable pageable) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        booleanBuilder.and(recruitment.user.id.eq(userId));
+        booleanBuilder.and(recruitment.user.userId.eq(userId));
 
         List<Recruitment> recruitments = jpaQueryFactory
                 .selectFrom(recruitment)

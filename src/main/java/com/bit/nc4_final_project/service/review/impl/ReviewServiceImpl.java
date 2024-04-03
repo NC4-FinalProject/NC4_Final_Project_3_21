@@ -45,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void post(ReviewDTO reviewDTO, CustomUserDetails customUserDetails) {
         reviewDTO.setRegDate(LocalDateTime.now());
 
-        User user = userRepository.findById(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
+        User user = userRepository.findByUserId(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
 
         Review review = reviewDTO.toEntity();
 
@@ -65,7 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void modify(ReviewDTO reviewDTO, CustomUserDetails customUserDetails) {
         reviewDTO.setRegDate(LocalDateTime.now());
 
-        User user = userRepository.findById(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
+        User user = userRepository.findByUserId(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
 
         Review review = reviewDTO.toEntity();
 

@@ -13,9 +13,9 @@ public interface UserService {
 
     UserDTO signin(UserDTO userDTO);
 
-    boolean isIdAvailable(String id);
+    boolean isUserIdAvailable(String userid);
 
-    boolean isNicknameAvailable(String nickname);
+    boolean isUserNameAvailable(String username);
 
     void deleteProfileImage(String username);
 
