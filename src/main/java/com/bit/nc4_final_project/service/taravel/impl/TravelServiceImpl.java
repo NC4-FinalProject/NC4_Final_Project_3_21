@@ -1,13 +1,14 @@
 package com.bit.nc4_final_project.service.taravel.impl;
 
 import com.bit.nc4_final_project.api.TourApiExplorer;
+import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.entity.travel.AreaCode;
-import com.bit.nc4_final_project.entity.travel.SigunguCode;
-import com.bit.nc4_final_project.entity.travel.Travel;
-import com.bit.nc4_final_project.entity.travel.TravelDetail;
+import com.bit.nc4_final_project.dto.user.UserDTO;
+import com.bit.nc4_final_project.entity.travel.*;
 import com.bit.nc4_final_project.repository.travel.AreaCodeRepository;
+import com.bit.nc4_final_project.repository.travel.BookmarkRepository;
 import com.bit.nc4_final_project.repository.travel.TravelRepository;
+import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TravelServiceImpl implements TravelService {
     private final TourApiExplorer tourApiExplorer;
-    private final TravelRepository travelRepository;
     private final AreaCodeRepository areaCodeRepository;
+    private final TravelRepository travelRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void save() {
@@ -46,17 +49,6 @@ public class TravelServiceImpl implements TravelService {
             log.info("save 199 pieces");
         }
         log.info("end");
-        // for (int i = 1; i <= totalPages; i++) {
-        //     List<Travel> travels = tourApiExplorer.getList(i, 200, totalCnt);
-        //     log.info("getList");
-        //     for (Travel travel : travels) {
-        //         Optional<TravelDetail> detail = tourApiExplorer.getDetailCommon(travel.getContentid());
-        //         detail.ifPresent(travel::setDetail);
-        //     }
-        //
-        //     travelRepository.saveAll(travels);
-        //     log.info("save 200 pieces");
-        // }
     }
 
     @Override
@@ -102,15 +94,48 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    public AreaCode getAreaCode(String areaCode) {
+        return areaCodeRepository.findAreaCodesByCode(areaCode);
+    }
+
+    @Override
+    public String getSigunguName(AreaCode areaCode, String sigunguCode) {
+        List<SigunguCode> sigunguCodes = areaCode.getSigunguCodes();
+        for (SigunguCode sigungu : sigunguCodes) {
+            if (sigungu.getCode().equals(sigunguCode)) {
+                return sigungu.getName();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public TravelDTO getTravelDTO(String contentId) {
-        Optional<Travel> travel = travelRepository.findById(contentId);
-        if (travel.isEmpty()) {
-            log.warn("Travel with ID {} not found", contentId);
+        Travel travel = travelRepository.findById(contentId).orElse(null);
+        if (travel == null) {
             return null;
         }
-        AreaCode areaCode = getAreaCode(travel.get().getAreaCode());
-        String sigunguName = getSigunguName(areaCode, travel.get().getSigunguCode());
-        return travel.get().toDTO(0, areaCode.getName(), sigunguName);
+        return createTravelDTO(travel);
+    }
+
+    @Override
+    public TravelDTO getTravelDTO(Travel travel) {
+        return createTravelDTO(travel);
+    }
+
+    private TravelDTO createTravelDTO(Travel travel) {
+        String areaName = "";
+        String sigunguName = "";
+
+        if (!travel.getAreaCode().isEmpty()) {
+            AreaCode areaCode = getAreaCode(travel.getAreaCode());
+            if (areaCode != null) {
+                areaName = areaCode.getName();
+                sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
+            }
+        }
+        // 북마크 조회 추가
+        return travel.toDTO(0, areaName, sigunguName);
     }
 
     public void removeDuplicateContentIds() {
@@ -128,18 +153,9 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort) {
-        log.info(">> " + searchArea + ", " + searchSigungu + ", " + searchKeyword + ", " + sort);
         List<Travel> travels = travelRepository.findAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
-        log.info("travels : " + travels.size());
-        for (Travel travel : travels) {
-            log.info("travel id : " + travel.getContentid());
-        }
         return travels.stream()
-                .map(travel -> {
-                    AreaCode areaCode = getAreaCode(travel.getAreaCode());
-                    String sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
-                    return travel.toDTO(0, areaCode.getName(), sigunguName);
-                })
+                .map(this::getTravelDTO)
                 .collect(Collectors.toList());
     }
 
@@ -162,32 +178,23 @@ public class TravelServiceImpl implements TravelService {
         }
         return travels.stream()
                 .filter(Objects::nonNull)
-                .map(travel -> {
-                    String areaName = "";
-                    String sigunguName = "";
-                    if (!travel.getAreaCode().isEmpty()) {
-                        AreaCode areaCode = getAreaCode(travel.getAreaCode());
-                        areaName = areaCode.getName();
-                        sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
-                    }
-                    return travel.toDTO(0, areaName, sigunguName);
-                })
+                .map(this::getTravelDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AreaCode getAreaCode(String areaCode) {
-        return areaCodeRepository.findAreaCodesByCode(areaCode);
+    public void regBookmark(BookmarkDTO bookmarkDTO) {
+        Bookmark bookmark = bookmarkDTO.toEntity();
+        bookmarkRepository.save(bookmark);
     }
 
     @Override
-    public String getSigunguName(AreaCode areaCode, String sigunguCode) {
-        List<SigunguCode> sigunguCodes = areaCode.getSigunguCodes();
-        for (SigunguCode sigungu : sigunguCodes) {
-            if (sigungu.getCode().equals(sigunguCode)) {
-                return sigungu.getName();
-            }
-        }
-        return null;
+    public Page<BookmarkDTO> getMyBookmarkList(Integer userSeq, Pageable pageable) {
+        Page<Bookmark> bookmarks = bookmarkRepository.findAllByUserSeq(userSeq, pageable);
+        return bookmarks.map(bookmark -> {
+            TravelDTO travelDTO = getTravelDTO(bookmark.getTravelId());
+            UserDTO userDTO = userRepository.findBySeq(bookmark.getUserSeq()).toDTO();
+            return bookmark.toDTO(travelDTO, userDTO);
+        });
     }
 }

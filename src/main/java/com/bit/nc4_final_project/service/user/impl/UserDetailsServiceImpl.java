@@ -21,8 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     // SpringSecurity 인증과정에서 자동으로 호출되는 메소드
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findById(id);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> userOptional = userRepository.findByUserId(username);
 
         if (userOptional.isEmpty()) {
             return null;
