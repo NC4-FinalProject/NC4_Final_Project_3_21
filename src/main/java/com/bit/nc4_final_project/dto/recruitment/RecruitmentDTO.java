@@ -20,6 +20,7 @@ public class RecruitmentDTO {
     private LocalDateTime regDate;
     private String searchCondition;
     private String searchKeyword;
+    private String sort;
 
     public Recruitment toEntity() {
         return Recruitment.builder()

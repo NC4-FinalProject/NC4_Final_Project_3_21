@@ -2,19 +2,17 @@ package com.bit.nc4_final_project.entity;
 
 
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
+import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import com.bit.nc4_final_project.entity.community.Community;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "T_COM_REVIEW")
 @SequenceGenerator(
-        name = "ReviewmentSeqGenerator",
+        name = "ReviewSeqGenerator",
         sequenceName = "T_REVIEW_SEQ",
         initialValue = 1,
         allocationSize = 1
@@ -37,6 +35,10 @@ public class Review {
     private int rating;
     private LocalDateTime regDate;
 
+    @Setter
+    private String travalId;
+
+    @Setter
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
@@ -54,7 +56,12 @@ public class Review {
                 .writer(this.writer)
                 .rating(this.rating)
                 .regDate(LocalDateTime.parse(this.regDate.toString()))
+//                .travel(travelDTO)
                 .build();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 
