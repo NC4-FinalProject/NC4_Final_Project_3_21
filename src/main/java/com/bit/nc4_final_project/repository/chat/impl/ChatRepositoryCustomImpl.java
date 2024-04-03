@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+
 public class ChatRepositoryCustomImpl implements ChatRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     public ChatRepositoryCustomImpl(EntityManager em) {
@@ -16,11 +17,11 @@ public class ChatRepositoryCustomImpl implements ChatRepositoryCustom {
     }
 
     @Override
-    public List<Chat> findAllByMakerIdOrPartnerId(String currentUserId) {
+    public List<Chat> findAllByMakerNameOrPartnerName(String currentUserName) {
         QChat chat = QChat.chat;
         return queryFactory
                 .selectFrom(chat)
-                .where(chat.makerId.eq(currentUserId).or(chat.partnerId.eq(currentUserId)))
+                .where(chat.makerName.eq(currentUserName).or(chat.partnerName.eq(currentUserName)))
                 .fetch();
     }
 }

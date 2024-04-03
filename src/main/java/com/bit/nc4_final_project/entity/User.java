@@ -28,22 +28,18 @@ public class User {
     @Column(name = "user_seq")
     private Integer seq;
     @Column(unique = true)
-    private String id;
-    private String pw;
-    private String nickname;
-    private String location;
-    private LocalDateTime birth;
-    private String tel;
+    private String userId;
+    private String userPw;
+    private String userName;
+//    private String location;
+    private LocalDateTime userBirth;
+    private String userTel;
     private String role;
-    private LocalDateTime regDate;
+    private LocalDateTime userRegDate;
     private boolean isActive;
     private LocalDateTime lastLoginDate;
     private String profileImageUrl;
 
-   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-   @Builder.Default
-   @JsonManagedReference
-   private List<UserTag> userTags = new ArrayList<>();
 
 //   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 //   @Builder.Default
@@ -58,14 +54,14 @@ public class User {
     public UserDTO toDTO() {
         return UserDTO.builder()
                 .seq(this.seq)
-                .id(this.id)
-                .pw(this.pw)
-                .nickname(this.nickname)
-                .location(this.location)
-                .birth(this.birth.toString())
-                .tel(this.tel)
+                .userId(this.userId)
+                .userPw(this.userPw)
+                .userName(this.userName)
+//                .location(this.location)
+                .userBirth(this.userBirth.toString())
+                .userTel(this.userTel)
                 .role(this.role)
-                .regDate(this.regDate.toString())
+                .userRegDate(this.userRegDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
                 .profileImageUrl(this.profileImageUrl)

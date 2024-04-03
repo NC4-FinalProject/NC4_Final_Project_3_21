@@ -4,26 +4,25 @@ import com.bit.nc4_final_project.dto.chat.ChatDTO;
 import com.bit.nc4_final_project.entity.User;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "T_CHAT")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Chat {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ChatSeqGenerator")
     @Column(name = "chat_seq")
     private Integer seq;
-
-    private String makerId;
-    private String partnerId;
+    private String makerName;
+    private String makerImg;
+    private String partnerName;
     private String partnerImg;
     private String lastChat;
     private Integer unreadCnt;
@@ -31,8 +30,9 @@ public class Chat {
     public ChatDTO toDTO() {
         return ChatDTO.builder()
                 .seq(this.seq)
-                .makerId(this.makerId)
-                .partnerId(this.partnerId)
+                .makerName(this.makerName)
+                .makerImg(this.makerImg)
+                .partnerName(this.partnerName)
                 .partnerImg(this.partnerImg)
                 .lastChat(this.lastChat)
                 .unreadCnt(this.unreadCnt)

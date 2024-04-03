@@ -140,4 +140,6 @@ public class Travel {
                 .expagerangeleports(detail.getExpagerangeleports())
                 .build();
     }
+
+
 }
