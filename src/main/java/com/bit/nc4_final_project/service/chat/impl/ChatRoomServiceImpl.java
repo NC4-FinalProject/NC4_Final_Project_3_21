@@ -6,6 +6,7 @@ import com.bit.nc4_final_project.repository.chat.ChatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.Message;
 import org.joda.time.LocalDateTime;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
@@ -59,5 +60,6 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         return chatMessageDTOList;
     }
+
 
 }

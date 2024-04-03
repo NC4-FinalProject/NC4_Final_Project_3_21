@@ -7,6 +7,6 @@ import com.bit.nc4_final_project.dto.chat.ChatMakeInfo;
 
 public interface ChatService {
     List<ChatDTO> getChatList(String userId);
-
     List<ChatDTO> makeChatRoom (ChatMakeInfo chatMakeInfo);
+    void updateUnreadCnt(String sender, String chatRoomId);
 }

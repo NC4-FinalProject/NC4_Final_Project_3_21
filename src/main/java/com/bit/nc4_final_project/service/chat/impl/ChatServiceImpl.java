@@ -57,4 +57,9 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
+    @Override
+    public void updateUnreadCnt(String sender, String chatRoomId) {
+
+    }
+
 }
