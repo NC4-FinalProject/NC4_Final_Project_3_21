@@ -41,6 +41,9 @@ public class Travel {
     @Field("detail")
     private TravelDetail detail;
 
+    @Setter
+    private PetTravel petTravel;
+
     public TravelDTO toDTO(Integer bookmarkCnt, String areaName, String sigunguName) {
         TravelDTO.TravelDTOBuilder builder = TravelDTO.builder()
                 .id(this.id)
@@ -72,6 +75,10 @@ public class Travel {
 
         if (this.detail != null) {
             builder.detail(toTravelDetailDTO(this.detail));
+        }
+
+        if (this.petTravel != null) {
+            builder.petTravel(this.petTravel.toDTO());
         }
 
         return builder.build();
