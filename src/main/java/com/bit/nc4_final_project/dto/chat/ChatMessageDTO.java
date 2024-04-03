@@ -1,9 +1,10 @@
 package com.bit.nc4_final_project.dto.chat;
 
 import lombok.*;
-import org.joda.time.LocalDateTime;
 
 import com.bit.nc4_final_project.entity.chat.ChatMessage;
+
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -13,19 +14,21 @@ import com.bit.nc4_final_project.entity.chat.ChatMessage;
 @ToString
 public class ChatMessageDTO {
 
-    private String messageId;
+    private String id;
     private String chatRoomId;
     private String sender;
     private String message;
-    private String sendDate;
+    private String img;
+    private LocalDateTime sendDate;
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
-                .messageId(this.messageId)
+                .id(this.id)
                 .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
                 .message(this.message)
-                .sendDate(LocalDateTime.parse(this.sendDate))
+                .img(this.img)
+                .sendDate(this.sendDate)
                 .build();
     }
 }

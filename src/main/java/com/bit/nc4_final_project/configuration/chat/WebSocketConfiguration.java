@@ -19,7 +19,6 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer{
     // WebSocket 엔드포인트 등록
    @Override
    public void registerStompEndpoints(StompEndpointRegistry registry) {
-       log.debug("stomp-endpoint log={}", registry);
       registry.addEndpoint("/chatting")
               .setAllowedOrigins("http://localhost:3000")
               .withSockJS();
@@ -31,8 +30,8 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer{
     registry.setApplicationDestinationPrefixes("/pub");        // /app이 붙은 메세지들은 @MessageMapping이 붙은 메소드로 라우팅
    }
 
-//   @Override
-//   public void configureClientInboundChannel (ChannelRegistration registration) {
-//      registration.interceptors(stompHeaderChannelInterceptor);
-//   }
+   @Override
+   public void configureClientInboundChannel (ChannelRegistration registration) {
+      registration.interceptors(stompHeaderChannelInterceptor);
+   }
 }
