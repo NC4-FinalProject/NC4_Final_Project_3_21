@@ -3,27 +3,44 @@ package com.bit.nc4_final_project.controller;
 import com.bit.nc4_final_project.common.FileUtils;
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
+import com.bit.nc4_final_project.dto.community.CommunityTagDTO;
+import com.bit.nc4_final_project.entity.CustomUserDetails;
+import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.community.CommunityService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/community")
 public class CommunityController {
     private final CommunityService communityService;
     private final FileUtils fileUtils;
+    private final UserRepository userRepository;
 
     @PostMapping("/reg")
-    public ResponseEntity<?> postBoard(@RequestBody CommunityDTO communityDTO) {
+    public ResponseEntity<?> postBoard(@RequestPart("community") CommunityDTO communityDTO,
+                                       @RequestPart("tags") List<CommunityTagDTO> communityTagDTOList,
+                                       @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+//        log.info(String.valueOf(">> communityDTO : " + communityDTO.getUser().getSeq()));
         ResponseDTO<CommunityDTO> responseDTO = new ResponseDTO<>();
-
+//        System.out.println(communityDTO.toString());
+        communityTagDTOList.forEach(communityTagDTO -> log.info(">> communityTagDTO.toString() : " + communityTagDTO.toString()));
         try {
+            communityDTO.setTagDTOList(communityTagDTOList);
+            communityDTO.setUser(customUserDetails.getUser().toDTO());
+//            communityDTO.setUserSeq(customUserDetails.getUser().getSeq());
+//            UserDTO user = userRepository.findBySeq(1).toDTO();
+//            log.info(">> user : " + user.getSeq());
+//            communityDTO.setUser(user);
             communityService.post(communityDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
@@ -35,6 +52,65 @@ public class CommunityController {
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
 
             return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/community/{seq}")
+    public ResponseEntity<?> getCommunity(@PathVariable("seq") Integer seq) {
+        ResponseDTO<CommunityDTO> responseDTO = new ResponseDTO<>();
+
+        try {
+            // 커뮤니티 서비스를 통해 ID에 해당하는 커뮤니티 정보 조회
+            CommunityDTO communityDTO = communityService.findBySeq(seq);
+            log.info(">> dto " + communityDTO);
+            log.info(">> dto " + communityDTO.getName() + "," + communityDTO.getSeq());
+            // 조회된 정보를 responseDTO에 설정
+            responseDTO.setItem(communityDTO);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+
+            // 성공 응답 반환
+            return ResponseEntity.ok(responseDTO);
+        } catch (EntityNotFoundException e) {
+            // 조회된 커뮤니티가 없을 경우 예외 처리
+            responseDTO.setErrorCode(404);
+            responseDTO.setErrorMessage("Community not found with id: " + seq);
+            responseDTO.setStatusCode(HttpStatus.NOT_FOUND.value());
+
+            // Not Found 응답 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
+        } catch (Exception e) {
+            // 그 외 예외 발생 시
+            responseDTO.setErrorCode(500);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            // 내부 서버 오류 응답 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
+    }
+
+    // 기존 게시글 수정 처리
+    @PutMapping("/modify")
+    public ResponseEntity<?> modifyBoard(@RequestPart("community") CommunityDTO communityDTO,
+                                         @RequestPart("tags") List<CommunityTagDTO> communityTagDTOList) {
+        ResponseDTO<CommunityDTO> responseDTO = new ResponseDTO<>();
+        System.out.println(communityDTO.toString());
+        communityTagDTOList.forEach(tag -> System.out.println(tag.toString()));
+
+        try {
+            // 커뮤니티 게시글과 태그 리스트 정보 업데이트
+            communityDTO.setTagDTOList(communityTagDTOList);
+            CommunityDTO updatedCommunityDTO = communityService.modify(communityDTO, communityTagDTOList);
+
+            responseDTO.setItem(updatedCommunityDTO);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            responseDTO.setErrorCode(500); // 예외 상황에 대한 에러 코드
+            responseDTO.setErrorMessage("Failed to modify the community post: " + e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
         }
     }
 }
