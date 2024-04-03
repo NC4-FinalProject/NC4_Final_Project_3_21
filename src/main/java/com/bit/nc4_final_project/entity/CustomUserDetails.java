@@ -44,6 +44,7 @@ public class CustomUserDetails implements UserDetails {
         return user.getNickname();
     }
 
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -62,6 +63,14 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String  getUserId() {
+        return user.getId();
+    }
+
+    public Integer getUserSeq() {
+        return user.getSeq();
     }
 }
 
