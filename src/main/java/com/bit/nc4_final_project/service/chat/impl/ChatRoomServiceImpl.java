@@ -1,6 +1,8 @@
 package com.bit.nc4_final_project.service.chat.impl;
 
+import com.bit.nc4_final_project.entity.chat.Chat;
 import com.bit.nc4_final_project.entity.chat.ChatMessage;
+import com.bit.nc4_final_project.repository.chat.ChatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.Message;
 import org.joda.time.LocalDateTime;
@@ -20,18 +22,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatRoomServiceImpl implements ChatRoomService {
 
+    public final ChatRepository chatRepository;
     public final ChatRoomRepository chatRoomRepository;
 
     @Override
     public ChatMessageDTO saveMessage(ChatMessageDTO messageDTO) {
-        log.info("ChatRoomService arrived");
+        String currentChatRoomId = messageDTO.getChatRoomId();
 
-//        messageDTO.setSendDate(LocalDateTime.now().toString());
+        Chat currentChat = chatRepository.findById(Integer.parseInt(currentChatRoomId)).orElse(null);
+        log.info("find by message currentChat : {}", currentChat.toString());
+
+        currentChat.setLastChat(messageDTO.getMessage());
+        log.info("find builded currentChat : {}", currentChat.toString());
         ChatMessage chatMessage = messageDTO.toEntity();
-        log.info("chatMessage : {}", chatMessage.toString());
         try {
             chatRoomRepository.save(chatMessage);
-
+            log.info("try save currnetChat");
+            chatRepository.save(currentChat);
         } catch (Exception e) {
             log.error("saveMessage error : {}", e.getMessage());
         }
@@ -40,17 +47,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         returnMessageDTO.setChatRoomId(chatMessage.getChatRoomId());
         returnMessageDTO.setSender(chatMessage.getSender());
         returnMessageDTO.setMessage(chatMessage.getMessage());
-//        returnMessageDTO.setSendDate(chatMessage.getSendDate().toString());
+        returnMessageDTO.setSendDate(chatMessage.getSendDate());
 
-        log.info("returnMessageDTO : {}", returnMessageDTO.toString());
         return returnMessageDTO;
     }
 
     @Override
     public List<ChatMessageDTO> getMessages(String chatRoomId) {
         List<ChatMessage> chatMessageList = chatRoomRepository.findAllByChatRoomId(chatRoomId);
-
-        log.info("chatMessageList : {}", chatMessageList.toString());
         List<ChatMessageDTO> chatMessageDTOList = chatMessageList.stream().map(ChatMessage::toDTO).toList();
 
         return chatMessageDTOList;

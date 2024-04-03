@@ -9,9 +9,11 @@ import lombok.*;
 @Entity
 @Table(name = "T_CHAT")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Chat {
     
     @Id
