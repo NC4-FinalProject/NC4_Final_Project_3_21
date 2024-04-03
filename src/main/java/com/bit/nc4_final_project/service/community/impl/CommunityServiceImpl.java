@@ -29,7 +29,7 @@ public class CommunityServiceImpl implements CommunityService {
     public void post(CommunityDTO communityDTO) {
         communityDTO.setRegDate(LocalDateTime.now().toString());
         User user = communityDTO.getUser().toEntity();
-        log.info(">>> user Seq : " + user.getNickname());
+        log.info(">>> user Seq : " + user.getUserName());
         Community community = communityDTO.toEntity(user);
 
         log.info(">> tag dto size : " + communityDTO.getTagDTOList().size());

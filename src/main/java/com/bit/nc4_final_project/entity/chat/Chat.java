@@ -20,7 +20,6 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ChatSeqGenerator")
     @Column(name = "chat_seq")
     private Integer seq;
-
     private String makerName;
     private String makerImg;
     private String partnerName;

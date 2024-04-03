@@ -35,7 +35,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     public void post(RecruitmentDTO recruitmentDTO, CustomUserDetails customUserDetails) {
         recruitmentDTO.setRegDate(LocalDateTime.now());
 
-        User user = userRepository.findById(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
+        User user = userRepository.findByUserId(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
 
         Recruitment recruitment = recruitmentDTO.toEntity();
 
@@ -55,7 +55,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     public void modify(RecruitmentDTO recruitmentDTO, CustomUserDetails customUserDetails) {
         recruitmentDTO.setRegDate(LocalDateTime.now());
 
-        User user = userRepository.findById(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
+        User user = userRepository.findByUserId(customUserDetails.getUserId()).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ID: " + customUserDetails.getUserId()));
 
         Recruitment recruitment = recruitmentDTO.toEntity();
 

@@ -23,7 +23,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatDTO> getChatList(String currentUserId) {
-        String currentUserName = userRepository.findById(currentUserId).get().getNickname();
+        String currentUserName = userRepository.findByUserId(currentUserId).get().getUserName();
         List<Chat> chatList = chatRepository.findAllByMakerNameOrPartnerName(currentUserName);
         List<ChatDTO> chatDTOList = chatList.stream().map(Chat::toDTO).toList();
 
@@ -33,11 +33,12 @@ public class ChatServiceImpl implements ChatService {
     // 새로운 채팅방 만들기
     @Override
     public List<ChatDTO> makeChatRoom(ChatMakeInfo chatMakeInfo) {
+        log.info("makeChatRoom : " + chatMakeInfo.toString());
         try {
-            String partnerName = userRepository.findById(chatMakeInfo.getPartnerId()).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다.")).getNickname();
-            String partnerImg = userRepository.findById(chatMakeInfo.getPartnerId()).orElseThrow().getProfileImageUrl();
-            String makerName = userRepository.findById(chatMakeInfo.getMakerId()).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다.")).getNickname();
-            String makerImg = userRepository.findById(chatMakeInfo.getMakerId()).orElseThrow().getProfileImageUrl();
+            String partnerName = userRepository.findByUserId(chatMakeInfo.getPartnerId()).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다.")).getUserName();
+            String partnerImg = userRepository.findByUserId(chatMakeInfo.getPartnerId()).orElseThrow().getProfileImageUrl();
+            String makerName = userRepository.findByUserId(chatMakeInfo.getMakerId()).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다.")).getUserName();
+            String makerImg = userRepository.findByUserId(chatMakeInfo.getMakerId()).orElseThrow().getProfileImageUrl();
             ChatDTO chatDTO = ChatDTO.builder()
                     .makerName(makerName)
                     .makerImg(makerImg)
