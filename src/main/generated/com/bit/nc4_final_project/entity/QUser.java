@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -20,31 +19,27 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final DateTimePath<java.time.LocalDateTime> birth = createDateTime("birth", java.time.LocalDateTime.class);
-
-    public final StringPath id = createString("id");
-
     public final BooleanPath isActive = createBoolean("isActive");
 
     public final DateTimePath<java.time.LocalDateTime> lastLoginDate = createDateTime("lastLoginDate", java.time.LocalDateTime.class);
 
-    public final StringPath location = createString("location");
-
-    public final StringPath nickname = createString("nickname");
-
     public final StringPath profileImageUrl = createString("profileImageUrl");
-
-    public final StringPath pw = createString("pw");
-
-    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
     public final StringPath role = createString("role");
 
     public final NumberPath<Integer> seq = createNumber("seq", Integer.class);
 
-    public final StringPath tel = createString("tel");
+    public final DateTimePath<java.time.LocalDateTime> userBirth = createDateTime("userBirth", java.time.LocalDateTime.class);
 
-    public final ListPath<UserTag, QUserTag> userTags = this.<UserTag, QUserTag>createList("userTags", UserTag.class, QUserTag.class, PathInits.DIRECT2);
+    public final StringPath userId = createString("userId");
+
+    public final StringPath userName = createString("userName");
+
+    public final StringPath userPw = createString("userPw");
+
+    public final DateTimePath<java.time.LocalDateTime> userRegDate = createDateTime("userRegDate", java.time.LocalDateTime.class);
+
+    public final StringPath userTel = createString("userTel");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

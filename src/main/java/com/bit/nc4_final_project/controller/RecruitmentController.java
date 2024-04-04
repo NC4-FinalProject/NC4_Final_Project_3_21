@@ -1,15 +1,10 @@
 package com.bit.nc4_final_project.controller;
 
 
-import com.bit.nc4_final_project.common.FileUtils;
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
-import com.bit.nc4_final_project.dto.review.ReviewDTO;
 import com.bit.nc4_final_project.entity.CustomUserDetails;
 import com.bit.nc4_final_project.service.recruitment.RecruitmentService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +21,7 @@ public class RecruitmentController {
     private final RecruitmentService recruitmentService;
 
     @GetMapping("/list")
-    public ResponseEntity<?> getRecruitmentList(@PageableDefault(page = 0, size = 4) Pageable pageable,
+    public ResponseEntity<?> getRecruitmentList(@PageableDefault(page = 0) Pageable pageable,
                                            @RequestParam("searchCondition") String searchCondition,
                                            @RequestParam("searchKeyword") String searchKeyword,
                                            @RequestParam("sort") String sort) {
@@ -107,7 +97,6 @@ public class RecruitmentController {
         ResponseDTO<RecruitmentDTO> responseDTO = new ResponseDTO<>();
         try {
             recruitmentService.modify(recruitmentDTO, customUserDetails);
-
 
             RecruitmentDTO modifiedRecruitmentDTO = recruitmentService.findById(recruitmentDTO.getSeq());
 

@@ -1,10 +1,8 @@
 package com.bit.nc4_final_project.service.recruitment.impl;
 
 import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
-import com.bit.nc4_final_project.dto.review.ReviewDTO;
 import com.bit.nc4_final_project.entity.CustomUserDetails;
 import com.bit.nc4_final_project.entity.Recruitment;
-import com.bit.nc4_final_project.entity.Review;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.repository.recruitment.RecruitmentRepository;
 import com.bit.nc4_final_project.repository.user.UserRepository;

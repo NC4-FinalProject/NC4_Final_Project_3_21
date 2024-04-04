@@ -21,11 +21,13 @@ public class QChat extends EntityPathBase<Chat> {
 
     public final StringPath lastChat = createString("lastChat");
 
-    public final StringPath makerId = createString("makerId");
+    public final StringPath makerImg = createString("makerImg");
 
-    public final StringPath partnerId = createString("partnerId");
+    public final StringPath makerName = createString("makerName");
 
     public final StringPath partnerImg = createString("partnerImg");
+
+    public final StringPath partnerName = createString("partnerName");
 
     public final NumberPath<Integer> seq = createNumber("seq", Integer.class);
 

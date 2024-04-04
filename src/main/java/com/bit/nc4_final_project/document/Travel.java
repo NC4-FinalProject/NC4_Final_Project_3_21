@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.entity.travel;
+package com.bit.nc4_final_project.document;
 
 import com.bit.nc4_final_project.dto.travel.*;
 import lombok.*;
@@ -33,6 +33,7 @@ public class Travel {
     private String mlevel;
     private String createdtime;
     private String modifiedtime;
+    @Setter
     private Integer viewCnt;
     private String areaCode;
     private String sigunguCode;
