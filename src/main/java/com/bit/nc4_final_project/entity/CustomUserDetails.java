@@ -36,13 +36,14 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPw();
+        return user.getUserPw();
     }
 
     @Override
     public String getUsername() {
-        return user.getNickname();
+        return user.getUserId();
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -62,6 +63,14 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String  getUserId() {
+        return user.getUserId();
+    }
+
+    public Integer getUserSeq() {
+        return user.getSeq();
     }
 }
 

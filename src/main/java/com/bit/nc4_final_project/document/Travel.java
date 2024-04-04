@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.entity.travel;
+package com.bit.nc4_final_project.document;
 
 import com.bit.nc4_final_project.dto.travel.*;
 import lombok.*;
@@ -33,6 +33,7 @@ public class Travel {
     private String mlevel;
     private String createdtime;
     private String modifiedtime;
+    @Setter
     private Integer viewCnt;
     private String areaCode;
     private String sigunguCode;
@@ -41,7 +42,10 @@ public class Travel {
     @Field("detail")
     private TravelDetail detail;
 
-    public TravelDTO toDTO() {
+    @Setter
+    private PetTravel petTravel;
+
+    public TravelDTO toDTO(Integer bookmarkCnt, String areaName, String sigunguName) {
         TravelDTO.TravelDTOBuilder builder = TravelDTO.builder()
                 .id(this.id)
                 .contentid(this.contentid)
@@ -64,11 +68,18 @@ public class Travel {
                 .createdtime(this.createdtime)
                 .modifiedtime(this.modifiedtime)
                 .viewCnt(this.viewCnt)
+                .bookmarkCnt(bookmarkCnt)
                 .areaCode(this.areaCode)
-                .sigunguCode(this.sigunguCode);
+                .areaName(areaName)
+                .sigunguCode(this.sigunguCode)
+                .sigunguName(sigunguName);
 
         if (this.detail != null) {
             builder.detail(toTravelDetailDTO(this.detail));
+        }
+
+        if (this.petTravel != null) {
+            builder.petTravel(this.petTravel.toDTO());
         }
 
         return builder.build();
@@ -130,4 +141,6 @@ public class Travel {
                 .expagerangeleports(detail.getExpagerangeleports())
                 .build();
     }
+
+
 }

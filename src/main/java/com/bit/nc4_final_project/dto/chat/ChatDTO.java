@@ -18,7 +18,8 @@ import lombok.ToString;
 @ToString
 public class ChatDTO {
     private Integer seq;
-    private Integer chatRoomNo;
+    private String makerName;
+    private String makerImg;
     private String partnerName;
     private String partnerImg;
     private String lastChat;
@@ -27,9 +28,10 @@ public class ChatDTO {
     public Chat toEntity() {
         return Chat.builder()
                 .seq(this.seq)
-                .chatRoomNo(this.chatRoomNo)
+                .makerName(this.makerName)
+                .makerImg(this.makerImg)
                 .partnerName(this.partnerName)
-                .partnerImg(partnerImg)
+                .partnerImg(this.partnerImg)
                 .lastChat(this.lastChat)
                 .unreadCnt(this.unreadCnt)
                 .build();

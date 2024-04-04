@@ -1,20 +1,13 @@
-package com.bit.nc4_final_project.entity.travel;
+package com.bit.nc4_final_project.dto.travel;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "pet_travel")
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class PetTravel {
-    @Id
+public class PetTravelDTO {
     private String id;
+    private String contentid;
     private String petTursmInfo;
     private String acmpyTypeCd;
     private String acmpyNeedMtr;

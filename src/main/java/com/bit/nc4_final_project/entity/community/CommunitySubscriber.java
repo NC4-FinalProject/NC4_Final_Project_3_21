@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 @IdClass(CommunitySubscriberId.class)
 public class CommunitySubscriber {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_seq")
+    @ManyToOne
+    @JoinColumn(name = "com_seq")
     private Community community;
 }

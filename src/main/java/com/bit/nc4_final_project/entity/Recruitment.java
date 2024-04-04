@@ -40,7 +40,7 @@ public class Recruitment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "community_seq")
+    @JoinColumn(name = "com_seq")
     private Community community;
 
     @Transient
@@ -54,7 +54,11 @@ public class Recruitment {
                 .title(this.title)
                 .content(this.content)
                 .writer(this.writer)
-                .regDate(LocalDateTime.now())
+                .regDate(LocalDateTime.parse(this.regDate.toString()))
                 .build();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -18,48 +18,48 @@ import java.util.stream.Collectors;
 @Builder
 public class UserDTO {
     private Integer seq;
-    private String id;
-    private String pw;
-    private String nickname;
-    private String location;
-    private String birth;
-    private String tel;
+    private String userId;
+    private String userPw;
+    private String userName;
+//    private String location;
+    private String userBirth;
+    private String userTel;
     private String role;
-    private String regDate;
+    private String userRegDate;
     private boolean isActive;
     private String lastLoginDate;
     private String token;
-    private List<String> tags;
+//    private List<String> tags;
+    private String profileImageUrl;
 
-    public List<String> getTags() {
-        if (tags == null) {
-            tags = new ArrayList<>();
-        }
-        return tags;
-    }
+//    public List<String> getTags() {
+//        if (tags == null) {
+//            tags = new ArrayList<>();
+//        }
+//        return tags;
+//    }
 
     public User toEntity() {
-        User user = User.builder()
+        return User.builder()
                 .seq(this.seq)
-                .id(this.id)
-                .pw(this.pw)
-                .nickname(this.nickname)
-                .location(this.location)
-                .birth(LocalDateTime.parse(this.birth))
-                .tel(this.tel)
+                .userId(this.userId)
+                .userPw(this.userPw)
+                .userName(this.userName)
+//                .location(this.location)
+                .userBirth(LocalDateTime.parse(this.userBirth))
+                .userTel(this.userTel)
                 .role(this.role)
-                .regDate(LocalDateTime.now())
+                .userRegDate(LocalDateTime.parse(this.userRegDate))
                 .isActive(this.isActive)
                 .lastLoginDate(LocalDateTime.parse(this.lastLoginDate))
+                .profileImageUrl(this.profileImageUrl)
                 .build();
 
-        if (this.tags != null) {
-            List<UserTag> userTags = this.tags.stream()
-                    .map(tag -> UserTag.builder().content(tag).user(user).build())
-                    .collect(Collectors.toList());
-            user.getUserTags().addAll(userTags);
-        }
-
-        return user;
+//        if (this.tags != null) {
+//            List<UserTag> userTags = this.tags.stream()
+//                    .map(tag -> UserTag.builder().content(tag).user(user).build())
+//                    .collect(Collectors.toList());
+//            user.getUserTags().addAll(userTags);
+//        }
     }
 }

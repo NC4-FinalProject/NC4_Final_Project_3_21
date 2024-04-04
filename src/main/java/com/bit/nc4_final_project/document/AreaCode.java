@@ -1,11 +1,11 @@
-package com.bit.nc4_final_project.entity;
+package com.bit.nc4_final_project.document;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Embedded;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = "area_code")
 @Getter
@@ -15,6 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class AreaCode {
     @Id
     private String id;
-    private Integer code;
+    private String code;
     private String name;
+
+    @Setter
+    @Embedded
+    private List<SigunguCode> sigunguCodes;
 }

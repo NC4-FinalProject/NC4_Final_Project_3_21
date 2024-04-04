@@ -1,7 +1,9 @@
 package com.bit.nc4_final_project.api;
 
-import com.bit.nc4_final_project.entity.travel.Travel;
-import com.bit.nc4_final_project.entity.travel.TravelDetail;
+import com.bit.nc4_final_project.document.AreaCode;
+import com.bit.nc4_final_project.document.SigunguCode;
+import com.bit.nc4_final_project.document.Travel;
+import com.bit.nc4_final_project.document.TravelDetail;
 import com.bit.nc4_final_project.factory.travel.TravelDetailFactory;
 import com.bit.nc4_final_project.factory.travel.impl.TravelDetail12Factory;
 import com.bit.nc4_final_project.factory.travel.impl.TravelDetail14Factory;
@@ -65,7 +67,7 @@ public class TourApiExplorer {
                 .append("&").append(URLEncoder.encode("_type", "UTF-8")).append("=").append(URLEncoder.encode("json", "UTF-8"))
                 .append("&").append(URLEncoder.encode("MobileOS", "UTF-8")).append("=").append(URLEncoder.encode("ETC", "UTF-8"))
                 .append("&").append(URLEncoder.encode("MobileApp", "UTF-8")).append("=").append(URLEncoder.encode("AppTest", "UTF-8"))
-                .append("&").append(URLEncoder.encode("contentTypeId", "UTF-8")).append("=").append(URLEncoder.encode("12", "UTF-8"));
+                .append("&").append(URLEncoder.encode("contentTypeId", "UTF-8")).append("=").append(URLEncoder.encode("28", "UTF-8"));
         return urlBuilder;
     }
 
@@ -268,5 +270,52 @@ public class TourApiExplorer {
         } catch (Exception e) {
             throw new RuntimeException("Unexpected error occurred: " + e.getMessage(), e);
         }
+    }
+
+    public List<Object> getAreaCodeList(String areaCode) throws UnsupportedEncodingException {
+        List<Object> areaCodes = new ArrayList<>();
+        StringBuilder url = new StringBuilder("http://apis.data.go.kr/B551011/KorService1/areaCode1?")
+                .append(URLEncoder.encode("serviceKey", "UTF-8")).append("=").append(secretKey)
+                .append("&").append(URLEncoder.encode("_type", "UTF-8")).append("=").append(URLEncoder.encode("json", "UTF-8"))
+                .append("&").append(URLEncoder.encode("MobileOS", "UTF-8")).append("=").append(URLEncoder.encode("ETC", "UTF-8"))
+                .append("&").append(URLEncoder.encode("MobileApp", "UTF-8")).append("=").append(URLEncoder.encode("AppTest", "UTF-8"))
+                .append("&").append(URLEncoder.encode("numOfRows", "UTF-8")).append("=").append(URLEncoder.encode("200", "UTF-8"))
+                .append("&").append(URLEncoder.encode("pageNo", "UTF-8")).append("=").append(URLEncoder.encode("AppTest", "UTF-8"));
+
+        if (areaCode != null) {
+            url.append("&").append(URLEncoder.encode("areaCode", "UTF-8")).append("=").append(URLEncoder.encode(areaCode, "UTF-8"));
+        }
+
+        try {
+            String response = sendHttpRequest(url.toString());
+
+            JSONObject responseBody = new JSONObject(response).getJSONObject("response").getJSONObject("body");
+            System.out.println(responseBody.getInt("totalCount"));
+            JSONArray itemsArray = responseBody.optJSONObject("items").optJSONArray("item");
+
+            if (itemsArray != null) {
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject itemObject = itemsArray.getJSONObject(i);
+                    if (areaCode != null) {
+                        SigunguCode sigunguEntity = SigunguCode.builder()
+                                .code(itemObject.optString("code", ""))
+                                .name(itemObject.optString("name", ""))
+                                .build();
+                        areaCodes.add(sigunguEntity);
+                    } else {
+                        AreaCode areaEntity = AreaCode.builder()
+                                .code(itemObject.optString("code", ""))
+                                .name(itemObject.optString("name", ""))
+                                .build();
+                        areaCodes.add(areaEntity);
+                    }
+                }
+            }
+        } catch (IOException | JSONException e) {
+            log.error("Error fetching travel list: {}", e.getMessage(), e);
+            throw new RuntimeException("Error fetching travel list", e);
+        }
+
+        return areaCodes;
     }
 }

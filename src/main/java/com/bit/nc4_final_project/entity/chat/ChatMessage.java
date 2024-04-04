@@ -1,18 +1,18 @@
 package com.bit.nc4_final_project.entity.chat;
 
-import org.joda.time.LocalDateTime;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Document(collection = "chat")
 @Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,17 +20,20 @@ public class ChatMessage {
     
     @Id
     private String id;
-    private String receiver;
+
+    private String chatRoomId;
     private String sender;
-    private String chatMessage;
+    private String message;
+    private String img;
     private LocalDateTime sendDate;
 
     public ChatMessageDTO toDTO() {
         return ChatMessageDTO.builder()
                 .id(this.id)
-                .receiver(this.receiver)
+                .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
-                .chatMessage(this.chatMessage)
+                .message(this.message)
+                .img(this.img)
                 .sendDate(this.sendDate)
                 .build();
     }

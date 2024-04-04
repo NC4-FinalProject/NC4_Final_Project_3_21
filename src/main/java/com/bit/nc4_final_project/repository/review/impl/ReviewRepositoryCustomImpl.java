@@ -19,7 +19,6 @@ import static com.bit.nc4_final_project.entity.QReview.review;
 @Repository
 @RequiredArgsConstructor
 public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
-    private final EntityManager em;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
@@ -44,6 +43,28 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 
 
         return new PageImpl<>(reviewList, pageable, totalCnt);
+    }
+
+    @Override
+    public Page<Review> searchMyReviewList(String userId, Pageable pageable) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.and(review.user.userId.eq(userId));
+
+        List<Review> reviews = jpaQueryFactory
+                .selectFrom(review)
+                .where(booleanBuilder)
+                .orderBy(review.regDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long totalCnt = jpaQueryFactory
+                .select(review.count())
+                .from(review)
+                .where(booleanBuilder)
+                .fetchOne();
+
+        return new PageImpl<>(reviews, pageable, totalCnt);
     }
 
 

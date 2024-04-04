@@ -20,6 +20,7 @@ public class RecruitmentDTO {
     private LocalDateTime regDate;
     private String searchCondition;
     private String searchKeyword;
+    private String sort;
 
     public Recruitment toEntity() {
         return Recruitment.builder()
@@ -27,7 +28,7 @@ public class RecruitmentDTO {
                 .title(this.title)
                 .content(this.content)
                 .writer(this.writer)
-                .regDate(LocalDateTime.now())
+                .regDate(LocalDateTime.parse(this.regDate.toString()))
                 .build();
     }
 }

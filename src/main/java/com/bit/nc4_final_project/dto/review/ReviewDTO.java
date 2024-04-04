@@ -1,6 +1,7 @@
 package com.bit.nc4_final_project.dto.review;
 
 
+import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import com.bit.nc4_final_project.entity.Recruitment;
 import com.bit.nc4_final_project.entity.Review;
 import lombok.*;
@@ -22,6 +23,9 @@ public class ReviewDTO {
     private LocalDateTime regDate;
     private String searchCondition;
     private String searchKeyword;
+    private String sort;
+
+//    private TravelDTO travel;
 
     public Review toEntity() {
         return Review.builder()
@@ -31,6 +35,7 @@ public class ReviewDTO {
                 .writer(this.writer)
                 .rating(this.rating)
                 .regDate(LocalDateTime.parse(this.regDate.toString()))
+//                .travalId(this.travel.getId())
                 .build();
     }
 }

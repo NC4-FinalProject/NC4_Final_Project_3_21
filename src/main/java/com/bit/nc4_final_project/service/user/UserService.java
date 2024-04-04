@@ -1,6 +1,7 @@
 package com.bit.nc4_final_project.service.user;
 
 import com.bit.nc4_final_project.dto.user.UserDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface UserService {
@@ -12,9 +13,13 @@ public interface UserService {
 
     UserDTO signin(UserDTO userDTO);
 
-    long idCheck(UserDTO userDTO);
+    boolean isUserIdAvailable(String userid);
 
-    boolean isIdAvailable(String id);
+    boolean isUserNameAvailable(String username);
 
-    boolean isNicknameAvailable(String nickname);
+    void deleteProfileImage(String username);
+
+    String uploadProfileImage(MultipartFile file, String id);
+
+    String updateProfileImage(MultipartFile file, String id);
 }

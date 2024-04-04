@@ -1,15 +1,13 @@
 package com.bit.nc4_final_project.entity.community;
 
-import com.bit.nc4_final_project.entity.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "T_COM_TAG")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,6 +22,9 @@ public class CommunityTag {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "community_seq")
+    @JoinColumn(name = "com_seq")
+    @JsonBackReference
     private Community community;
+
+
 }

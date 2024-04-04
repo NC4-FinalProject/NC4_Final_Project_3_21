@@ -1,34 +1,33 @@
 package com.bit.nc4_final_project.dto.chat;
 
-import org.joda.time.LocalDateTime;
+import lombok.*;
 
 import com.bit.nc4_final_project.entity.chat.ChatMessage;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatMessageDTO {
-    
+
     private String id;
-    private String receiver;
+    private String chatRoomId;
     private String sender;
-    private String chatMessage;
+    private String message;
+    private String img;
     private LocalDateTime sendDate;
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
                 .id(this.id)
-                .receiver(this.receiver)
+                .chatRoomId(this.chatRoomId)
                 .sender(this.sender)
-                .chatMessage(this.chatMessage)
+                .message(this.message)
+                .img(this.img)
                 .sendDate(this.sendDate)
                 .build();
     }

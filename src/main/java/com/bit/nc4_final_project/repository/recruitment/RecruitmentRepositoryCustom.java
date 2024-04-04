@@ -5,5 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface RecruitmentRepositoryCustom {
-    Page<Recruitment> searchAll(Pageable pageable, String searchCondition, String searchKeyword);
+    Page<Recruitment> searchAll(Pageable pageable, String searchCondition, String searchKeyword, String sort);
+    Page<Recruitment> searchMyRecruitmentList(String userId, Pageable pageable);
 }
