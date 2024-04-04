@@ -72,8 +72,8 @@ public class CommunityController {
         try {
             // 커뮤니티 서비스를 통해 ID에 해당하는 커뮤니티 정보 조회
             CommunityDTO communityDTO = communityService.findBySeq(seq);
-            log.info(">> dto " + communityDTO);
-            log.info(">> dto " + communityDTO.getName() + "," + communityDTO.getSeq());
+//            log.info(">> dto " + communityDTO);
+//            log.info(">> dto " + communityDTO.getName() + "," + communityDTO.getSeq());
             // 조회된 정보를 responseDTO에 설정
             responseDTO.setItem(communityDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
@@ -102,9 +102,12 @@ public class CommunityController {
     // 기존 게시글 수정 처리
     @PutMapping("/modify")
     public ResponseEntity<?> modifyBoard(@RequestPart("community") CommunityDTO communityDTO,
-                                         @RequestPart("tags") List<CommunityTagDTO> communityTagDTOList) {
+                                         @RequestPart("tags") List<CommunityTagDTO> communityTagDTOList,
+                                         @RequestPart(value = "picture", required = false) MultipartFile picture) {
+        System.out.println("fff");
         ResponseDTO<CommunityDTO> responseDTO = new ResponseDTO<>();
-        System.out.println(communityDTO.toString());
+        log.info(">> " + communityDTO.toString());
+        log.info("communityDTO : " + communityDTO.getName());
         communityTagDTOList.forEach(tag -> System.out.println(tag.toString()));
 
         try {
