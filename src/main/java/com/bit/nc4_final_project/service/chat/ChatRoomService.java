@@ -9,4 +9,7 @@ public interface ChatRoomService {
     ChatMessageDTO saveMessage(ChatMessageDTO messageDTO);
 
     List<ChatMessageDTO> getMessages(String CurrentUserId);
+
+    void deleteChatRoom(String chatRoomId);
+    
 } 
