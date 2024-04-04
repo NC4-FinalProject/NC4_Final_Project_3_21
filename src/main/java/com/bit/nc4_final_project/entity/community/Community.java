@@ -59,7 +59,7 @@ public class Community {
                 .picture(this.picture)
                 .description(this.description)
                 .user(userDTO)
-                .tagDTOList(this.communityTags != null ? this.communityTags.stream()
+                .tags(this.communityTags != null ? this.communityTags.stream()
                         .map(tag -> new CommunityTagDTO(tag.getSeq(), tag.getContent()))
                         .collect(Collectors.toList()) : null)
                 .build();
