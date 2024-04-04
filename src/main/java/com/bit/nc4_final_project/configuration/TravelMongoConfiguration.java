@@ -1,4 +1,3 @@
-
 package com.bit.nc4_final_project.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +9,7 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.bit.nc4_final_project.repository.travel", mongoTemplateRef = "mongoTemplate1")
+@EnableMongoRepositories(basePackages = "com.bit.nc4_final_project.repository.travel.mongo", mongoTemplateRef = "mongoTemplate1")
 public class TravelMongoConfiguration {
 
     @Value("${spring.data.mongodb.uri}")

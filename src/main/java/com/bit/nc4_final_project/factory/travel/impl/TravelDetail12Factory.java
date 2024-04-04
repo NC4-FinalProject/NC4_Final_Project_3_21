@@ -1,6 +1,6 @@
 package com.bit.nc4_final_project.factory.travel.impl;
 
-import com.bit.nc4_final_project.entity.travel.TravelDetail;
+import com.bit.nc4_final_project.document.TravelDetail;
 import com.bit.nc4_final_project.factory.travel.TravelDetailFactory;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
