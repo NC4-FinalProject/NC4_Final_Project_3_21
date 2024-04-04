@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.service.recruitment;
 
 import com.bit.nc4_final_project.dto.recruitment.RecruitmentDTO;
-import com.bit.nc4_final_project.dto.review.ReviewDTO;
 import com.bit.nc4_final_project.entity.CustomUserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

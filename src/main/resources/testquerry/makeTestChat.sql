@@ -13,8 +13,30 @@ values (1, '안녕하세요', 1, 'aaa', 'bbb', 'img1.jpg'),
 
 
 # user 정보 입력
-INSERT INTO nc4taehyeon.t_user (user_seq, birth, id, is_active, last_login_date, location, nickname, pw, reg_date, role, tel)
-VALUES (1, '2021-04-05 00:00:00.000000', 'aaa', true, '2024-03-31 17:42:33.717384', '경기도 수원시', 'aaa', '$2a$10$GsPP2n5J0VNJmy5gtBH7yumGIzZu4zRojT9Ya32ks9/k9qaLzjbY2', '2024-03-31 17:42:33.717384', 'ROLE_USER', '010-4076-6673');
-INSERT INTO nc4taehyeon.t_user (user_seq, birth, id, is_active, last_login_date, location, nickname, pw, reg_date, role, tel)
-VALUES (2, '2022-04-04 00:00:00.000000', 'bbb', true, '2024-03-31 17:42:34.687695', '경기도 수원시', 'bbb', '$2a$10$cVW/GaOz28PgEb1lw2T5AegDA7jdExdJgJLRIpDYmSwdjG2Z/VBIy', '2024-03-31 17:42:34.687695', 'ROLE_USER', '010-4076-6673');
-
+INSERT INTO nc4taehyeon.t_user
+(user_seq, is_active,
+ last_login_date,
+ profile_image_url,
+ role,
+ user_birth,
+ user_id,
+ user_name,
+ user_pw,
+ user_reg_date,
+ user_tel)
+VALUES (1,
+        true,
+        '2024-04-03 16:29:22.244150',
+        null,
+        'ROLE_USER',
+        '2022-03-04 00:00:00.000000',
+        'aaa',
+        'aaa',
+        '$2a$10$xCOoGzOmlnWGBp5YOZOgX.eaenpLuW.RJJC0uxGoS0VuKPBdfLhYe',
+        '2024-04-03 14:55:16.652367',
+        '010-4076-6673');
+INSERT INTO nc4taehyeon.t_user
+(user_seq, is_active, last_login_date, profile_image_url, role, user_birth, user_id, user_name, user_pw, user_reg_date,
+ user_tel)
+VALUES (2, true, '2024-04-03 14:55:43.707205', null, 'ROLE_USER', '2022-04-04 00:00:00.000000', 'bbb', 'bbb',
+        '$2a$10$02WdaKImXStvPwK7f3tHDuQ0qEKNzQwZjTiR.dpZN.QiuhTmnQbPy', '2024-04-03 14:55:43.707205', '010-4076-6673');

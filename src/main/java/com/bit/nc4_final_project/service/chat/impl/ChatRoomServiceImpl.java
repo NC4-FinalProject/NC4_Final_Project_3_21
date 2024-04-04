@@ -1,22 +1,16 @@
 package com.bit.nc4_final_project.service.chat.impl;
 
+import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 import com.bit.nc4_final_project.entity.chat.Chat;
 import com.bit.nc4_final_project.entity.chat.ChatMessage;
 import com.bit.nc4_final_project.repository.chat.ChatRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.message.Message;
-import org.joda.time.LocalDateTime;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
-
-import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 import com.bit.nc4_final_project.repository.chatroom.ChatRoomRepository;
 import com.bit.nc4_final_project.service.chat.ChatRoomService;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -59,6 +53,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         List<ChatMessageDTO> chatMessageDTOList = chatMessageList.stream().map(ChatMessage::toDTO).toList();
 
         return chatMessageDTOList;
+    }
+
+    @Override
+    public void deleteChatRoom(String chatRoomId) {
+        Chat chat = chatRepository.findBySeq(Integer.parseInt(chatRoomId)).orElseThrow();
+        chatRepository.delete(chat);
+        chatRoomRepository.deleteAll(chatRoomRepository.findAllByChatRoomId(chatRoomId));
     }
 
 
