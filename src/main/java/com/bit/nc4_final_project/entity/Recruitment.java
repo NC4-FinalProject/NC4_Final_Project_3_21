@@ -54,7 +54,7 @@ public class Recruitment {
                 .title(this.title)
                 .content(this.content)
                 .writer(this.writer)
-                .regDate(LocalDateTime.now())
+                .regDate(LocalDateTime.parse(this.regDate.toString()))
                 .build();
     }
 
