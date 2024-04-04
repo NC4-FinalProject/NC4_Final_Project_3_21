@@ -32,9 +32,9 @@ public class CommunityServiceImpl implements CommunityService {
         log.info(">>> user Seq : " + user.getUserName());
         Community community = communityDTO.toEntity(user);
 
-        log.info(">> tag dto size : " + communityDTO.getTagDTOList().size());
-        if (communityDTO.getTagDTOList() != null) {
-            List<CommunityTag> tagList = communityDTO.getTagDTOList().stream()
+        log.info(">> tag dto size : " + communityDTO.getTags().size());
+        if (communityDTO.getTags() != null) {
+            List<CommunityTag> tagList = communityDTO.getTags().stream()
                     .map(tagDTO -> {
                         CommunityTag tag = new CommunityTag();
                         tag.setContent(tagDTO.getContent());
