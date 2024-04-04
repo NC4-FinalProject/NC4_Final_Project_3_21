@@ -1,9 +1,9 @@
 package com.bit.nc4_final_project.api;
 
-import com.bit.nc4_final_project.entity.travel.AreaCode;
-import com.bit.nc4_final_project.entity.travel.SigunguCode;
-import com.bit.nc4_final_project.entity.travel.Travel;
-import com.bit.nc4_final_project.entity.travel.TravelDetail;
+import com.bit.nc4_final_project.document.AreaCode;
+import com.bit.nc4_final_project.document.SigunguCode;
+import com.bit.nc4_final_project.document.Travel;
+import com.bit.nc4_final_project.document.TravelDetail;
 import com.bit.nc4_final_project.factory.travel.TravelDetailFactory;
 import com.bit.nc4_final_project.factory.travel.impl.TravelDetail12Factory;
 import com.bit.nc4_final_project.factory.travel.impl.TravelDetail14Factory;

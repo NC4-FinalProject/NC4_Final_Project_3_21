@@ -1,10 +1,10 @@
 package com.bit.nc4_final_project.service.taravel;
 
+import com.bit.nc4_final_project.document.AreaCode;
+import com.bit.nc4_final_project.document.SigunguCode;
+import com.bit.nc4_final_project.document.Travel;
 import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.entity.travel.AreaCode;
-import com.bit.nc4_final_project.entity.travel.SigunguCode;
-import com.bit.nc4_final_project.entity.travel.Travel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -36,7 +36,9 @@ public interface TravelService {
 
     List<TravelDTO> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy);
 
-    void regBookmark(BookmarkDTO bookmarkDTO);
+    void regBookmark(String id, Integer userSeq);
 
     Page<BookmarkDTO> getMyBookmarkList(Integer userSeq, Pageable pageable);
+
+    void updateViewCnt(String id);
 }

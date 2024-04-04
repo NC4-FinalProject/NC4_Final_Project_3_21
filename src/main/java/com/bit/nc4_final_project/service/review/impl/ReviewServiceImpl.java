@@ -1,30 +1,21 @@
 package com.bit.nc4_final_project.service.review.impl;
 
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
-import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import com.bit.nc4_final_project.entity.CustomUserDetails;
 import com.bit.nc4_final_project.entity.Review;
 import com.bit.nc4_final_project.entity.User;
-import com.bit.nc4_final_project.entity.travel.Travel;
 import com.bit.nc4_final_project.repository.review.ReviewRepository;
-import com.bit.nc4_final_project.repository.travel.TravelRepository;
+import com.bit.nc4_final_project.repository.travel.mongo.TravelRepository;
 import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.review.ReviewService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 @Slf4j
 @Service
