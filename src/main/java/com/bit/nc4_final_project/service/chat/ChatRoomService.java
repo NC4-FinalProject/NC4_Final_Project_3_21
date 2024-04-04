@@ -8,5 +8,5 @@ public interface ChatRoomService {
 
     ChatMessageDTO saveMessage(ChatMessageDTO messageDTO);
 
-//    List<ChatMessageDTO> getMessages(String CurrentUserId);
+    List<ChatMessageDTO> getMessages(String CurrentUserId);
 } 
