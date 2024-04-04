@@ -1,6 +1,6 @@
-package com.bit.nc4_final_project.repository.travel;
+package com.bit.nc4_final_project.repository.travel.mongo;
 
-import com.bit.nc4_final_project.entity.travel.AreaCode;
+import com.bit.nc4_final_project.document.AreaCode;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

@@ -27,6 +27,7 @@ public class TravelDTO {
     private String createdtime;
     private String modifiedtime;
     private Integer viewCnt;
+    private boolean isBookmark;
     private Integer bookmarkCnt;
     private String areaCode;
     private String areaName;

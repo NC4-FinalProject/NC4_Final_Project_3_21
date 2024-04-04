@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "T_TRAVEL_BOOKMARK")
 @SequenceGenerator(
         name = "TravelBookmarkSeqGenerator",
-        sequenceName = "T_REVIEW_SEQ",
+        sequenceName = "T_TRAVEL_BOOKMARK_SEQ",
         initialValue = 1,
         allocationSize = 1
 )
