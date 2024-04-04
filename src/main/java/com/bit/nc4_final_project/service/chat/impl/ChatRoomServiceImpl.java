@@ -57,7 +57,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void deleteChatRoom(String chatRoomId) {
-        Chat chat = chatRepository.findBySeq(Integer.parseInt(chatRoomId));
+        Chat chat = chatRepository.findBySeq(Integer.parseInt(chatRoomId)).orElseThrow();
         chatRepository.delete(chat);
         chatRoomRepository.deleteAll(chatRoomRepository.findAllByChatRoomId(chatRoomId));
     }

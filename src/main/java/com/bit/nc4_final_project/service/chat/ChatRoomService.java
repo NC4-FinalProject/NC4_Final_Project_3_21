@@ -11,4 +11,5 @@ public interface ChatRoomService {
     List<ChatMessageDTO> getMessages(String CurrentUserId);
 
     void deleteChatRoom(String chatRoomId);
+    
 } 

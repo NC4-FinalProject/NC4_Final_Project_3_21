@@ -21,50 +21,49 @@ public class StompHeaderChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        log.info("===== WebSocket InterCeptor Arrived =====");
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        log.info("===== WebSocket InterCeptor : accessor :{}", accessor);
         StompCommand command = accessor.getCommand();
-//        // websocket 연결시 헤더의 jwt token 유효성 검증
-//        if (command == StompCommand.CONNECT) {
-//            log.debug("===== WebSocket InterCepTer : CONNECT =====");
-//            String token = accessor.getFirstNativeHeader("ACCESS_TOKEN");
-//            // 현재 프로젝트 내의 jwtTokenProvider를 사용하여 토큰의 유효성을 검사
-//            if (jwtTokenProvider.validateAndGetUsername(token) == null) {
-//                log.info("===== WebSocket InterCepTer : Token is not valid. =====");
-//                throw new AccessDeniedException("Token is not valid.");
-//            }
-//        }
-//        String currentUserName = getCurrentUser().getUsername();
-//        handleMessage(command, accessor, currentUserName);
-        log.info("intercepted massage : {}", message);
-        log.info("intercepted accessor : {}", accessor);
-        log.info("intercepted command : {}", command);
+        log.info("===== WebSocket InterCeptor : command :{}", command);
+        log.info("WebSocket Message : {}", message);
+        int currentConnectedUserCount = 0;
+
+        // websocket 연결시 헤더의 jwt token 유효성 검증
+        if (command == StompCommand.CONNECT) {
+            log.debug("===== WebSocket InterCepTer : CONNECT =====");
+            // 현재 프로젝트 내의 jwtTokenProvider를 사용하여 토큰의 유효성을 검사
+            String token = accessor.getFirstNativeHeader("Authorization");
+            if (token == null || !token.startsWith("Bearer")) {
+                log.info("===== WebSocket InterCeptor : Token is not valid. =====");
+                throw new RuntimeException("Token is not valid.");
+            } else if (jwtTokenProvider.validateAndGetUsername(token.substring(7)) == null) {
+                log.info("===== WebSocket InterCeptor : The Token held by current user are unavailable. =====");
+                throw new RuntimeException("The Token held by current user are unavailable.");
+            }
+        }
+        // websocket sub 시 현재 채팅방의 접속 상태를 체크
+        if (command == StompCommand.SUBSCRIBE) {
+            log.debug("===== WebSocket InterCepTer : SUBSCRIBE =====");
+            currentConnectedUserCount++;
+        }
+        if (command == StompCommand.DISCONNECT) {
+            log.debug("===== WebSocket InterCepTer : DISCONNECT =====");
+            currentConnectedUserCount--;
+        }
+        if (command == StompCommand.SEND) {
+            if (currentConnectedUserCount < 2) {
+
+            }
+        }
+
         return message;
     }
 
-    // 현재 세션에 담긴 사용자 정보를 가져오기 위한 메소드
-//    public UserDetails getCurrentUser() {
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (principal instanceof UserDetails) {
-//            return (UserDetails) principal;
-//        }
-//        return null;
-//    }
-
-    // stomp command에 따라 처리할 내용을 분기하는 메소드
-//    private void handleMessage(StompCommand command, StompHeaderAccessor accessor, String currentUserName) {
-//        switch (command) {
-//            case CONNECT:
-//
-//                break;
-//            case SUBSCRIBE:
-//            case SEND:
-//
-//
-//        }
-//    }
-
-//    private void connectToChatRoom(StompHeaderAccessor accessor, String currentUserName) {
-//        // 채팅방 입장시 사용자 정보를 채팅방에 등록
+//    @EventListener
+//    public void handleWebSocketconnectedListener(SessionConnectedEvent event) {
+//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+//        String sessionId = headerAccessor.getSessionId();
 //
 //    }
 }
