@@ -1,18 +1,16 @@
 package com.bit.nc4_final_project.service.chat.impl;
 
-import java.util.List;
-
+import com.bit.nc4_final_project.dto.chat.ChatDTO;
 import com.bit.nc4_final_project.dto.chat.ChatMakeInfo;
+import com.bit.nc4_final_project.entity.chat.Chat;
+import com.bit.nc4_final_project.repository.chat.ChatRepository;
 import com.bit.nc4_final_project.repository.user.UserRepository;
+import com.bit.nc4_final_project.service.chat.ChatService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import com.bit.nc4_final_project.dto.chat.ChatDTO;
-import com.bit.nc4_final_project.entity.chat.Chat;
-import com.bit.nc4_final_project.repository.chat.ChatRepository;
-import com.bit.nc4_final_project.service.chat.ChatService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -59,8 +57,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void updateUnreadCnt(String sender, String chatRoomId) {
-
+    public void plusUnreadCnt(String chatRoomId) {
+        
     }
 
 }

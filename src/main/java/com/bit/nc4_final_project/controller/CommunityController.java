@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,18 +30,27 @@ public class CommunityController {
     @PostMapping("/reg")
     public ResponseEntity<?> postBoard(@RequestPart("community") CommunityDTO communityDTO,
                                        @RequestPart("tags") List<CommunityTagDTO> communityTagDTOList,
+                                       @RequestPart(value = "picture", required = false) MultipartFile picture,
                                        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 //        log.info(String.valueOf(">> communityDTO : " + communityDTO.getUser().getSeq()));
         ResponseDTO<CommunityDTO> responseDTO = new ResponseDTO<>();
 //        System.out.println(communityDTO.toString());
         communityTagDTOList.forEach(communityTagDTO -> log.info(">> communityTagDTO.toString() : " + communityTagDTO.toString()));
         try {
-            communityDTO.setTagDTOList(communityTagDTOList);
+            communityDTO.setTags(communityTagDTOList);
             communityDTO.setUser(customUserDetails.getUser().toDTO());
 //            communityDTO.setUserSeq(customUserDetails.getUser().getSeq());
 //            UserDTO user = userRepository.findBySeq(1).toDTO();
 //            log.info(">> user : " + user.getSeq());
 //            communityDTO.setUser(user);
+            // 파일 처리
+            if (picture != null && !picture.isEmpty()) {
+                // 여기에 파일을 처리하는 로직을 추가합니다.
+                // 예를 들어, 파일을 서버에 저장하고, 그 경로를 CommunityDTO의 picture 필드에 설정할 수 있습니다.
+                String picturePath = fileUtils.saveFile(picture); // fileUtils는 파일을 저장하는 유틸리티 클래스를 가정합니다.
+                communityDTO.setPicture(picturePath);
+            }
+
             communityService.post(communityDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
@@ -99,7 +109,7 @@ public class CommunityController {
 
         try {
             // 커뮤니티 게시글과 태그 리스트 정보 업데이트
-            communityDTO.setTagDTOList(communityTagDTOList);
+            communityDTO.setTags(communityTagDTOList);
             CommunityDTO updatedCommunityDTO = communityService.modify(communityDTO, communityTagDTOList);
 
             responseDTO.setItem(updatedCommunityDTO);

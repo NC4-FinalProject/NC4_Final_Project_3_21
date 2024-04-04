@@ -1,15 +1,18 @@
 package com.bit.nc4_final_project.controller;
 
+import com.bit.nc4_final_project.document.AreaCode;
+import com.bit.nc4_final_project.document.SigunguCode;
 import com.bit.nc4_final_project.dto.ResponseDTO;
-import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.entity.travel.AreaCode;
-import com.bit.nc4_final_project.entity.travel.SigunguCode;
+import com.bit.nc4_final_project.entity.CustomUserDetails;
 import com.bit.nc4_final_project.service.taravel.TravelService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +25,10 @@ public class TravelController {
     private final TravelService travelService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTravel(@PathVariable("id") String contentId) {
+    public ResponseEntity<?> getTravel(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
-
         try {
-            TravelDTO travelDTO = travelService.getTravelDTO(contentId);
+            TravelDTO travelDTO = travelService.getTravelDTO(id);
             responseDTO.setItem(travelDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
@@ -172,10 +174,11 @@ public class TravelController {
     }
 
     @PostMapping("/bookmark")
-    public ResponseEntity<?> regBookmark(@RequestBody BookmarkDTO bookmarkDTO) {
+    public ResponseEntity<?> regBookmark(@RequestParam("id") String id,
+                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
         try {
-            travelService.regBookmark(bookmarkDTO);
+            travelService.regBookmark(id, customUserDetails.getUserSeq());
             responseDTO.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
@@ -186,5 +189,18 @@ public class TravelController {
         }
     }
 
-
+    @PostMapping("/viewIncrease")
+    public ResponseEntity<?> regBookmark(@RequestParam("id") String id) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        try {
+            travelService.updateViewCnt(id);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(100);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
 }

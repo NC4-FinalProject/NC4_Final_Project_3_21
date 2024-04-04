@@ -1,7 +1,7 @@
-package com.bit.nc4_final_project.repository.travel.impl;
+package com.bit.nc4_final_project.repository.travel.mongo.impl;
 
-import com.bit.nc4_final_project.entity.travel.Travel;
-import com.bit.nc4_final_project.repository.travel.TravelRepositoryCustom;
+import com.bit.nc4_final_project.document.Travel;
+import com.bit.nc4_final_project.repository.travel.mongo.TravelRepositoryCustom;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
