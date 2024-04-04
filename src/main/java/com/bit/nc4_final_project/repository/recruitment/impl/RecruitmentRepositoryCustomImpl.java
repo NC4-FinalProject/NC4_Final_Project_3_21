@@ -2,7 +2,6 @@ package com.bit.nc4_final_project.repository.recruitment.impl;
 
 
 import com.bit.nc4_final_project.entity.Recruitment;
-import com.bit.nc4_final_project.entity.Review;
 import com.bit.nc4_final_project.repository.recruitment.RecruitmentRepositoryCustom;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.bit.nc4_final_project.entity.QRecruitment.recruitment;
-import static com.bit.nc4_final_project.entity.QReview.review;
 
 @Repository
 @RequiredArgsConstructor
@@ -76,15 +74,15 @@ public class RecruitmentRepositoryCustomImpl implements RecruitmentRepositoryCus
 
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
             if ("all".equalsIgnoreCase(searchCondition)) {
-                booleanBuilder.or(review.title.containsIgnoreCase(searchKeyword))
-                        .or(review.content.containsIgnoreCase(searchKeyword))
-                        .or(review.writer.containsIgnoreCase(searchKeyword));
+                booleanBuilder.or(recruitment.title.containsIgnoreCase(searchKeyword))
+                        .or(recruitment.content.containsIgnoreCase(searchKeyword))
+                        .or(recruitment.writer.containsIgnoreCase(searchKeyword));
             } else if ("title".equalsIgnoreCase(searchCondition)) {
-                booleanBuilder.and(review.title.containsIgnoreCase(searchKeyword));
+                booleanBuilder.and(recruitment.title.containsIgnoreCase(searchKeyword));
             } else if ("content".equalsIgnoreCase(searchCondition)) {
-                booleanBuilder.and(review.content.containsIgnoreCase(searchKeyword));
+                booleanBuilder.and(recruitment.content.containsIgnoreCase(searchKeyword));
             } else if ("writer".equalsIgnoreCase(searchCondition)) {
-                booleanBuilder.and(review.writer.containsIgnoreCase(searchKeyword));
+                booleanBuilder.and(recruitment.writer.containsIgnoreCase(searchKeyword));
             }
         }
 
@@ -93,19 +91,19 @@ public class RecruitmentRepositoryCustomImpl implements RecruitmentRepositoryCus
 
     private OrderSpecifier<?> getOrderSpecifier(String sort) {
         if (sort == null) {
-            return review.regDate.desc();
+            return recruitment.regDate.desc();
         }
         switch (sort) {
             case "latest":
-                return review.regDate.desc();
+                return recruitment.regDate.desc();
             case "oldest":
-                return review.regDate.asc();
-            case "rating_high":
-                return review.rating.desc();
-            case "rating_low":
-                return review.rating.asc();
+                return recruitment.regDate.asc();
+//            case "member_high":
+//                return review.rating.desc();
+//            case "member_low":
+//                return review.rating.asc();
             default:
-                return review.regDate.desc();
+                return recruitment.regDate.desc();
         }
     }
 
