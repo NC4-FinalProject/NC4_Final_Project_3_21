@@ -11,4 +11,6 @@ public interface ChatService {
     List<ChatDTO> makeChatRoom(ChatMakeInfo chatMakeInfo);
 
     void plusUnreadCnt(String chatRoomId);
+
+    void resetUnreadCnt(String chatRoomId);
 }
