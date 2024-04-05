@@ -139,8 +139,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO modifyUser(String userId, UserDTO userDTO) {
-        Optional<User> optionalUser = userRepository.findByUserId(userId);
+    public UserDTO modifyUser(String userid, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByUserId(userid);
 
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
@@ -148,15 +148,15 @@ public class UserServiceImpl implements UserService {
 
         User existingUser = optionalUser.get();
 
+        if (!passwordEncoder.matches(userDTO.getUserPw(), existingUser.getUserPw())) {
+            throw new RuntimeException("Incorrect current password");
+        }
+
         User updatedUser = User.builder()
-                .seq(existingUser.getSeq())
                 .userId(existingUser.getUserId())
-                .userPw(userDTO.getUserPw() != null && !userDTO.getUserPw().isEmpty()
-                        ? passwordEncoder.encode(userDTO.getUserPw())
-                        : existingUser.getUserPw())
+                .userPw(userDTO.getUserPw())
                 .userName(userDTO.getUserName())
                 .userTel(userDTO.getUserTel())
-                .userBirth(LocalDateTime.parse(userDTO.getUserBirth()))
                 .build();
 
         User savedUser = userRepository.save(updatedUser);
