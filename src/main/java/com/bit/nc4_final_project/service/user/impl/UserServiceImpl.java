@@ -32,10 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
-//      System.out.println(userDTO);
-
         User user = userRepository.save(userDTO.toEntity());
-
 //        List<String> tags = userDTO.getTags();
 //
 //        tags.forEach(tagContent -> {
@@ -65,7 +62,7 @@ public class UserServiceImpl implements UserService {
         signinDTO.setToken(jwtTokenProvider.create(signInUser.get()));
 
         userRepository.save(signinDTO.toEntity());
-//        System.out.println(jwtTokenProvider.create(signinUser.get()));
+//         System.out.println(jwtTokenProvider.create(signInUser.get()));
         userRepository.flush();
 
         return signinDTO;
@@ -139,6 +136,33 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return newFileUrl;
+    }
+
+    @Override
+    public UserDTO modifyUser(String userId, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByUserId(userId);
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User existingUser = optionalUser.get();
+
+        User updatedUser = User.builder()
+                .seq(existingUser.getSeq())
+                .userId(existingUser.getUserId())
+                .userPw(userDTO.getUserPw() != null && !userDTO.getUserPw().isEmpty()
+                        ? passwordEncoder.encode(userDTO.getUserPw())
+                        : existingUser.getUserPw())
+                .userName(userDTO.getUserName())
+                .userTel(userDTO.getUserTel())
+                .userBirth(LocalDateTime.parse(userDTO.getUserBirth()))
+                .build();
+
+        User savedUser = userRepository.save(updatedUser);
+        UserDTO updatedUserDTO = savedUser.toDTO();
+
+        return updatedUserDTO;
     }
 
 
