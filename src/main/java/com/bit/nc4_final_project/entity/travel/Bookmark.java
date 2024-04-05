@@ -31,7 +31,8 @@ public class Bookmark {
     )
     @Column(name = "travel_bookmark_seq")
     private Long seq;
-    private LocalDateTime bookmarkDate;
+    @Builder.Default
+    private LocalDateTime bookmarkDate = LocalDateTime.now();
     private String travelId;
     private Integer userSeq;
 
