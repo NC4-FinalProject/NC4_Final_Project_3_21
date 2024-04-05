@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.dto.community;
 
+import com.bit.nc4_final_project.dto.board.BoardDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.community.Community;

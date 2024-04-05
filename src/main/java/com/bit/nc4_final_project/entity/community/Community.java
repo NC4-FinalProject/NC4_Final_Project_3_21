@@ -4,6 +4,7 @@ import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.dto.community.CommunityTagDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.entity.board.Board;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

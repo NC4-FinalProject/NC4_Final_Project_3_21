@@ -11,6 +11,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@SequenceGenerator(
+        name = "TagSeqGenerator",
+        sequenceName = "T_COM_TAG_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class CommunityTag {
     @Id
     @GeneratedValue(
