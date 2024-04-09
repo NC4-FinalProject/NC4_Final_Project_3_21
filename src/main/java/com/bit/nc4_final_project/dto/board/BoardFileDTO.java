@@ -17,9 +17,6 @@ public class BoardFileDTO {
     private Integer seq;
 
     private String name;
-    private String path;
-    private String origin;
-    private String cate;
     @Transient
     private String status;
     @Transient
@@ -33,9 +30,6 @@ public class BoardFileDTO {
                 .seq(this.seq)
                 .board(board)
                 .name(this.name)
-                .path(this.path)
-                .origin(this.origin)
-                .cate(this.cate)
                 .status(this.status)
                 .newFileName(this.newFileName)
                 .build();
