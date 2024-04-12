@@ -46,13 +46,13 @@ public class UserDTO {
                 .userPw(this.userPw)
                 .userName(this.userName)
 //                .location(this.location)
-                .userBirth(LocalDateTime.parse(this.userBirth))
-                .userTel(this.userTel)
+                .userBirth(this.userBirth == null ? null : LocalDateTime.parse(this.userBirth))
+                .userTel(this.userTel == null ? null : this.userTel)
                 .role(this.role)
                 .userRegDate(LocalDateTime.parse(this.userRegDate))
                 .isActive(this.isActive)
                 .lastLoginDate(LocalDateTime.parse(this.lastLoginDate))
-                .profileImageUrl(this.profileImageUrl)
+                .profileImageUrl(this.profileImageUrl == null ? null : this.profileImageUrl)
                 .build();
 
 //        if (this.tags != null) {

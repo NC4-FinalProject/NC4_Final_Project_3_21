@@ -10,14 +10,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CustomUserDetails implements UserDetails {
+
     private User user;
 
+    Map<String, Object> attributes;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
@@ -72,5 +75,6 @@ public class CustomUserDetails implements UserDetails {
     public Integer getUserSeq() {
         return user.getSeq();
     }
+
 }
 
