@@ -3,6 +3,8 @@ package com.bit.nc4_final_project.controller.chat;
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 import com.bit.nc4_final_project.service.chat.ChatRoomService;
+import com.bit.nc4_final_project.service.chat.ChatRoomSessionService;
+import com.bit.nc4_final_project.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,13 +23,24 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ChatRoomController {
-    public final ChatRoomService chatRoomService;
-    public final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatRoomSessionService chatRoomSessionService;
 
     @MessageMapping("/send-message")
     public ResponseEntity<?> sendMessage(ChatMessageDTO messageDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        int userCount = chatRoomSessionService.getSessionCount(messageDTO.getChatRoomId());
+        log.info("userCount : {}", userCount);
         try {
+            if (userCount <= 1) {
+                log.info("==========unreadCnt plus==========");
+                chatService.plusUnreadCnt(messageDTO.getChatRoomId());
+            } else if (userCount == 2) {
+                log.info("==========unreadCnt reset==========");
+                chatService.resetUnreadCnt(messageDTO.getChatRoomId());
+            }
             ChatMessageDTO returnChatMessageDTO = chatRoomService.saveMessage(messageDTO);
             simpMessagingTemplate.convertAndSend("/sub/" + returnChatMessageDTO.getChatRoomId(), returnChatMessageDTO);
 
@@ -68,7 +81,7 @@ public class ChatRoomController {
 
             responseDTO.setItem("deleteChatRoom Success");
             responseDTO.setStatusCode(HttpStatus.OK.value());
-            
+
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
             log.error("ChatRoomController : deleteChatRoom error {}", e.getMessage());
