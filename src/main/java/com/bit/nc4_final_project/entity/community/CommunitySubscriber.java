@@ -1,5 +1,6 @@
 package com.bit.nc4_final_project.entity.community;
 
+import com.bit.nc4_final_project.dto.community.CommunitySubscriberDTO;
 import com.bit.nc4_final_project.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,11 @@ public class CommunitySubscriber {
     @ManyToOne
     @JoinColumn(name = "com_seq")
     private Community community;
+
+    public CommunitySubscriberDTO toDTO() {
+        return CommunitySubscriberDTO.builder()
+                .commuinity(this.community.getSeq())
+                .user(this.user.getSeq())
+                .build();
+    }
 }
