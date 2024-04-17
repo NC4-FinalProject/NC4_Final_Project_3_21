@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,8 +49,19 @@ public class UserController {
 
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            responseDTO.setErrorCode(100);
-            responseDTO.setErrorMessage(e.getMessage());
+            if (e.getMessage().equalsIgnoreCase("id is required")) {
+                responseDTO.setErrorCode(100);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else if (e.getMessage().equalsIgnoreCase("password is required")) {
+                responseDTO.setErrorCode(101);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else if (e.getMessage().equalsIgnoreCase("name is required")) {
+                responseDTO.setErrorCode(102);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else {
+                responseDTO.setErrorCode(103);
+                responseDTO.setErrorMessage(e.getMessage());
+            }
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }
@@ -66,10 +79,10 @@ public class UserController {
             responseDTO.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            if(e.getMessage().equalsIgnoreCase("not exist userid")) {
+            if (e.getMessage().equalsIgnoreCase("not exist userid")) {
                 responseDTO.setErrorCode(200);
                 responseDTO.setErrorMessage(e.getMessage());
-            } else if(e.getMessage().equalsIgnoreCase("wrong password")) {
+            } else if (e.getMessage().equalsIgnoreCase("wrong password")) {
                 responseDTO.setErrorCode(201);
                 responseDTO.setErrorMessage(e.getMessage());
             } else {
@@ -86,7 +99,7 @@ public class UserController {
     public ResponseEntity<?> signout() {
         ResponseDTO<Map<String, String>> responseDTO = new ResponseDTO<>();
 
-        try{
+        try {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(null);
             SecurityContextHolder.setContext(securityContext);
@@ -99,9 +112,9 @@ public class UserController {
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
             return ResponseEntity.ok(responseDTO);
-        } catch(Exception e) {
+        } catch (Exception e) {
             responseDTO.setErrorMessage(e.getMessage());
-            responseDTO.setErrorCode(202);
+            responseDTO.setErrorCode(300);
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }
@@ -115,6 +128,7 @@ public class UserController {
             boolean available = userService.isUserIdAvailable(userid);
             Map<String, Object> response = new HashMap<>();
             response.put("available", available);
+
 
             responseDTO.setItem(response);
             responseDTO.setStatusCode(HttpStatus.OK.value());
@@ -168,5 +182,32 @@ public class UserController {
         String userid = jwtTokenProvider.validateAndGetUsername(token);
         String profileImageUrl = userService.updateProfileImage(file, userid);
         return ResponseEntity.ok(profileImageUrl);
+    }
+
+    @PutMapping("/modifyuser/{userId}")
+    public ResponseEntity<ResponseDTO<Map<String, Object>>> modifyUser(
+            @PathVariable("userId") String userid,
+            @RequestBody UserDTO userDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
+
+        try {
+            // 사용자 인증 및 권한 확인
+            if (!userDetails.getUsername().equals(userid)) {
+            }
+
+            UserDTO updateUserDTO = userService.modifyUser(userid, userDTO);
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", updateUserDTO);
+
+            responseDTO.setItem(response);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setErrorCode(104);
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
     }
 }

@@ -19,7 +19,9 @@ public interface UserService {
 
     void deleteProfileImage(String username);
 
-    String uploadProfileImage(MultipartFile file, String id);
+    String uploadProfileImage(MultipartFile file, String userid);
 
-    String updateProfileImage(MultipartFile file, String id);
+    String updateProfileImage(MultipartFile file, String userid);
+
+    UserDTO modifyUser(String userid, UserDTO userDTO);
 }

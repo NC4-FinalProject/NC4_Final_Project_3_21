@@ -27,6 +27,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+
                 .cors(httpSecurityCorsConfigurer -> {
 
                 })
@@ -35,22 +36,25 @@ public class SecurityConfiguration {
                     httpSecurityHttpBasicConfigurer.disable();
                 })
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
-//                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                   httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/review/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-userid").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-username").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").authenticated();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-userid/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-username/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").authenticated();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/chatting/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/update").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/delete").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/upload").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/update/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/delete/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/upload/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/kakao").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/google").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/modifyuser/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)

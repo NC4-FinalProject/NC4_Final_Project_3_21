@@ -10,6 +10,7 @@ import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.user.UserService;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,10 +33,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
-//      System.out.println(userDTO);
+        if (StringUtils.isBlank(userDTO.getUserId())) {
+            throw new IllegalArgumentException("id is required");
+        }
+        if (StringUtils.isBlank(userDTO.getUserPw())) {
+            throw new IllegalArgumentException("password is required");
+        }
+        if (StringUtils.isBlank(userDTO.getUserName())) {
+            throw new IllegalArgumentException("name is required");
+        }
 
         User user = userRepository.save(userDTO.toEntity());
-
 //        List<String> tags = userDTO.getTags();
 //
 //        tags.forEach(tagContent -> {
@@ -65,7 +73,7 @@ public class UserServiceImpl implements UserService {
         signinDTO.setToken(jwtTokenProvider.create(signInUser.get()));
 
         userRepository.save(signinDTO.toEntity());
-//        System.out.println(jwtTokenProvider.create(signinUser.get()));
+//         System.out.println(jwtTokenProvider.create(signInUser.get()));
         userRepository.flush();
 
         return signinDTO;
@@ -139,6 +147,30 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return newFileUrl;
+    }
+
+    @Override
+    public UserDTO modifyUser(String userid, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByUserId(userid);
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User existingUser = optionalUser.get();
+
+        if (!userDTO.getUserPw().equals(existingUser.getUserPw())) {
+            String encodedPassword = passwordEncoder.encode(userDTO.getUserPw());
+            existingUser.setUserPw(encodedPassword);
+        }
+
+        existingUser.setUserName(userDTO.getUserName());
+        existingUser.setUserTel(userDTO.getUserTel());
+
+        User savedUser = userRepository.save(existingUser);
+        UserDTO updatedUserDTO = savedUser.toDTO();
+
+        return updatedUserDTO;
     }
 
 

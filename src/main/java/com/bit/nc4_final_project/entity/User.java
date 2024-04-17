@@ -15,6 +15,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@SequenceGenerator(
+        name = "UserSeqGenerator",
+        sequenceName = "T_USER_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class User {
     @Id
     @GeneratedValue(
@@ -27,13 +33,16 @@ public class User {
     private String userId;
     private String userPw;
     private String userName;
-    //    private String location;
+    // private String location;
+    @Column(nullable = true)
     private LocalDateTime userBirth;
+    @Column(nullable = true)
     private String userTel;
     private String role;
     private LocalDateTime userRegDate;
     private boolean isActive;
     private LocalDateTime lastLoginDate;
+    @Column(nullable = true)
     private String profileImageUrl;
 
 
@@ -54,13 +63,13 @@ public class User {
                 .userPw(this.userPw)
                 .userName(this.userName)
 //                .location(this.location)
-                .userBirth(this.userBirth.toString())
-                .userTel(this.userTel)
+                .userBirth(this.userBirth == null ? null : this.userBirth.toString())
+                .userTel(this.userTel == null ? null : this.userTel)
                 .role(this.role)
                 .userRegDate(this.userRegDate.toString())
                 .isActive(this.isActive)
                 .lastLoginDate(this.lastLoginDate.toString())
-                .profileImageUrl(this.profileImageUrl)
+                .profileImageUrl(this.profileImageUrl == null ? null : this.profileImageUrl)
 //                .tags(this.userTags.stream().map(UserTag::getContent).collect(Collectors.toList()))
                 .build();
 
@@ -68,4 +77,16 @@ public class User {
 
     public void setProfileImageUrl(String fileUrl) {
     }
+
+    public void setUserPw(String userPw) {
+        this.userPw = userPw;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserTel(String userTel) {
+        this.userTel = userTel;
+    }
+
 }
