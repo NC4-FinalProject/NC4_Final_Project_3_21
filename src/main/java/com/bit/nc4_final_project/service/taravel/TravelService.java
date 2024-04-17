@@ -1,7 +1,7 @@
 package com.bit.nc4_final_project.service.taravel;
 
-import com.bit.nc4_final_project.document.AreaCode;
-import com.bit.nc4_final_project.document.SigunguCode;
+import com.bit.nc4_final_project.document.travel.AreaCode;
+import com.bit.nc4_final_project.document.travel.SigunguCode;
 import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import org.springframework.data.domain.Page;

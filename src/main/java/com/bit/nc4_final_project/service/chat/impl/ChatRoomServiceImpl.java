@@ -1,8 +1,8 @@
 package com.bit.nc4_final_project.service.chat.impl;
 
+import com.bit.nc4_final_project.document.chat.ChatMessage;
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
 import com.bit.nc4_final_project.entity.chat.Chat;
-import com.bit.nc4_final_project.entity.chat.ChatMessage;
 import com.bit.nc4_final_project.repository.chat.ChatRepository;
 import com.bit.nc4_final_project.repository.chatroom.ChatRoomRepository;
 import com.bit.nc4_final_project.service.chat.ChatRoomService;

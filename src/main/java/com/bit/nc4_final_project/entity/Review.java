@@ -2,8 +2,6 @@ package com.bit.nc4_final_project.entity;
 
 
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
-import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.entity.community.Community;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -59,10 +57,4 @@ public class Review {
 //                .travel(travelDTO)
                 .build();
     }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
 }
