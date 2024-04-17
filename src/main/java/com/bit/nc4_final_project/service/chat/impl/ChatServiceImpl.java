@@ -56,9 +56,29 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
+    // todo : 안읽은 메세지 구현
     @Override
     public void plusUnreadCnt(String chatRoomId) {
-        
+        log.info("===== plusUnreadCnt Arrived =====");
+        Chat chat = chatRepository.findBySeq(Integer.parseInt(chatRoomId)).orElseThrow(() -> new RuntimeException("채팅방을 찾을 수 없습니다."));
+
+        try {
+            chat.setUnreadCnt(chat.getUnreadCnt() + 1);
+            chatRepository.save(chat);
+        } catch (Exception e) {
+            log.error("plusUnreadCnt error : " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void resetUnreadCnt(String chatRoomId) {
+        Chat chat = chatRepository.findBySeq(Integer.parseInt(chatRoomId)).orElseThrow(() -> new RuntimeException("채팅방을 찾을 수 없습니다."));
+        try {
+            chat.setUnreadCnt(0);
+            chatRepository.save(chat);
+        } catch (Exception e) {
+            log.error("plusUnreadCnt error : " + e.getMessage());
+        }
     }
 
 }

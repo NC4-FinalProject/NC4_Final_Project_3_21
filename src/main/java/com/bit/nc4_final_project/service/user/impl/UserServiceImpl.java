@@ -32,10 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
-//      System.out.println(userDTO);
-
         User user = userRepository.save(userDTO.toEntity());
-
 //        List<String> tags = userDTO.getTags();
 //
 //        tags.forEach(tagContent -> {
@@ -65,7 +62,7 @@ public class UserServiceImpl implements UserService {
         signinDTO.setToken(jwtTokenProvider.create(signInUser.get()));
 
         userRepository.save(signinDTO.toEntity());
-//        System.out.println(jwtTokenProvider.create(signinUser.get()));
+//         System.out.println(jwtTokenProvider.create(signInUser.get()));
         userRepository.flush();
 
         return signinDTO;
@@ -139,6 +136,33 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return newFileUrl;
+    }
+
+    @Override
+    public UserDTO modifyUser(String userid, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByUserId(userid);
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User existingUser = optionalUser.get();
+
+        if (!passwordEncoder.matches(userDTO.getUserPw(), existingUser.getUserPw())) {
+            throw new RuntimeException("Incorrect current password");
+        }
+
+        User updatedUser = User.builder()
+                .userId(existingUser.getUserId())
+                .userPw(userDTO.getUserPw())
+                .userName(userDTO.getUserName())
+                .userTel(userDTO.getUserTel())
+                .build();
+
+        User savedUser = userRepository.save(updatedUser);
+        UserDTO updatedUserDTO = savedUser.toDTO();
+
+        return updatedUserDTO;
     }
 
 
