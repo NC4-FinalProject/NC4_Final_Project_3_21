@@ -1,6 +1,6 @@
 package com.bit.nc4_final_project.repository.chatroom;
 
-import com.bit.nc4_final_project.entity.chat.ChatMessage;
+import com.bit.nc4_final_project.document.chat.ChatMessage;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

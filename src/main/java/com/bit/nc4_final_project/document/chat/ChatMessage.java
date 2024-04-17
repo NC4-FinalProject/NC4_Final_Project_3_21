@@ -1,11 +1,9 @@
-package com.bit.nc4_final_project.entity.chat;
-
-import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.bit.nc4_final_project.document.chat;
 
 import com.bit.nc4_final_project.dto.chat.ChatMessageDTO;
-
 import jakarta.persistence.Id;
+import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ChatMessage {
-    
+
     @Id
     private String id;
 

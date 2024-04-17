@@ -1,6 +1,6 @@
 package com.bit.nc4_final_project.repository.travel.mongo;
 
-import com.bit.nc4_final_project.document.Travel;
+import com.bit.nc4_final_project.document.travel.Travel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Aggregation;

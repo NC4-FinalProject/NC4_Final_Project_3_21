@@ -1,26 +1,18 @@
 package com.bit.nc4_final_project.controller.chat;
 
-import com.bit.nc4_final_project.dto.chat.ChatMakeInfo;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.chat.ChatDTO;
-import com.bit.nc4_final_project.dto.user.UserDTO;
+import com.bit.nc4_final_project.dto.chat.ChatMakeInfo;
 import com.bit.nc4_final_project.service.chat.ChatService;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -32,7 +24,7 @@ public class ChatController {
 
     // 채팅 목록 조회, 친구 요청 목록 조회
     @GetMapping("/getChatList")
-    public ResponseEntity<?> getChatList (@RequestParam("userId") String userId) {
+    public ResponseEntity<?> getChatList(@RequestParam("userId") String userId) {
         ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>();
         try {
             Map<String, Object> responseMap = new HashMap<>();
@@ -51,20 +43,20 @@ public class ChatController {
         }
     }
 
-     @PostMapping("/make-chat")
-     public ResponseEntity<?> makeChat (@RequestBody ChatMakeInfo chatMakeInfo) {
-         ResponseDTO <List<ChatDTO>> responseDTO = new ResponseDTO<>();
-            try {
-                List<ChatDTO> returnChatDTOList = chatService.makeChatRoom(chatMakeInfo);
-                responseDTO.setItem(returnChatDTOList);
-                responseDTO.setStatusCode(HttpStatus.OK.value());
-                return ResponseEntity.ok(responseDTO);
-            } catch (Exception e) {
-                responseDTO.setErrorCode(100);
-                responseDTO.setErrorMessage(e.getMessage());
-                responseDTO.setStatusCode(400);
-                return ResponseEntity.badRequest().body(responseDTO);
-            }
-     }
-    
+    @PostMapping("/make-chat")
+    public ResponseEntity<?> makeChat(@RequestBody ChatMakeInfo chatMakeInfo) {
+        ResponseDTO<List<ChatDTO>> responseDTO = new ResponseDTO<>();
+        try {
+            List<ChatDTO> returnChatDTOList = chatService.makeChatRoom(chatMakeInfo);
+            responseDTO.setItem(returnChatDTOList);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(100);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(400);
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
 }

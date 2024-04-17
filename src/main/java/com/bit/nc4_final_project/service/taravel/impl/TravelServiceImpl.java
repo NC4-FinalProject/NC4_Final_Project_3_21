@@ -1,7 +1,7 @@
 package com.bit.nc4_final_project.service.taravel.impl;
 
 import com.bit.nc4_final_project.api.TourApiExplorer;
-import com.bit.nc4_final_project.document.*;
+import com.bit.nc4_final_project.document.travel.*;
 import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;

@@ -1,8 +1,7 @@
 package com.bit.nc4_final_project.dto.chat;
 
+import com.bit.nc4_final_project.document.chat.ChatMessage;
 import lombok.*;
-
-import com.bit.nc4_final_project.entity.chat.ChatMessage;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.bit.nc4_final_project.document;
+package com.bit.nc4_final_project.document.travel;
 
 import jakarta.persistence.Embedded;
 import lombok.*;
