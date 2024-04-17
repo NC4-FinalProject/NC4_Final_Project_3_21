@@ -24,10 +24,7 @@ import java.util.stream.Collectors;
 @Builder
 public class Community {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "CommunitySeqGenerator"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 변경된 부분
     @Column(name = "com_seq")
     private Integer seq;
     private String name;

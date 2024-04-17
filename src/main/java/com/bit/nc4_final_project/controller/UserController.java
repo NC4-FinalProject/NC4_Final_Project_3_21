@@ -49,12 +49,19 @@ public class UserController {
 
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            if(e.getMessage().contains("Duplicate entry")) {
-                responseDTO.setErrorCode(301);
-            } else {
+            if (e.getMessage().equalsIgnoreCase("id is required")) {
                 responseDTO.setErrorCode(100);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else if (e.getMessage().equalsIgnoreCase("password is required")) {
+                responseDTO.setErrorCode(101);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else if (e.getMessage().equalsIgnoreCase("name is required")) {
+                responseDTO.setErrorCode(102);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else {
+                responseDTO.setErrorCode(103);
+                responseDTO.setErrorMessage(e.getMessage());
             }
-            responseDTO.setErrorMessage(e.getMessage());
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }
@@ -107,7 +114,7 @@ public class UserController {
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
             responseDTO.setErrorMessage(e.getMessage());
-            responseDTO.setErrorCode(202);
+            responseDTO.setErrorCode(300);
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.badRequest().body(responseDTO);
         }

@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                     httpSecurityHttpBasicConfigurer.disable();
                 })
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
-//                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                   httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/").permitAll();

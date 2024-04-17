@@ -3,7 +3,6 @@ package com.bit.nc4_final_project.service.community.impl;
 
 import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.dto.community.CommunitySubscriberDTO;
-import com.bit.nc4_final_project.dto.community.CommunityTagDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.community.Community;

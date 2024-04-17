@@ -10,6 +10,7 @@ import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.user.UserService;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +33,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
+        if (StringUtils.isBlank(userDTO.getUserId())) {
+            throw new IllegalArgumentException("id is required");
+        }
+        if (StringUtils.isBlank(userDTO.getUserPw())) {
+            throw new IllegalArgumentException("password is required");
+        }
+        if (StringUtils.isBlank(userDTO.getUserName())) {
+            throw new IllegalArgumentException("name is required");
+        }
+
         User user = userRepository.save(userDTO.toEntity());
 //        List<String> tags = userDTO.getTags();
 //
@@ -148,18 +159,15 @@ public class UserServiceImpl implements UserService {
 
         User existingUser = optionalUser.get();
 
-        if (!passwordEncoder.matches(userDTO.getUserPw(), existingUser.getUserPw())) {
-            throw new RuntimeException("Incorrect current password");
+        if (!userDTO.getUserPw().equals(existingUser.getUserPw())) {
+            String encodedPassword = passwordEncoder.encode(userDTO.getUserPw());
+            existingUser.setUserPw(encodedPassword);
         }
 
-        User updatedUser = User.builder()
-                .userId(existingUser.getUserId())
-                .userPw(userDTO.getUserPw())
-                .userName(userDTO.getUserName())
-                .userTel(userDTO.getUserTel())
-                .build();
+        existingUser.setUserName(userDTO.getUserName());
+        existingUser.setUserTel(userDTO.getUserTel());
 
-        User savedUser = userRepository.save(updatedUser);
+        User savedUser = userRepository.save(existingUser);
         UserDTO updatedUserDTO = savedUser.toDTO();
 
         return updatedUserDTO;

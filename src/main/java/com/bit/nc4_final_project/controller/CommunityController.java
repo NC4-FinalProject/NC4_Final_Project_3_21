@@ -75,8 +75,8 @@ public class CommunityController {
         try {
             // 커뮤니티 서비스를 통해 ID에 해당하는 커뮤니티 정보 조회
             CommunityDTO communityDTO = communityService.findBySeq(seq);
-            log.info(">> dto " + communityDTO);
-            log.info(">> dto " + communityDTO.getName() + "," + communityDTO.getSeq());
+//            log.info(">> dto " + communityDTO);
+//            log.info(">> dto " + communityDTO.getName() + "," + communityDTO.getSeq());
             // 조회된 정보를 responseDTO에 설정
             responseDTO.setItem(communityDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
@@ -108,7 +108,11 @@ public class CommunityController {
                                          @RequestPart("tags") List<CommunityTagDTO> communityTagDTOList,
                                          @RequestPart("picture") MultipartFile picture,
                                          @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        System.out.println("fff");
         ResponseDTO<CommunityDTO> responseDTO = new ResponseDTO<>();
+        log.info(">> " + communityDTO.toString());
+        log.info("communityDTO : " + communityDTO.getName());
+        communityTagDTOList.forEach(tag -> System.out.println(tag.toString()));
         try {
             // 커뮤니티 게시글과 태그 리스트 정보 업데이트
             communityDTO.setTags(communityTagDTOList);
