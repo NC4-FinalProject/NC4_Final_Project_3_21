@@ -1,18 +1,20 @@
 package com.bit.nc4_final_project.controller;
 
+import com.bit.nc4_final_project.document.AreaCode;
+import com.bit.nc4_final_project.document.SigunguCode;
 import com.bit.nc4_final_project.dto.ResponseDTO;
-import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.entity.travel.AreaCode;
-import com.bit.nc4_final_project.entity.travel.SigunguCode;
+import com.bit.nc4_final_project.entity.CustomUserDetails;
 import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -22,11 +24,20 @@ public class TravelController {
     private final TravelService travelService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTravel(@PathVariable("id") String contentId) {
+    public ResponseEntity<?> getTravel(@PathVariable("id") String id,
+                                       @RequestParam("isIncreaseViewCnt") boolean isIncreaseViewCnt,
+                                       @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
-
         try {
-            TravelDTO travelDTO = travelService.getTravelDTO(contentId);
+            if (isIncreaseViewCnt) {
+                travelService.updateViewCnt(id);
+            }
+            TravelDTO travelDTO;
+            if (customUserDetails == null) {
+                travelDTO = travelService.getTravelDTO(id, null);
+            } else {
+                travelDTO = travelService.getTravelDTO(id, customUserDetails.getUserSeq());
+            }
             responseDTO.setItem(travelDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
@@ -121,7 +132,8 @@ public class TravelController {
     public ResponseEntity<?> getTravelInCarousel(@RequestParam(value = "searchArea", defaultValue = "") String searchArea,
                                                  @RequestParam(value = "searchSigungu", defaultValue = "") String searchSigungu,
                                                  @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
-                                                 @RequestParam(value = "sort", defaultValue = "") String sort) {
+                                                 @RequestParam(value = "sort", defaultValue = "") String sort,
+                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
         try {
             if (sort.equals("bookmark")) {
@@ -172,10 +184,17 @@ public class TravelController {
     }
 
     @PostMapping("/bookmark")
-    public ResponseEntity<?> regBookmark(@RequestBody BookmarkDTO bookmarkDTO) {
-        ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
+    public ResponseEntity<?> regBookmark(@RequestBody Map<String, ?> requestBody,
+                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        String id = (String) requestBody.get("id");
+        boolean isReg = (boolean) requestBody.get("isReg");
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
         try {
-            travelService.regBookmark(bookmarkDTO);
+            if (isReg) {
+                travelService.cancelBookmark(id, customUserDetails.getUserSeq());
+            } else {
+                travelService.regBookmark(id, customUserDetails.getUserSeq());
+            }
             responseDTO.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
@@ -185,6 +204,4 @@ public class TravelController {
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
-
-
 }

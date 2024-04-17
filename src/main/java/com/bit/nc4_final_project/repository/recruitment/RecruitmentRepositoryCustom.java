@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.repository.recruitment;
 
 import com.bit.nc4_final_project.entity.Recruitment;
-import com.bit.nc4_final_project.entity.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -4,6 +4,7 @@ import com.bit.nc4_final_project.dto.community.CommunityDTO;
 import com.bit.nc4_final_project.dto.community.CommunityTagDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.entity.board.Board;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,10 +24,7 @@ import java.util.stream.Collectors;
 @Builder
 public class Community {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "CommunitySeqGenerator"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 변경된 부분
     @Column(name = "com_seq")
     private Integer seq;
     private String name;
@@ -59,7 +57,7 @@ public class Community {
                 .picture(this.picture)
                 .description(this.description)
                 .user(userDTO)
-                .tagDTOList(this.communityTags != null ? this.communityTags.stream()
+                .tags(this.communityTags != null ? this.communityTags.stream()
                         .map(tag -> new CommunityTagDTO(tag.getSeq(), tag.getContent()))
                         .collect(Collectors.toList()) : null)
                 .build();

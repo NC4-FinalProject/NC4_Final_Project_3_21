@@ -4,6 +4,7 @@ package com.bit.nc4_final_project.entity.board;
 import com.bit.nc4_final_project.dto.board.BoardDTO;
 import com.bit.nc4_final_project.entity.User;
 import com.bit.nc4_final_project.entity.community.Community;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@SequenceGenerator(
+        name = "BoardSeqGenerator",
+        sequenceName = "T_COM_BOARD_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Board {
     @Id
     @GeneratedValue(
@@ -42,7 +49,7 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "com_seq")
-//    @JsonBackReference
+    @JsonBackReference
     private Community community;
 
     public BoardDTO toDTO() {

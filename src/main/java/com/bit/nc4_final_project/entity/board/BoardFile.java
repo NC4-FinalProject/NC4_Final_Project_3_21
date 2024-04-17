@@ -22,9 +22,6 @@ public class BoardFile {
     private Integer seq;
 
     private String name;
-    private String path;
-    private String origin;
-    private String cate;
     @Transient
     private String status;
     @Transient
@@ -39,9 +36,6 @@ public class BoardFile {
                 .seq(this.seq)
                 .seq(this.board.getSeq())
                 .name(this.name)
-                .path(this.path)
-                .origin(this.origin)
-                .cate(this.cate)
                 .status(this.status)
                 .newFileName(this.newFileName)
                 .build();

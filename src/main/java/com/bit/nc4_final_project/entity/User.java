@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.entity;
 
 import com.bit.nc4_final_project.dto.user.UserDTO;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "T_USER")
@@ -37,7 +33,7 @@ public class User {
     private String userId;
     private String userPw;
     private String userName;
-//    private String location;
+    // private String location;
     @Column(nullable = true)
     private LocalDateTime userBirth;
     @Column(nullable = true)

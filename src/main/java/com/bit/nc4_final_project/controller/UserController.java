@@ -31,8 +31,6 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
-
-//        System.out.println(userDTO);
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
 
         try {

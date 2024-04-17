@@ -2,6 +2,7 @@ package com.bit.nc4_final_project.dto.travel;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -27,12 +28,15 @@ public class TravelDTO {
     private String createdtime;
     private String modifiedtime;
     private Integer viewCnt;
+    @Setter
+    private boolean isBookmark;
     private Integer bookmarkCnt;
     private String areaCode;
     private String areaName;
     private String sigunguCode;
     private String sigunguName;
     private TravelDetailDTO detail;
+    @Setter
     private PetTravelDTO petTravel;
 
     private String searchArea;
