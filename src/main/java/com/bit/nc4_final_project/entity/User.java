@@ -75,8 +75,7 @@ public class User {
 
     }
 
-    public void setProfileImageUrl(String fileUrl) {
-    }
+
 
     public void setUserPw(String userPw) {
         this.userPw = userPw;
@@ -89,4 +88,7 @@ public class User {
         this.userTel = userTel;
     }
 
+    public void setProfileImageUrl(String fileUrl) {
+        this.profileImageUrl = fileUrl;
+    }
 }

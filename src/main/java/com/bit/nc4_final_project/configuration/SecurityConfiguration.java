@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/review/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-out/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/bookmark/**").hasAnyRole("USER");
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-userid/**").permitAll();
@@ -50,9 +51,9 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").authenticated();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/chat/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/chatting/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/update/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/delete/**").permitAll();
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/upload/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/upload/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/delete/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/update/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/kakao").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/google").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/modifyuser/**").permitAll();
