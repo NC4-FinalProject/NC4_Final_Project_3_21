@@ -5,6 +5,7 @@ import com.bit.nc4_final_project.document.travel.SigunguCode;
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import com.bit.nc4_final_project.entity.CustomUserDetails;
+import com.bit.nc4_final_project.service.review.ReviewService;
 import com.bit.nc4_final_project.service.taravel.TravelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TravelController {
     private final TravelService travelService;
+    private final ReviewService reviewService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTravel(@PathVariable("id") String id,
@@ -37,6 +39,7 @@ public class TravelController {
             } else {
                 travelDTO = travelService.getTravelDTO(id, customUserDetails.getUserSeq());
             }
+            travelDTO.setReviews(reviewService.getReviewsByTravelId(travelDTO.getId()));
             responseDTO.setItem(travelDTO);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 
@@ -131,13 +134,9 @@ public class TravelController {
     public ResponseEntity<?> getTravelInCarousel(@RequestParam(value = "searchArea", defaultValue = "") String searchArea,
                                                  @RequestParam(value = "searchSigungu", defaultValue = "") String searchSigungu,
                                                  @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
-                                                 @RequestParam(value = "sort", defaultValue = "") String sort,
-                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+                                                 @RequestParam(value = "sort", defaultValue = "") String sort) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
         try {
-            if (sort.equals("bookmark")) {
-                // 북마크 조회 추가
-            }
             List<TravelDTO> travelDTOs = travelService.searchAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
             responseDTO.setItems(travelDTOs);
             responseDTO.setItem(TravelDTO.builder()
@@ -162,13 +161,47 @@ public class TravelController {
                                                 @RequestParam(value = "userMapy") double userMapy) {
         ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
         try {
-            double radius = 3.0 / 111.0;
-            double minMapx = userMapx - radius;
-            double maxMapx = userMapx + radius;
-            double minMapy = userMapy - radius;
-            double maxMapy = userMapy + radius;
+            List<TravelDTO> travelDTOs = travelService.findNearbyTravels(userMapx, userMapy, null);
 
-            List<TravelDTO> travelDTOs = travelService.findNearbyTravels(minMapx, maxMapx, minMapy, maxMapy);
+            responseDTO.setItems(travelDTOs);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(401);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/near")
+    public ResponseEntity<?> getNearTravels(@RequestParam(value = "userMapx") double userMapx,
+                                            @RequestParam(value = "userMapy") double userMapy) {
+        ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
+        try {
+            List<TravelDTO> travelDTOs = travelService.findNearbyTravels(userMapx, userMapy, 12);
+
+            responseDTO.setItems(travelDTOs);
+            responseDTO.setStatusCode(HttpStatus.OK.value());
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            responseDTO.setErrorCode(401);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
+
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/viewCnt")
+    public ResponseEntity<?> getViewCnt() {
+        ResponseDTO<TravelDTO> responseDTO = new ResponseDTO<>();
+        try {
+            List<TravelDTO> travelDTOs = travelService.findByOrderByViewCnt(12);
+
             responseDTO.setItems(travelDTOs);
             responseDTO.setStatusCode(HttpStatus.OK.value());
 

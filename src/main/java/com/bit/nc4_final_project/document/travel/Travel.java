@@ -42,7 +42,7 @@ public class Travel {
     @Field("detail")
     private TravelDetail detail;
 
-    public TravelDTO toDTO(Integer bookmarkCnt, String areaName, String sigunguName) {
+    public TravelDTO toDTO(int bookmarkCnt, String areaName, String sigunguName) {
         TravelDTO.TravelDTOBuilder builder = TravelDTO.builder()
                 .id(this.id)
                 .contentid(this.contentid)

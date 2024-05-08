@@ -1,7 +1,6 @@
 package com.bit.nc4_final_project.jwt;
 
 
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,16 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     private String parseBearerToken(HttpServletRequest request) {
-        /*
-         * request 헤더에 담겨있는 토큰의 형태
-         * header: {
-         *   Authorization: "Bearer 토큰값"
-         * }
-         * */
         String bearerToken = request.getHeader("Authorization");
-
-        System.out.println("======================================");
-        System.out.println(bearerToken);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             // bearerToken에서 Bearer를 제거한 실제 토큰 값 리턴

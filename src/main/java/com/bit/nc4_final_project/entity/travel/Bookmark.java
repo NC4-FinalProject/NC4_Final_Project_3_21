@@ -2,7 +2,6 @@ package com.bit.nc4_final_project.entity.travel;
 
 import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.dto.user.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,12 +35,11 @@ public class Bookmark {
     private String travelId;
     private Integer userSeq;
 
-    public BookmarkDTO toDTO(TravelDTO travelDTO, UserDTO userDTO) {
+    public BookmarkDTO toDTO(TravelDTO travelDTO) {
         return BookmarkDTO.builder()
                 .seq(this.seq)
                 .bookmarkDate(this.bookmarkDate)
                 .travel(travelDTO)
-                .user(userDTO)
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package com.bit.nc4_final_project.entity;
 
 
 import com.bit.nc4_final_project.dto.review.ReviewDTO;
+import com.bit.nc4_final_project.dto.travel.TravelDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,7 +35,7 @@ public class Review {
     private LocalDateTime regDate;
 
     @Setter
-    private String travalId;
+    private String travelId;
 
     @Setter
     @ManyToOne
@@ -46,7 +47,7 @@ public class Review {
     @Transient
     private String searchKeyword;
 
-    public ReviewDTO toDTO() {
+    public ReviewDTO toDTO(TravelDTO travelDTO) {
         return ReviewDTO.builder()
                 .seq(this.seq)
                 .title(this.title)
@@ -54,7 +55,8 @@ public class Review {
                 .writer(this.writer)
                 .rating(this.rating)
                 .regDate(LocalDateTime.parse(this.regDate.toString()))
-//                .travel(travelDTO)
+                .travel(travelDTO)
+                .travelId(travelDTO.getId())
                 .build();
     }
 }

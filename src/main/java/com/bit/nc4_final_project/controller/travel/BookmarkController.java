@@ -24,18 +24,26 @@ public class BookmarkController {
     private final TravelService travelService;
 
     @GetMapping("/")
-    public ResponseEntity<?> getTravel(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                       @PageableDefault(page = 0, size = 8) Pageable pageable) {
+    public ResponseEntity<?> getBookmark(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                         @PageableDefault(page = 0, size = 8) Pageable pageable) {
         ResponseDTO<BookmarkDTO> responseDTO = new ResponseDTO<>();
         try {
+            if (customUserDetails == null) {
+                throw new RuntimeException("not signed in");
+            }
+
             Page<BookmarkDTO> bookmarkDTOS = travelService.getMyBookmarkList(customUserDetails.getUserSeq(), pageable);
             responseDTO.setPageItems(bookmarkDTOS);
             responseDTO.setStatusCode(HttpStatus.OK.value());
-
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            responseDTO.setErrorCode(403);
-            responseDTO.setErrorMessage(e.getMessage());
+            if (e.getMessage().equalsIgnoreCase("not signed in")) {
+                responseDTO.setErrorCode(200);
+                responseDTO.setErrorMessage(e.getMessage());
+            } else {
+                responseDTO.setErrorCode(403);
+                responseDTO.setErrorMessage(e.getMessage());
+            }
             responseDTO.setStatusCode(HttpStatus.BAD_REQUEST.value());
 
             return ResponseEntity.badRequest().body(responseDTO);

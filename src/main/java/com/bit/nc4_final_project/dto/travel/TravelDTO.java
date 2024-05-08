@@ -1,8 +1,11 @@
 package com.bit.nc4_final_project.dto.travel;
 
+import com.bit.nc4_final_project.dto.review.ReviewDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -38,6 +41,9 @@ public class TravelDTO {
     private TravelDetailDTO detail;
     @Setter
     private PetTravelDTO petTravel;
+
+    @Setter
+    private List<ReviewDTO> reviews;
 
     private String searchArea;
     private String searchSigungu;
