@@ -18,8 +18,8 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
     // JWT TOKEN의 signature 부분이 될 서명 키 선언
-    // bitcampdevops4finalproject20240419endoftheclass 을 BASE64 인코딩한 값
-    private static final String SECRET_KEY = "Yml0Y2FtcGRldm9wczRmaW5hbHByb2plY3QyMDI0MDQxOWVuZG9mdGhlY2xhc3M=";
+    // bitcampdevops4finalprojectfighting502endofclass 을 BASE64 인코딩한 값
+    private static final String SECRET_KEY = "Yml0Y2FtcGRldm9wczRmaW5hbHByb2plY3RmaWdodGluZzUwMmVuZG9mY2xhc3M=";
 
     // SECRET_KEY를 KEY 객체로 변환
     SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));

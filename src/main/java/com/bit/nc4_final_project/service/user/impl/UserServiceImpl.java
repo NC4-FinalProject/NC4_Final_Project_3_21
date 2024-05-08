@@ -11,8 +11,10 @@ import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.user.UserService;
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         signinDTO.setLastLoginDate(LocalDateTime.now().toString());
         signinDTO.setToken(jwtTokenProvider.create(signInUser.get()));
-
+        System.out.println(jwtTokenProvider.create(signInUser.get()));
         userRepository.save(signinDTO.toEntity());
 //         System.out.println(jwtTokenProvider.create(signInUser.get()));
         userRepository.flush();
@@ -88,8 +90,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteProfileImage(String userid) {
-        User user = userRepository.findByUserId(userid)
+    public void deleteProfileImage(String userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String fileUrl = user.getProfileImageUrl();
@@ -102,10 +104,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String uploadProfileImage(MultipartFile file, String userid) {
-        User user = userRepository.findByUserId(userid)
+    public String uploadProfileImage(MultipartFile file, String userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         String fileName = UUID.randomUUID().toString();
         try {
             PutObjectRequest request = new PutObjectRequest(fileUtils.getBucketName(), fileName, file.getInputStream(), new ObjectMetadata())
@@ -114,17 +115,15 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
         }
-        String fileUrl = fileUtils.getStorageUrl() + "/" + fileUtils.getBucketName() + "/" + fileName;
-
+        String fileUrl = "https://" + fileUtils.getBucketName() + ".s3." + "ap-northeast-2" + ".amazonaws.com/" + fileName;
         user.setProfileImageUrl(fileUrl);
-        userRepository.save(user);
-
+            userRepository.save(user);
         return fileUrl;
     }
 
     @Override
-    public String updateProfileImage(MultipartFile file, String userid) {
-        User user = userRepository.findByUserId(userid)
+    public String updateProfileImage(MultipartFile file, String userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String existingFileUrl = user.getProfileImageUrl();
@@ -141,7 +140,7 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
         }
-        String newFileUrl = fileUtils.getStorageUrl() + "/" + fileUtils.getBucketName() + "/" + newFileName;
+        String newFileUrl = "https://" + fileUtils.getBucketName() + ".s3." + "ap-northeast-2" + ".amazonaws.com/" + newFileName;
 
         user.setProfileImageUrl(newFileUrl);
         userRepository.save(user);
@@ -150,8 +149,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO modifyUser(String userid, UserDTO userDTO) {
-        Optional<User> optionalUser = userRepository.findByUserId(userid);
+    public UserDTO modifyUser(String userId, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByUserId(userId);
 
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
@@ -159,18 +158,31 @@ public class UserServiceImpl implements UserService {
 
         User existingUser = optionalUser.get();
 
-        if (!userDTO.getUserPw().equals(existingUser.getUserPw())) {
+        if (userDTO.getUserPw() != null && !userDTO.getUserPw().isEmpty()) {
             String encodedPassword = passwordEncoder.encode(userDTO.getUserPw());
             existingUser.setUserPw(encodedPassword);
         }
 
-        existingUser.setUserName(userDTO.getUserName());
-        existingUser.setUserTel(userDTO.getUserTel());
+        if (userDTO.getUserName() != null && !userDTO.getUserName().isEmpty()) {
+            existingUser.setUserName(userDTO.getUserName());
+        }
+
+
+        if (userDTO.getUserTel() != null && !userDTO.getUserTel().isEmpty()) {
+            existingUser.setUserTel(userDTO.getUserTel());
+        }
 
         User savedUser = userRepository.save(existingUser);
         UserDTO updatedUserDTO = savedUser.toDTO();
 
         return updatedUserDTO;
+    }
+
+    public UserDTO getUserInfo(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return user.toDTO();
     }
 
 

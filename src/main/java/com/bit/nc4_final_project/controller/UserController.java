@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -163,26 +164,39 @@ public class UserController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
-        String userid = jwtTokenProvider.validateAndGetUsername(token);
-        String profileImageUrl = userService.uploadProfileImage(file, userid);
-        System.out.println(userid);
+    public ResponseEntity<String> uploadProfileImage(@RequestParam(value = "file") MultipartFile file, @RequestHeader("Authorization") String token) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName(); // 사용자의 아이디를 가져옵니다.
+        String profileImageUrl = userService.uploadProfileImage(file, userId);
         return ResponseEntity.ok(profileImageUrl);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteProfileImage(@RequestHeader("Authorization") String token) {
-        String userid = jwtTokenProvider.validateAndGetUsername(token);
-        userService.deleteProfileImage(userid);
+        String userId = jwtTokenProvider.validateAndGetUsername(token);
+        userService.deleteProfileImage(userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update")
     public ResponseEntity<String> updateProfileImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
-        String userid = jwtTokenProvider.validateAndGetUsername(token);
-        String profileImageUrl = userService.updateProfileImage(file, userid);
+        String userId = jwtTokenProvider.validateAndGetUsername(token);
+        String profileImageUrl = userService.updateProfileImage(file, userId);
         return ResponseEntity.ok(profileImageUrl);
     }
+
+    @GetMapping("/modifyuser/{userId}")
+    public ResponseEntity<UserDTO> getUserInfo(@PathVariable("userId") String userId, @AuthenticationPrincipal UserDetails userDetails) {
+        // 사용자 인증 및 권한 확인
+        if (!userDetails.getUsername().equals(userId)) {
+            // 권한 없음 처리
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        UserDTO userDTO = userService.getUserInfo(userId);
+        return ResponseEntity.ok(userDTO);
+    }
+
 
     @PutMapping("/modifyuser/{userId}")
     public ResponseEntity<ResponseDTO<Map<String, Object>>> modifyUser(
