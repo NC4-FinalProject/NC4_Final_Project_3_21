@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-up/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/sign-in/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/travel/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/bookmark/**").hasAnyRole("USER");
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-userid/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/check-username/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/community/**").authenticated();

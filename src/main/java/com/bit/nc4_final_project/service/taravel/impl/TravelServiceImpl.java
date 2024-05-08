@@ -4,7 +4,6 @@ import com.bit.nc4_final_project.api.TourApiExplorer;
 import com.bit.nc4_final_project.document.travel.*;
 import com.bit.nc4_final_project.dto.travel.BookmarkDTO;
 import com.bit.nc4_final_project.dto.travel.TravelDTO;
-import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.travel.Bookmark;
 import com.bit.nc4_final_project.repository.travel.BookmarkRepository;
 import com.bit.nc4_final_project.repository.travel.mongo.AreaCodeRepository;
@@ -143,8 +142,9 @@ public class TravelServiceImpl implements TravelService {
                 sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
             }
         }
-        // 북마크 조회 추가
-        return travel.toDTO(0, areaName, sigunguName);
+
+        int bookmarkCnt = bookmarkRepository.findTotalCntByTravelId(travel.getId());
+        return travel.toDTO(bookmarkCnt, areaName, sigunguName);
     }
 
     @Transactional
@@ -164,30 +164,64 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort) {
         List<Travel> travels = travelRepository.findAllCarousel(searchArea, searchSigungu, searchKeyword, sort);
+
+        if ("bookmark".equals(sort)) {
+            List<String> travelsIds = travels.stream().map(Travel::getId).toList();
+            List<String> orderTravelsIds = bookmarkRepository.findTop12BYTravelId(travelsIds);
+
+            List<Travel> orderedTravels = new ArrayList<>(travels.stream()
+                    .filter(travel -> orderTravelsIds.contains(travel.getId()))
+                    .toList());
+
+            if (orderedTravels.size() < 12) {
+                List<Travel> remainingTravels = travels.stream()
+                        .filter(travel -> !orderTravelsIds.contains(travel.getId()))
+                        .collect(Collectors.toList());
+
+                Collections.shuffle(remainingTravels);
+                orderedTravels.addAll(remainingTravels.subList(0, Math.min(12 - orderedTravels.size(), remainingTravels.size())));
+            }
+
+            return orderedTravels.stream()
+                    .map(this::createTravelDTO)
+                    .collect(Collectors.toList());
+        }
+
         return travels.stream()
                 .map(this::createTravelDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Page<TravelDTO> searchAllPageable(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort) {
-        Page<Travel> travelPage = travelRepository.findAllPagination(searchArea, searchSigungu, searchKeyword, sort, pageable);
-        return travelPage.map(travel -> {
-            AreaCode areaCode = getAreaCode(travel.getAreaCode());
-            String sigunguName = getSigunguName(areaCode, travel.getSigunguCode());
-            return travel.toDTO(0, areaCode.getName(), sigunguName);
-        });
-    }
+    public List<TravelDTO> findNearbyTravels(double userMapx, double userMapy, Integer resultNum) {
+        double radius = 3.0 / 111.0;
+        double minMapx = userMapx - radius;
+        double maxMapx = userMapx + radius;
+        double minMapy = userMapy - radius;
+        double maxMapy = userMapy + radius;
 
-    @Override
-    public List<TravelDTO> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy) {
-        List<Travel> travels = travelRepository.findNearbyTravels(minMapx, maxMapx, minMapy, maxMapy);
+        List<Travel> travels;
+        if (resultNum == null) {
+            travels = travelRepository.findNearbyMap(minMapx, maxMapx, minMapy, maxMapy);
+        } else {
+            travels = travelRepository.findNearbyMapLimit(minMapx, maxMapx, minMapy, maxMapy, resultNum);
+        }
+
         if (travels == null) {
             log.warn("No nearby travels found.");
             return Collections.emptyList();
         }
+
         return travels.stream()
-                .filter(Objects::nonNull)
+                .map(this::createTravelDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TravelDTO> findByOrderByViewCnt(int resultNum) {
+        List<Travel> travels = travelRepository.findByOrderByViewCntDesc(resultNum);
+
+        return travels.stream()
                 .map(this::createTravelDTO)
                 .collect(Collectors.toList());
     }
@@ -208,13 +242,13 @@ public class TravelServiceImpl implements TravelService {
         bookmarkRepository.delete(bookmark);
     }
 
+    @Transactional
     @Override
     public Page<BookmarkDTO> getMyBookmarkList(Integer userSeq, Pageable pageable) {
-        Page<Bookmark> bookmarks = bookmarkRepository.findAllByUserSeq(userSeq, pageable);
+        Page<Bookmark> bookmarks = bookmarkRepository.findAllByUserSeq(pageable, userSeq);
         return bookmarks.map(bookmark -> {
             TravelDTO travelDTO = getTravelDTO(bookmark.getTravelId(), userSeq);
-            UserDTO userDTO = userRepository.findBySeq(bookmark.getUserSeq()).toDTO();
-            return bookmark.toDTO(travelDTO, userDTO);
+            return bookmark.toDTO(travelDTO);
         });
     }
 

@@ -29,9 +29,9 @@ public interface TravelService {
 
     List<TravelDTO> searchAllCarousel(String searchArea, String searchSigungu, String searchKeyword, String sort);
 
-    Page<TravelDTO> searchAllPageable(Pageable pageable, String searchArea, String searchSigungu, String searchKeyword, String sort);
+    List<TravelDTO> findNearbyTravels(double userMapx, double userMapy, Integer resultNum);
 
-    List<TravelDTO> findNearbyTravels(double minMapx, double maxMapx, double minMapy, double maxMapy);
+    List<TravelDTO> findByOrderByViewCnt(int resultNum);
 
     void regBookmark(String id, Integer userSeq);
 

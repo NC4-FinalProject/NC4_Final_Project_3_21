@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 @Repository
 class TravelRepositoryImpl implements TravelRepositoryCustom {
-
     private final MongoTemplate mongoTemplate;
 
     @Autowired
@@ -30,33 +29,34 @@ class TravelRepositoryImpl implements TravelRepositoryCustom {
     @Override
     public List<Travel> findAllCarousel(String area, String sigungu, String keyword, String sort) {
         Criteria criteria = new Criteria();
-        if (StringUtils.hasText(area) && !area.equals("")) {
+        if (StringUtils.hasText(area)) {
             criteria.and("areaCode").is(area);
         }
-        if (StringUtils.hasText(sigungu) && !sigungu.equals("")) {
+        if (StringUtils.hasText(sigungu)) {
             criteria.and("sigunguCode").is(sigungu);
         }
-        if (StringUtils.hasText(keyword) && !keyword.equals("")) {
+        if (StringUtils.hasText(keyword)) {
             criteria.and("title").regex(keyword, "i");
         }
 
         MatchOperation matchOperation = Aggregation.match(criteria);
-
         SortOperation sortOperation = null;
+
         if ("alphabetical".equals(sort)) {
             sortOperation = Aggregation.sort(Sort.by("title").ascending());
         } else if ("view".equals(sort)) {
             sortOperation = Aggregation.sort(Sort.by("viewCnt").descending());
         }
 
+        Aggregation aggregation;
         if ("random".equals(sort)) {
-            Aggregation aggregation = Aggregation.newAggregation(matchOperation,
-                    Aggregation.sample(12));
-            return mongoTemplate.aggregate(aggregation, "travel", Travel.class).getMappedResults();
+            aggregation = Aggregation.newAggregation(matchOperation, Aggregation.sample(12));
+        } else if ("bookmark".equals(sort)) {
+            aggregation = Aggregation.newAggregation(matchOperation);
+        } else {
+            LimitOperation limitOperation = Aggregation.limit(12);
+            aggregation = Aggregation.newAggregation(matchOperation, sortOperation, limitOperation);
         }
-
-        LimitOperation limitOperation = Aggregation.limit(12);
-        Aggregation aggregation = Aggregation.newAggregation(matchOperation, sortOperation, limitOperation);
 
         return mongoTemplate.aggregate(aggregation, "travel", Travel.class).getMappedResults();
     }

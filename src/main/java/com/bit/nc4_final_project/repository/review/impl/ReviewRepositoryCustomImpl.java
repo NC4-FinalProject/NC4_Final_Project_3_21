@@ -5,7 +5,6 @@ import com.bit.nc4_final_project.repository.review.ReviewRepositoryCustom;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -39,7 +38,6 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .where(searchPredicate)
                 .from(review)
                 .fetchOne();
-
 
 
         return new PageImpl<>(reviewList, pageable, totalCnt);
