@@ -57,6 +57,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/kakao").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/google").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/modifyuser/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/areas/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)

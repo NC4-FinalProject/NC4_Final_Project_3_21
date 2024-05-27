@@ -1,11 +1,14 @@
 package com.bit.nc4_final_project.controller;
 
+import com.bit.nc4_final_project.document.user.AreaCode;
 import com.bit.nc4_final_project.dto.ResponseDTO;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.jwt.JwtTokenProvider;
+import com.bit.nc4_final_project.repository.user.area.UserAreaCodeRepository;
 import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,9 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Slf4j
 @RestController
@@ -30,10 +33,18 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private UserAreaCodeRepository userAreaCodeRepository;
+
+    @GetMapping("/areas")
+    public List<AreaCode> getAreas() {
+        return userAreaCodeRepository.findAll();
+    }
+
     @PostMapping("/sign-up")
     public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
-
+        System.out.println(userDTO);
         try {
             userDTO.setActive(true);
             userDTO.setLastLoginDate(LocalDateTime.now().toString());
@@ -164,7 +175,7 @@ public class UserController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam(value = "file") MultipartFile file, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<String> uploadProfileImage(@RequestParam(value = "file") MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName(); // 사용자의 아이디를 가져옵니다.
         String profileImageUrl = userService.uploadProfileImage(file, userId);
@@ -172,16 +183,18 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteProfileImage(@RequestHeader("Authorization") String token) {
-        String userId = jwtTokenProvider.validateAndGetUsername(token);
+    public ResponseEntity<Void> deleteProfileImage() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
         userService.deleteProfileImage(userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateProfileImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
-        String userId = jwtTokenProvider.validateAndGetUsername(token);
-        String profileImageUrl = userService.updateProfileImage(file, userId);
+    public ResponseEntity<String> updateProfileImage(@RequestParam("file") MultipartFile file) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        String profileImageUrl = userService.uploadProfileImage(file, userId);
         return ResponseEntity.ok(profileImageUrl);
     }
 

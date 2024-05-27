@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,6 +20,10 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final StringPath areaCode = createString("areaCode");
+
+    public final StringPath areaName = createString("areaName");
+
     public final BooleanPath isActive = createBoolean("isActive");
 
     public final DateTimePath<java.time.LocalDateTime> lastLoginDate = createDateTime("lastLoginDate", java.time.LocalDateTime.class);
@@ -29,6 +34,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> seq = createNumber("seq", Integer.class);
 
+    public final StringPath sigunguCode = createString("sigunguCode");
+
+    public final StringPath sigunguName = createString("sigunguName");
+
     public final DateTimePath<java.time.LocalDateTime> userBirth = createDateTime("userBirth", java.time.LocalDateTime.class);
 
     public final StringPath userId = createString("userId");
@@ -38,6 +47,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath userPw = createString("userPw");
 
     public final DateTimePath<java.time.LocalDateTime> userRegDate = createDateTime("userRegDate", java.time.LocalDateTime.class);
+
+    public final ListPath<UserTag, QUserTag> userTags = this.<UserTag, QUserTag>createList("userTags", UserTag.class, QUserTag.class, PathInits.DIRECT2);
 
     public final StringPath userTel = createString("userTel");
 

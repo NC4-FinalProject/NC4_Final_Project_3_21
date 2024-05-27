@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bit.nc4_final_project.common.FileUtils;
 import com.bit.nc4_final_project.dto.user.UserDTO;
 import com.bit.nc4_final_project.entity.User;
+import com.bit.nc4_final_project.entity.UserTag;
 import com.bit.nc4_final_project.jwt.JwtTokenProvider;
 import com.bit.nc4_final_project.repository.user.UserRepository;
 import com.bit.nc4_final_project.service.user.UserService;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,13 +48,13 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userRepository.save(userDTO.toEntity());
-//        List<String> tags = userDTO.getTags();
-//
-//        tags.forEach(tagContent -> {
-//            UserTag userTag = new UserTag();
-//            userTag.setContent(tagContent);
-//            user.addUserTag(userTag);
-//        });
+        List<String> tags = userDTO.getTags();
+
+        tags.forEach(tagContent -> {
+            UserTag userTag = new UserTag();
+            userTag.setContent(tagContent);
+            user.addUserTag(userTag);
+        });
 
         return user.toDTO();
     }

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = {"com.bit.nc4_final_project.repository.travel.mongo", "com.bit.nc4_final_project.repository.chatroom"})
+@EnableMongoRepositories(basePackages = {"com.bit.nc4_final_project.repository.travel.mongo", "com.bit.nc4_final_project.repository.chatroom", "com.bit.nc4_final_project.repository.user.area"})
 public class MongoConfiguration extends AbstractMongoClientConfiguration {
     @Value("${spring.data.mongodb.uri}")
     private String uri;
