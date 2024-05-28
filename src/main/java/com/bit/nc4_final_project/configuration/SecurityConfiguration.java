@@ -27,7 +27,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-
                 .cors(httpSecurityCorsConfigurer -> {
 
                 })
@@ -56,6 +55,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/update/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/kakao").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/google").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/user/areas/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/modifyuser/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
