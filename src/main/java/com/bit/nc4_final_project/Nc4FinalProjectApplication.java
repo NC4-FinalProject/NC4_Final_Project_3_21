@@ -11,7 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         basePackages = "com.bit.nc4_final_project.repository",
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.bit\\.nc4_final_project\\.repository\\.travel\\.mongo\\..*"),
-                @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.bit\\.nc4_final_project\\.repository\\.chatroom\\..*")
+                @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.bit\\.nc4_final_project\\.repository\\.chatroom\\..*"),
+                @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.bit\\.nc4_final_project\\.repository\\.user\\.area\\..*")
         }
 )
 public class Nc4FinalProjectApplication {
