@@ -8,6 +8,8 @@ import com.bit.nc4_final_project.repository.user.area.UserAreaCodeRepository;
 import com.bit.nc4_final_project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserAreaCodeRepository userAreaCodeRepository;
@@ -200,13 +203,17 @@ public class UserController {
 
     @GetMapping("/modifyuser/{userId}")
     public ResponseEntity<UserDTO> getUserInfo(@PathVariable("userId") String userId, @AuthenticationPrincipal UserDetails userDetails) {
-        // 사용자 인증 및 권한 확인
+        logger.info("Received request to get user info for userId: {}", userId);
+
         if (!userDetails.getUsername().equals(userId)) {
-            // 권한 없음 처리
+            logger.warn("Access denied for user: {}", userDetails.getUsername());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
+        logger.debug("Fetching user info for userId: {}", userId);
         UserDTO userDTO = userService.getUserInfo(userId);
+        logger.debug("User info fetched: {}", userDTO);
+
         return ResponseEntity.ok(userDTO);
     }
 

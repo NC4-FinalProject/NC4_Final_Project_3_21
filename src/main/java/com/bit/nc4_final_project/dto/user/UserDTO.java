@@ -73,4 +73,20 @@ public class UserDTO {
 
         return user;
     }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public void setSigunguCode(String sigunguCode) {
+        this.sigunguCode = sigunguCode;
+    }
+
+    public void setSigunguName(String sigunguName) {
+        this.sigunguName = sigunguName;
+    }
 }
