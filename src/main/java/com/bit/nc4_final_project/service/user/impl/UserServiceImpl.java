@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userDTO) {
+        if (userRepository.existsByUserId(userDTO.getUserId())) {
+            throw new RuntimeException("User already exists");
+        }
         if (StringUtils.isBlank(userDTO.getUserId())) {
             throw new IllegalArgumentException("id is required");
         }
@@ -46,7 +51,6 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isBlank(userDTO.getUserName())) {
             throw new IllegalArgumentException("name is required");
         }
-
         User user = userRepository.save(userDTO.toEntity());
         List<String> tags = userDTO.getTags();
 
@@ -55,7 +59,6 @@ public class UserServiceImpl implements UserService {
             userTag.setContent(tagContent);
             user.addUserTag(userTag);
         });
-
         return user.toDTO();
     }
 
@@ -169,11 +172,33 @@ public class UserServiceImpl implements UserService {
             existingUser.setUserName(userDTO.getUserName());
         }
 
-
         if (userDTO.getUserTel() != null && !userDTO.getUserTel().isEmpty()) {
             existingUser.setUserTel(userDTO.getUserTel());
         }
 
+        if (userDTO.getTags() != null) {
+            List<UserTag> newTags = userDTO.getTags().stream()
+                    .map(tag -> UserTag.builder().content(tag).user(existingUser).build())
+                    .collect(Collectors.toList());
+            existingUser.setTags(newTags);
+        }
+
+
+        if (userDTO.getAreaCode() != null && !userDTO.getAreaCode().isEmpty()) {
+            existingUser.setAreaCode(userDTO.getAreaCode());
+        }
+
+        if (userDTO.getAreaName() != null && !userDTO.getAreaName().isEmpty()) {
+            existingUser.setAreaName(userDTO.getAreaName());
+        }
+
+        if (userDTO.getSigunguCode() != null && !userDTO.getSigunguCode().isEmpty()) {
+            existingUser.setSigunguCode(userDTO.getSigunguCode());
+        }
+
+        if (userDTO.getSigunguName() != null && !userDTO.getSigunguName().isEmpty()) {
+            existingUser.setSigunguName(userDTO.getSigunguName());
+        }
         User savedUser = userRepository.save(existingUser);
         UserDTO updatedUserDTO = savedUser.toDTO();
 
@@ -203,4 +228,21 @@ public class UserServiceImpl implements UserService {
         return user.get().toDTO();
     }
 
+    @Override
+    public boolean checkPassword(String userId, String password) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + userId));
+
+        return passwordEncoder.matches(password, user.getUserPw());
+    }
+
+    @Override
+    public void updatePassword(String userId, String newPassword) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + userId));
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setUserPw(encodedPassword);
+        userRepository.save(user);
+    }
 }

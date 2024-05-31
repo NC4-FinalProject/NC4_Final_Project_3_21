@@ -57,6 +57,8 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth/google").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/areas/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/modifyuser/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/confirmPassword/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/updatePassword/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)

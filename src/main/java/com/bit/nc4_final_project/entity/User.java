@@ -64,6 +64,11 @@ public class User {
         userTag.setUser(this);
     }
 
+    public void removeUserTag(UserTag userTag) {
+        userTags.remove(userTag);
+        userTag.setUser(null);
+    }
+
     public UserDTO toDTO() {
         return UserDTO.builder()
                 .seq(this.seq)
@@ -71,10 +76,10 @@ public class User {
                 .userPw(this.userPw)
                 .userName(this.userName)
 //                .location(this.location)
-                .areaCode(this.areaCode)
-                .areaName(this.areaName)
-                .sigunguCode(this.sigunguCode)
-                .sigunguName(this.sigunguName)
+                .areaCode(this.areaCode == null ? null : this.areaCode)
+                .areaName(this.areaName == null ? null : this.areaName)
+                .sigunguCode(this.sigunguCode == null ? null : this.sigunguCode)
+                .sigunguName(this.sigunguName == null ? null : this.sigunguName)
                 .userBirth(this.userBirth == null ? null : this.userBirth.toString())
                 .userTel(this.userTel == null ? null : this.userTel)
                 .role(this.role)
@@ -102,5 +107,35 @@ public class User {
 
     public void setProfileImageUrl(String fileUrl) {
         this.profileImageUrl = fileUrl;
+    }
+
+    public void setTags(List<UserTag> newTags) {
+        // 현재 태그 목록을 삭제합니다.
+        for (UserTag tag : new ArrayList<>(userTags)) {
+            removeUserTag(tag);
+        }
+
+        // 새로운 태그 목록을 추가합니다.
+        if (newTags != null) {
+            for (UserTag newTag : newTags) {
+                addUserTag(newTag);
+            }
+        }
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public void setSigunguCode(String sigunguCode) {
+        this.sigunguCode = sigunguCode;
+    }
+
+    public void setSigunguName(String sigunguName) {
+        this.sigunguName = sigunguName;
     }
 }
