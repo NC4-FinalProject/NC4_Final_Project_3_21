@@ -245,4 +245,5 @@ public class UserServiceImpl implements UserService {
         user.setUserPw(encodedPassword);
         userRepository.save(user);
     }
+
 }
