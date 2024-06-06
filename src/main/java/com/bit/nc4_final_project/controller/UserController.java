@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class UserController {
     @Autowired
     private UserAreaCodeRepository userAreaCodeRepository;
 
+    private boolean isSocialLoginUser(String userId) {
+        return userId.contains("@");
+    }
+
     @GetMapping("/areas")
     public List<AreaCode> getAreas() {
         return userAreaCodeRepository.findAll();
@@ -49,6 +54,15 @@ public class UserController {
         ResponseDTO<UserDTO> responseDTO = new ResponseDTO<>();
         System.out.println(userDTO);
         try {
+            if (isSocialLoginUser(userDTO.getUserId())) {
+                userDTO.setUserBirth("2000-01-01T00:00:00");
+                userDTO.setTags(Collections.singletonList("1"));
+                userDTO.setAreaCode("1");
+                userDTO.setAreaName("서울");
+                userDTO.setSigunguCode("1");
+                userDTO.setSigunguName("강남구");
+                userDTO.setUserTel("010-0000-0000");
+            }
             userDTO.setActive(true);
             userDTO.setLastLoginDate(LocalDateTime.now().toString());
             userDTO.setUserRegDate(LocalDateTime.now().toString());
@@ -64,7 +78,10 @@ public class UserController {
 
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            if (e.getMessage().equalsIgnoreCase("id is required")) {
+            if (e.getMessage().equalsIgnoreCase("User already exists")) {
+                responseDTO.setErrorCode(301);
+                responseDTO.setErrorMessage("User already exists");
+            } else if (e.getMessage().equalsIgnoreCase("id is required")) {
                 responseDTO.setErrorCode(100);
                 responseDTO.setErrorMessage(e.getMessage());
             } else if (e.getMessage().equalsIgnoreCase("password is required")) {
@@ -205,6 +222,9 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserInfo(@PathVariable("userId") String userId, @AuthenticationPrincipal UserDetails userDetails) {
         logger.info("Received request to get user info for userId: {}", userId);
 
+        logger.debug("Authenticated user: {}", userDetails.getUsername());
+        logger.debug("Requested userId: {}", userId);
+
         if (!userDetails.getUsername().equals(userId)) {
             logger.warn("Access denied for user: {}", userDetails.getUsername());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -213,8 +233,30 @@ public class UserController {
         logger.debug("Fetching user info for userId: {}", userId);
         UserDTO userDTO = userService.getUserInfo(userId);
         logger.debug("User info fetched: {}", userDTO);
+        userDTO.setUserPw("");
 
         return ResponseEntity.ok(userDTO);
+    }
+
+    @PostMapping("/confirmPassword")
+    public ResponseEntity<Map<String, Boolean>> confirmPassword(@RequestParam("currentPassword") String currentPassword, Authentication authentication) {
+        String userId = authentication.getName();
+
+        boolean isPasswordValid = userService.checkPassword(userId, currentPassword);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isPasswordValid", isPasswordValid);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<Void> updatePassword(@RequestParam("newPassword") String newPassword, Authentication authentication) {
+        String userId = authentication.getName();
+
+        userService.updatePassword(userId, newPassword);
+
+        return ResponseEntity.ok().build();
     }
 
 
@@ -245,3 +287,4 @@ public class UserController {
         }
     }
 }
+
