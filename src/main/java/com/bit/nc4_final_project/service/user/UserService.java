@@ -26,4 +26,8 @@ public interface UserService {
     UserDTO modifyUser(String userId, UserDTO userDTO);
 
     UserDTO getUserInfo(String userId);
+
+    boolean checkPassword(String username, String password);
+    void updatePassword(String username, String newPassword);
+
 }
